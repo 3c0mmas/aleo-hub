@@ -664,6 +664,7 @@ export default function AleoLanding() {
 
   return (
     <motion.div className="relative min-h-screen font-sans text-gray-100 bg-black overflow-x-hidden">
+      <PixelBackground /> {/* фон */}
       <GlowingCursor />
 
       {/* HEADER NAVIGATION */}
