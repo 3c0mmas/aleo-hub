@@ -20,7 +20,6 @@ function GlowingCursor() {
 
     const MAX_POINTS = 20;
     const DECAY = 0.86;
-
     const mainColor = "#EEFFA8";
     const glowColor = "#C4FFC2";
 
@@ -31,17 +30,14 @@ function GlowingCursor() {
       ctx.globalAlpha = baseAlpha;
       ctx.shadowColor = glowColor;
       ctx.shadowBlur = 20 * (1 - t);
-
       const shape = [
         [0, 0, 1, 0, 0],
         [0, 1, 0, 1, 0],
         [1, 0, 0, 0, 1],
       ];
-
       ctx.save();
       ctx.translate(x, y);
       ctx.rotate((-30 * Math.PI) / 180);
-
       for (let row = 0; row < shape.length; row++) {
         for (let col = 0; col < shape[row].length; col++) {
           if (shape[row][col] === 1) {
@@ -51,7 +47,6 @@ function GlowingCursor() {
           }
         }
       }
-
       ctx.restore();
       ctx.globalAlpha = 1;
     }
@@ -79,22 +74,16 @@ function GlowingCursor() {
     function draw() {
       ctx.clearRect(0, 0, w, h);
       ctx.save();
-
-      if (trailRef.current.length > 1) {
-        drawGlowTrail(trailRef.current);
-      }
-
+      if (trailRef.current.length > 1) drawGlowTrail(trailRef.current);
       for (let i = 0; i < trailRef.current.length; i++) {
         const p = trailRef.current[i];
         const t = i / MAX_POINTS;
         const size = 8 + (1 - t) * 10;
         drawPixelArrow(p.x, p.y, size, t);
       }
-
       ctx.restore();
       rafRef.current = requestAnimationFrame(draw);
     }
-
     draw();
 
     function pushPoint(x, y) {
@@ -133,11 +122,15 @@ function GlowingCursor() {
     };
   }, []);
 
+  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full pointer-events-none z-40" />;
+}
+
+function BlockSnakeEmbed() {
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed top-0 left-0 w-full h-full pointer-events-none z-40"
-    />
+    <div className="relative w-full h-[70vh] bg-black border border-[#EEFFA8]/20 rounded-3xl overflow-hidden">
+      <iframe src="/blocksnake.html" title="Aleo Block Snake" className="absolute inset-0 w-full h-full rounded-3xl" />
+      <div className="absolute top-4 left-4 text-[#EEFFA8] font-semibold z-10">Play Aleo Snake</div>
+    </div>
   );
 }
 
@@ -145,6 +138,11 @@ export default function AleoLanding() {
   const [showMore, setShowMore] = useState(false);
 
   const tweets = [
+    {
+      date: "November 1, 2025",
+      text: "Don't read this one before bed... Happy Halloween from the Aleo team! 🎃 🕸️",
+      link: "https://x.com/AleoHQ/status/1984308920895086613",
+    },
     {
       date: "October 27, 2025",
       text: "Exploring the future of privacy at Money20/20 Las Vegas! Join us at Aleo’s Privacy Lounge.",
@@ -198,7 +196,12 @@ export default function AleoLanding() {
       title: "Aleo Token Revolut Listing",
       link: "https://aleo.org/post/aleo-token-revolut-listing/",
     },
-  ];
+    {
+      date: "August 28, 2025",
+      title: "Aleo Joins The Global Dollar Network to Advance Privacy-Preserving Stablecoin Infrastructure",
+      link: "https://aleo.org/post/aleo-joins-global-dollar-network-private-stablecoin/",
+    },
+  ];  
 
   const events = [
     {
@@ -256,7 +259,6 @@ export default function AleoLanding() {
   return (
     <motion.div className="relative min-h-screen font-sans text-gray-100 bg-black overflow-x-hidden">
       <GlowingCursor />
-
       <header className="z-30 relative">
         <nav className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -270,6 +272,9 @@ export default function AleoLanding() {
             <a href="#features" className="hover:text-white">Features</a>
             <a href="#events" className="hover:text-white">Events</a>
             <a href="#community" className="hover:text-white">Community</a>
+            <a href="#governance" className="hover:text-white">Governance</a>
+            <a href="#articles" className="hover:text-white">Articles</a>
+            <a href="#game" className="hover:text-white">Game</a>
           </div>
         </nav>
       </header>
@@ -277,55 +282,28 @@ export default function AleoLanding() {
       <main className="z-20 relative">
         <section id="about" className="max-w-6xl mx-auto px-6 py-20">
           <h2 className="text-3xl font-semibold text-white mb-4">About Aleo</h2>
-          <p className="text-gray-300 max-w-3xl">Aleo enables developers to build private applications with zero-knowledge proofs executed off-chain and verified on-chain. Its mission is to make privacy-preserving computing accessible to everyone, empowering users to control their own data.</p>
+          <p className="text-gray-300 max-w-3xl">Aleo enables developers to build private applications with zero-knowledge proofs executed off-chain and verified on-chain.</p>
         </section>
 
         <section id="features" className="max-w-6xl mx-auto px-6 py-20">
           <h3 className="text-2xl font-semibold text-white mb-8">Features</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-              <h4 className="text-lg font-semibold text-white mb-2">Private by Default</h4>
-              <p className="text-gray-400 text-sm">All application logic can be executed privately using zk-proofs, ensuring total confidentiality for users and developers alike.</p>
-            </div>
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-              <h4 className="text-lg font-semibold text-white mb-2">Developer-First</h4>
-              <p className="text-gray-400 text-sm">Aleo provides powerful SDKs, local development tools, and documentation to help developers build privacy-preserving apps faster.</p>
-            </div>
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-              <h4 className="text-lg font-semibold text-white mb-2">Composable & Secure</h4>
-              <p className="text-gray-400 text-sm">Applications on Aleo can interoperate securely, enabling scalable private DeFi and beyond with modular, verifiable components.</p>
-            </div>
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-6"><h4 className="text-lg font-semibold text-white mb-2">Private by Default</h4><p className="text-gray-400 text-sm">All app logic can be executed privately using zk-proofs, ensuring confidentiality.</p></div>
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-6"><h4 className="text-lg font-semibold text-white mb-2">Developer-First</h4><p className="text-gray-400 text-sm">Powerful SDKs, local tools, and docs to help build privacy-preserving apps fast.</p></div>
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-6"><h4 className="text-lg font-semibold text-white mb-2">Composable & Secure</h4><p className="text-gray-400 text-sm">Aleo apps interoperate securely, enabling scalable private DeFi and beyond.</p></div>
           </div>
         </section>
 
         <section id="events" className="max-w-6xl mx-auto px-6 py-20">
           <h3 className="text-3xl font-semibold text-white mb-8">Aleo Global Events</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <AnimatePresence>
-              {visibleEvents.map((event, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.4 }}
-                  onClick={() => window.open(event.link, "_blank")}
-                  className="group cursor-pointer bg-white/5 border border-white/10 rounded-2xl p-6 transition-all duration-300 hover:bg-[#EEFFA8]/10 hover:scale-[1.03] hover:shadow-[0_0_25px_#EEFFA8aa]"
-                >
-                  <div className="text-sm text-gray-400">{event.time}</div>
-                  <div className="text-xs text-gray-500">{event.location}</div>
-                  <h4 className="mt-3 text-lg font-semibold text-white group-hover:text-[#EEFFA8] transition-colors">{event.title}</h4>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-          <div className="text-center mt-10">
-            <button
-              onClick={() => setShowMore(!showMore)}
-              className="px-6 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition"
-            >
-              {showMore ? "Show Less Events" : "Show More Events"}
-            </button>
+            {events.map((event, idx) => (
+              <motion.div key={idx} onClick={() => window.open(event.link, "_blank")} className="cursor-pointer bg-white/5 border border-white/10 rounded-2xl p-6 transition-all duration-300 hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] hover:scale-[1.03]">
+                <div className="text-sm text-gray-400">{event.time}</div>
+                <div className="text-xs text-gray-500">{event.location}</div>
+                <h4 className="mt-3 text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">{event.title}</h4>
+              </motion.div>
+            ))}
           </div>
         </section>
 
@@ -333,11 +311,7 @@ export default function AleoLanding() {
           <h3 className="text-3xl font-semibold text-white mb-8">Aleo Community Hub</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {tweets.map((tweet, idx) => (
-              <div
-                key={idx}
-                onClick={() => window.open(tweet.link, "_blank")}
-                className="cursor-pointer bg-white/5 border border-white/10 rounded-2xl p-6 transition-all duration-300 hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] hover:scale-[1.03]"
-              >
+              <div key={idx} onClick={() => window.open(tweet.link, "_blank")} className="cursor-pointer bg-white/5 border border-white/10 rounded-2xl p-6 transition-all duration-300 hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] hover:scale-[1.03]">
                 <div className="text-sm text-gray-400">{tweet.date}</div>
                 <h4 className="mt-3 text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">{tweet.text}</h4>
               </div>
@@ -349,14 +323,7 @@ export default function AleoLanding() {
           <div className="bg-white/5 border border-white/10 rounded-3xl p-10 text-center">
             <h3 className="text-3xl font-semibold text-white mb-4">Aleo Governance</h3>
             <p className="text-gray-300 max-w-2xl mx-auto mb-6">Propose. Vote. Change. Shape the future of the Aleo Network.</p>
-            <a
-              href="https://vote.aleo.org/"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-block px-8 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition"
-            >
-              Join Governance Platform
-            </a>
+            <a href="https://vote.aleo.org/" target="_blank" rel="noreferrer" className="inline-block px-8 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition">Join Governance Platform</a>
           </div>
         </section>
 
@@ -364,31 +331,24 @@ export default function AleoLanding() {
           <h3 className="text-3xl font-semibold text-white mb-8">Aleo Blog Highlights</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {articles.map((article, idx) => (
-              <div
-                key={idx}
-                onClick={() => window.open(article.link, "_blank")}
-                className="cursor-pointer bg-white/5 border border-white/10 rounded-2xl p-6 transition-all duration-300 hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] hover:scale-[1.03]"
-              >
+              <div key={idx} onClick={() => window.open(article.link, "_blank")} className="cursor-pointer bg-white/5 border border-white/10 rounded-2xl p-6 transition-all duration-300 hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] hover:scale-[1.03]">
                 <div className="text-sm text-gray-400 mb-2">{article.date}</div>
                 <h4 className="text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">{article.title}</h4>
               </div>
             ))}
           </div>
           <div className="text-center mt-10">
-            <a
-              href="https://aleo.org/blog/"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-block px-6 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition"
-            >
-              View More Articles
-            </a>
+            <a href="https://aleo.org/blog/" target="_blank" rel="noreferrer" className="inline-block px-6 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition">View More Articles</a>
           </div>
         </section>
 
-        <footer className="max-w-6xl mx-auto px-6 py-12 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} Aleo — Community & Governance
-        </footer>
+        <section id="game" className="max-w-6xl mx-auto px-6 py-20">
+          <h3 className="text-3xl font-semibold text-white mb-8">Aleo Block Snake</h3>
+          <p className="text-gray-400 mb-8 max-w-3xl">Test your reflexes and learn Aleo privacy concepts through gameplay — each move is a zero-knowledge decision!</p>
+          <BlockSnakeEmbed />
+        </section>
+
+        <footer className="max-w-6xl mx-auto px-6 py-12 text-center text-sm text-gray-500">© {new Date().getFullYear()} Aleo — Community & Governance</footer>
       </main>
     </motion.div>
   );
