@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import BlockSnake from "./BlockSnake";
 
 function GlowingCursor() {
   const canvasRef = useRef(null);
@@ -294,6 +295,42 @@ export default function AleoLanding() {
             <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
               <h4 className="text-lg font-semibold text-white mb-2">Composable & Secure</h4>
               <p className="text-gray-400 text-sm">Applications on Aleo can interoperate securely, enabling scalable private DeFi and beyond with modular, verifiable components.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="game" className="max-w-6xl mx-auto px-6 py-20">
+          <div className="flex flex-col lg:flex-row gap-10">
+            <div className="lg:w-1/2 space-y-5">
+              <p className="text-sm uppercase tracking-[0.25em] text-[#EEFFA8]/80">Interactive Demo</p>
+              <h3 className="text-3xl font-semibold text-white">Aleo Block Snake</h3>
+              <p className="text-gray-300 leading-relaxed">
+                Navigate the Aleo validator snake, slash malicious nodes, and collect transactions to scale the network. Each
+                level introduces more threats, so keep moving and trigger bombs strategically to protect the chain.
+              </p>
+              <ul className="text-sm text-gray-400 space-y-2">
+                <li className="flex items-center gap-2">
+                  <span className="text-[#EEFFA8]">▲</span>
+                  <span>Use arrow keys or WASD to steer the validator snake.</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-[#EEFFA8]">◆</span>
+                  <span>Click on enemy nodes to slash them before they collide with you.</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-[#EEFFA8]">●</span>
+                  <span>Collect glowing transactions, trigger bomb tiles, and survive to climb the global leaderboard.</span>
+                </li>
+              </ul>
+            </div>
+            <div className="lg:w-1/2">
+              <div className="relative w-full h-[420px] rounded-3xl border border-white/10 bg-black/80 overflow-hidden shadow-[0_0_35px_rgba(238,255,168,0.25)]">
+                <div className="pointer-events-none absolute inset-x-6 top-5 z-10 flex items-center justify-between text-[11px] uppercase tracking-[0.3em] text-gray-400/80">
+                  <span>Aleo Block Snake</span>
+                  <span>Tap / Space to Start</span>
+                </div>
+                <BlockSnake />
+              </div>
             </div>
           </div>
         </section>
