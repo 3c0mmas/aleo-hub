@@ -707,7 +707,7 @@ export default function AleoLanding() {
 
   {/* Hero Content */}
   <section className="flex flex-col items-center justify-center h-[90vh] text-center px-6">
-  <h1 className="text-5xl font-bold mb-4 text-[#EEFFA8] flex items-center gap-3">
+  <h1 className="text-5xl font-bold mb-4 text-[#C4FFC2] flex items-center gap-3">
     Welcome to 
     <img
       src="https://vote.aleo.org/images/logo-wordmark-black.svg"
@@ -719,7 +719,7 @@ export default function AleoLanding() {
   <p className="text-gray-400 max-w-xl">
     Privacy-first blockchain empowering developers to build private, decentralized apps.
   </p>
-  <button className="mt-6 px-6 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition">
+  <button className="mt-6 px-6 py-3 bg-[#C4FFC2]/10 border border-[#C4FFC2]/30 rounded-xl text-[#C4FFC2] hover:bg-[#C4FFC2]/20 transition">
     Learn More
   </button>
 </section>
