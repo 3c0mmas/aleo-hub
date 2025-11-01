@@ -614,11 +614,44 @@ export default function AleoLanding() {
       </header>
 
       {/* HERO */}
-      <section className="h-screen flex flex-col items-center justify-center text-center px-6">
-        <h1 className="text-5xl font-bold text-[#EEFFA8] mb-4">Welcome to Aleo Network</h1>
-        <p className="text-gray-400 max-w-xl mb-6">Privacy-first blockchain empowering developers to build private, decentralized apps.</p>
-        <a href="#about" className="px-8 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition">Learn More</a>
-      </section>
+<section className="relative h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
+  {/* Light Glow Animation */}
+  <motion.div
+    className="absolute inset-0 z-0 pointer-events-none"
+    initial={{ opacity: 0.4 }}
+    animate={{
+      opacity: [0.4, 0.8, 0.4],
+      background: [
+        "radial-gradient(circle at 30% 40%, rgba(238,255,168,0.25) 0%, transparent 60%)",
+        "radial-gradient(circle at 70% 60%, rgba(196,255,194,0.25) 0%, transparent 60%)",
+        "radial-gradient(circle at 50% 50%, rgba(238,255,168,0.3) 0%, transparent 65%)",
+      ],
+    }}
+    transition={{ duration: 6, repeat: Infinity, repeatType: "mirror" }}
+  />
+
+  {/* Hero Content */}
+  <div className="relative z-10">
+    <h1 className="text-5xl font-bold text-[#EEFFA8] mb-4 flex flex-wrap items-center justify-center gap-3">
+      <span>Welcome to</span>
+      <img
+        src="https://vote.aleo.org/images/logo-wordmark-black.svg"
+        alt="Aleo Logo"
+        className="h-10 brightness-200 contrast-125"
+      />
+      <span>Network</span>
+    </h1>
+    <p className="text-gray-400 max-w-xl mx-auto mb-6">
+      Privacy-first blockchain empowering developers to build private, decentralized apps.
+    </p>
+    <a
+      href="#about"
+      className="px-8 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition"
+    >
+      Learn More
+    </a>
+  </div>
+</section>
 
       {/* ABOUT */}
       <section id="about" className="max-w-6xl mx-auto px-6 py-20">
