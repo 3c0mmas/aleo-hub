@@ -332,14 +332,14 @@ export default function AleoLanding() {
         <section id="community" className="max-w-6xl mx-auto px-6 py-20">
           <h3 className="text-3xl font-semibold text-white mb-8">Aleo Community Hub</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tweets.map((url, idx) => (
+            {tweets.map((tweet, idx) => (
               <div
                 key={idx}
-                onClick={() => window.open(url, "_blank")}
+                onClick={() => window.open(tweet.link, "_blank")}
                 className="cursor-pointer bg-white/5 border border-white/10 rounded-2xl p-6 transition-all duration-300 hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] hover:scale-[1.03]"
               >
-                <div className="text-gray-300 text-sm">Tweet #{idx + 1}</div>
-                <h4 className="mt-3 text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">View post on X</h4>
+                <div className="text-sm text-gray-400">{tweet.date}</div>
+                <h4 className="mt-3 text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">{tweet.text}</h4>
               </div>
             ))}
           </div>
@@ -369,6 +369,7 @@ export default function AleoLanding() {
                 onClick={() => window.open(article.link, "_blank")}
                 className="cursor-pointer bg-white/5 border border-white/10 rounded-2xl p-6 transition-all duration-300 hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] hover:scale-[1.03]"
               >
+                <div className="text-sm text-gray-400 mb-2">{article.date}</div>
                 <h4 className="text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">{article.title}</h4>
               </div>
             ))}
