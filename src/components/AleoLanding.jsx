@@ -129,6 +129,80 @@ function GlowingCursor() {
   );
 }
 
+// === Glow squares ============================================================
+function PixelBackground() {
+  const canvasRef = useRef(null);
+  const rafRef = useRef(null);
+  const pixelsRef = useRef([]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    let w = (canvas.width = window.innerWidth);
+    let h = (canvas.height = window.innerHeight);
+
+    const COUNT = 120;
+    const COLORS = ["#EEFFA8", "#C4FFC2", "#ffffff"];
+    const pixels = Array.from({ length: COUNT }).map(() => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      size: 1 + Math.random() * 3,
+      speed: 0.05 + Math.random() * 0.1,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      alpha: 0.2 + Math.random() * 0.5,
+      dir: Math.random() * Math.PI * 2,
+    }));
+    pixelsRef.current = pixels;
+
+    function resize() {
+      w = (canvas.width = window.innerWidth);
+      h = (canvas.height = window.innerHeight);
+    }
+    window.addEventListener("resize", resize);
+
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      for (const p of pixelsRef.current) {
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = 8;
+        ctx.fillRect(p.x, p.y, p.size, p.size);
+        ctx.shadowBlur = 0;
+
+        // лёгкое движение
+        p.x += Math.cos(p.dir) * p.speed;
+        p.y += Math.sin(p.dir) * p.speed;
+
+        // плавное изменение прозрачности
+        p.alpha += (Math.random() - 0.5) * 0.01;
+        if (p.alpha < 0.1) p.alpha = 0.1;
+        if (p.alpha > 0.7) p.alpha = 0.7;
+
+        // возврат за границы
+        if (p.x < 0) p.x = w;
+        if (p.x > w) p.x = 0;
+        if (p.y < 0) p.y = h;
+        if (p.y > h) p.y = 0;
+      }
+      rafRef.current = requestAnimationFrame(draw);
+    }
+    draw();
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed top-0 left-0 w-full h-full pointer-events-none z-0"
+    />
+  );
+}
+
 // === INTEGRATED GAME =========================================================
 function BlockSnake() {
   const canvasRef = useRef(null);
