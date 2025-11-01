@@ -159,10 +159,16 @@ function BlockSnake() {
     };
 
     const CELL = 24;
-    let w = (canvas.width = window.innerWidth);
-    let h = (canvas.height = window.innerHeight * 0.7);
+
+    let w = canvas.clientWidth || window.innerWidth;
+    let h = (canvas.clientHeight || window.innerHeight) * 0.7;
+    if (h < 380) h = 380;
+
     let COLS = Math.floor(w / CELL);
     let ROWS = Math.floor(h / CELL);
+
+    canvas.width = w;
+    canvas.height = h;
 
     let tick = 0;
     let stepMs = 150;
@@ -200,7 +206,10 @@ function BlockSnake() {
       let c;
       let tries = 0;
       do {
-        c = { x: Math.floor(Math.random() * COLS), y: Math.floor(Math.random() * ROWS) };
+        c = {
+          x: Math.floor(Math.random() * COLS),
+          y: Math.floor(Math.random() * ROWS),
+        };
         tries++;
         if (tries > 100) break;
       } while (occupied(c));
@@ -208,7 +217,11 @@ function BlockSnake() {
     }
 
     function spawnEnemy() {
-      const e = { x: Math.floor(Math.random() * COLS), y: Math.floor(Math.random() * ROWS), alive: true };
+      const e = {
+        x: Math.floor(Math.random() * COLS),
+        y: Math.floor(Math.random() * ROWS),
+        alive: true,
+      };
       spawnFlashRef.current.push({ x: e.x, y: e.y, alpha: 1 });
       return e;
     }
@@ -218,6 +231,7 @@ function BlockSnake() {
       for (let i = 0; i < count; i++) enemies.push(spawnEnemy());
     }
 
+    // first target
     tx = spawnFree();
     addEnemiesForLevel();
 
@@ -246,7 +260,6 @@ function BlockSnake() {
 
     window.addEventListener("keydown", onKey);
 
-    // click = slashing
     window.addEventListener("click", (e) => {
       if (!running) {
         running = true;
@@ -288,42 +301,210 @@ function BlockSnake() {
       stepMs = 150;
     }
 
+    function triggerBombs() {
+      for (const e of enemies) {
+        if (e.alive) {
+          e.alive = false;
+          statsRef.current.slashed++;
+          score += 5;
+          for (let i = 0; i < 6; i++) {
+            shardsRef.current.push({
+              x: e.x * CELL + CELL / 2,
+              y: e.y * CELL + CELL / 2,
+              vx: (Math.random() - 0.5) * 5,
+              vy: (Math.random() - 0.5) * 5,
+              life: 1,
+            });
+          }
+        }
+      }
+      bombsRef.current = [];
+    }
+
     function step() {
       dir = nextDir;
       const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
-      if (!inBounds(head)) return (running = false);
+
+      // столкновение со стеной
+      if (!inBounds(head)) return gameOver();
+
+      // столкновение с собой / врагом (если нет буста)
       if (!power || powerTime <= 0) {
-        for (let i = 0; i < snake.length; i++) if (cellEquals(snake[i], head)) return (running = false);
-        if (enemies.some((e) => e.alive && cellEquals(e, head))) return (running = false);
+        for (let i = 0; i < snake.length; i++)
+          if (cellEquals(snake[i], head)) return gameOver();
+        if (enemies.some((e) => e.alive && cellEquals(e, head))) return gameOver();
       }
+
       snake.unshift(head);
+
+      // съели цель
       if (cellEquals(head, tx)) {
         score += 10;
         tx = spawnFree();
         level++;
         addEnemiesForLevel();
-      } else snake.pop();
+
+        // каждые 5 уровней — бомба
+        if (level % 5 === 0) {
+          stepMs = Math.max(60, stepMs - 10);
+          bombsRef.current.push({ ...spawnFree(), timer: 300 }); // ~5 сек
+        }
+
+        // шанс на power
+        if (!power && Math.random() < 0.3) power = spawnFree();
+        flashRef.current = 1;
+      } else {
+        snake.pop();
+      }
+
+      // таймер бомб
+      for (const bomb of bombsRef.current) {
+        bomb.timer--;
+      }
+      bombsRef.current = bombsRef.current.filter((b) => b.timer > 0);
+
+      // подорвали бомбу
+      for (const bomb of bombsRef.current) {
+        if (cellEquals(head, bomb)) {
+          triggerBombs();
+          break;
+        }
+      }
+
+      // подобрали power
+      if (power && cellEquals(head, power)) {
+        power = null;
+        powerTime = 30 + level * 10;
+      }
+
+      if (powerTime > 0) powerTime--;
+    }
+
+    function gameOver() {
+      running = false;
+    }
+
+    function drawCell(c, color, glow = false, alpha = 1) {
+      if (!c) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      if (glow) {
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 12;
+      }
+      ctx.fillStyle = color;
+      ctx.fillRect(c.x * CELL + 3, c.y * CELL + 3, CELL - 6, CELL - 6);
+      ctx.restore();
+    }
+
+    function renderShards() {
+      for (const shard of shardsRef.current) {
+        ctx.save();
+        ctx.fillStyle = COLORS.shard;
+        ctx.globalAlpha = shard.life;
+        ctx.fillRect(shard.x, shard.y, 3, 3);
+        ctx.restore();
+        shard.x += shard.vx;
+        shard.y += shard.vy;
+        shard.life -= 0.03;
+      }
+      shardsRef.current = shardsRef.current.filter((s) => s.life > 0);
+    }
+
+    function renderSpawnFlashes() {
+      for (const flash of spawnFlashRef.current) {
+        if (flash.alpha <= 0) continue;
+        ctx.save();
+        ctx.beginPath();
+        ctx.fillStyle = COLORS.enemy;
+        ctx.globalAlpha = flash.alpha * 0.5;
+        const px = flash.x * CELL + CELL / 2;
+        const py = flash.y * CELL + CELL / 2;
+        const radius = (1 - flash.alpha) * 40 + 8;
+        ctx.arc(px, py, radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+        flash.alpha -= 0.05;
+      }
+      spawnFlashRef.current = spawnFlashRef.current.filter((f) => f.alpha > 0);
     }
 
     function render() {
       ctx.fillStyle = COLORS.bg;
       ctx.fillRect(0, 0, w, h);
-      ctx.fillStyle = COLORS.grid;
+
+      // сетка
+      ctx.strokeStyle = COLORS.grid;
+      ctx.lineWidth = 1;
       for (let x = 0; x <= COLS; x++) {
-        ctx.fillRect(x * CELL, 0, 1, h);
+        ctx.beginPath();
+        ctx.moveTo(x * CELL + 0.5, 0);
+        ctx.lineTo(x * CELL + 0.5, h);
+        ctx.stroke();
       }
       for (let y = 0; y <= ROWS; y++) {
-        ctx.fillRect(0, y * CELL, w, 1);
+        ctx.beginPath();
+        ctx.moveTo(0, y * CELL + 0.5);
+        ctx.lineTo(w, y * CELL + 0.5);
+        ctx.stroke();
       }
-      ctx.fillStyle = COLORS.tx;
-      ctx.fillRect(tx.x * CELL + 3, tx.y * CELL + 3, CELL - 6, CELL - 6);
-      for (let i = 0; i < snake.length; i++) {
-        ctx.fillStyle = COLORS.main;
-        ctx.fillRect(snake[i].x * CELL + 3, snake[i].y * CELL + 3, CELL - 6, CELL - 6);
+
+      renderSpawnFlashes();
+      renderShards();
+
+      // глобальный флеш
+      if (flashRef.current > 0) {
+        ctx.save();
+        ctx.fillStyle = COLORS.flash;
+        ctx.globalAlpha = flashRef.current * 0.5;
+        ctx.fillRect(0, 0, w, h);
+        ctx.restore();
+        flashRef.current *= 0.9;
       }
+
+      // цель
+      drawCell(tx, COLORS.tx, true);
+
+      // power
+      if (power) drawCell(power, COLORS.glow, true, 0.8);
+
+      // враги
+      for (const e of enemies) {
+        if (e.alive) drawCell(e, COLORS.enemy, false, 0.9);
+      }
+
+      // бомбы
+      for (const b of bombsRef.current) {
+        drawCell(b, COLORS.bomb, true, 0.9);
+      }
+
+      // змейка
+      for (let i = snake.length - 1; i >= 0; i--) {
+        const a = 0.45 + 0.55 * (i === 0 ? 1 : i / snake.length);
+        drawCell(snake[i], COLORS.main, true, a);
+      }
+
+      // HUD
+      ctx.save();
       ctx.fillStyle = COLORS.text;
       ctx.font = "14px monospace";
-      ctx.fillText(`Score: ${score} Level: ${level}`, 12, h - 16);
+      if (!running && score > 0) {
+        ctx.fillText(
+          `GAME OVER — Level ${level}, Slashed ${statsRef.current.slashed} nodes`,
+          12,
+          h / 2
+        );
+        ctx.fillText(`Tap / Space to Restart`, 12, h / 2 + 24);
+      } else {
+        ctx.fillText(
+          `Score: ${score}  Level: ${level}  Slashed: ${statsRef.current.slashed}  ${
+            running ? "" : "Tap / Space to Start"
+          }`,
+          12,
+          h - 16
+        );
+      }
+      ctx.restore();
     }
 
     function loop(ts) {
@@ -340,13 +521,31 @@ function BlockSnake() {
     }
 
     rafRef.current = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(rafRef.current);
+
+    // resize game on window resize
+    function onResize() {
+      w = canvas.clientWidth || window.innerWidth;
+      h = (canvas.clientHeight || window.innerHeight) * 0.7;
+      if (h < 380) h = 380;
+      COLS = Math.floor(w / CELL);
+      ROWS = Math.floor(h / CELL);
+      canvas.width = w;
+      canvas.height = h;
+    }
+
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+    };
   }, []);
 
   return (
     <div className="relative w-full h-[70vh] bg-black border border-[#EEFFA8]/20 rounded-3xl overflow-hidden">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-      <div className="absolute top-4 left-4 text-[#EEFFA8] font-semibold z-10">
+      <div className="absolute top-4 left-4 text-[#EEFFA8] font-semibold z-10 drop-shadow">
         Play Aleo Snake
       </div>
     </div>
