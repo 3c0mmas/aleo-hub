@@ -822,7 +822,7 @@ export default function AleoLanding() {
       </section>
 
       <footer className="max-w-6xl mx-auto px-6 py-12 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} Aleo — Community & Governance
+        © {new Date().getFullYear()} Julissa ♥ Aleo Community
       </footer>
     </motion.div>
   );
