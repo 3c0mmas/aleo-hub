@@ -637,7 +637,7 @@ export default function AleoLanding() {
       <img
         src="https://vote.aleo.org/images/logo-wordmark-black.svg"
         alt="Aleo Logo"
-        className="h-10 brightness-200 invert sepia saturate-300 hue-rotate-[60deg] drop-shadow-[0_0_12px_#EEFFA8aa]"
+        className="h-10 brightness-200 invert sepia saturate-300 hue-rotate-[60deg] drop-shadow-[0_0_12px_##EEFFA8]"
         style={{
           filter:
             "invert(85%) sepia(60%) saturate(300%) hue-rotate(60deg) brightness(110%) contrast(105%)",
