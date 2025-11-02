@@ -1,13 +1,14 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import AleoQuizInteractive from "./AleoQuizInteractive";
+import GlowingCursor from "./GlowingCursor";
+import PixelBackground from "./PixelBackground";
+import GameSection from "./GameSection";
 
-export default function AleoLanding() {
-  return (
-    <div className="relative min-h-screen font-sans text-gray-100 bg-black overflow-x-hidden overflow-y-visible">
-      <PixelBackground /> {/* 🔶 квадратики по всему сайту */}
-      <GlowingCursor /> {/* 💡 лимонный курсор */}
+// === MAIN PAGE ==============================================================
 
+  const [showMore, setShowMore] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
       {/* HERO и другие блоки */}
       <section className="relative flex flex-col items-center justify-center min-h-screen text-center">
         <motion.h1
@@ -776,7 +777,7 @@ function GameSection() {
 
 // === MAIN PAGE ==============================================================
 
-export default function AleoLanding() {
+
   const [showMore, setShowMore] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
 
