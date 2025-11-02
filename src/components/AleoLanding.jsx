@@ -201,6 +201,52 @@ function PixelBackground() {
 }
 
 // === GAME =========================================================
+{/* GAME */}
+<section id="game" className="max-w-6xl mx-auto px-6 py-20 text-center">
+  <h3 className="text-3xl font-semibold text-white mb-6">Aleo Block Snake</h3>
+
+  <motion.div
+    className="text-gray-300 max-w-3xl mx-auto mb-10 leading-relaxed"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 1.2, ease: "easeOut" }}
+  >
+    <motion.span
+      className="block text-[#EEFFA8] font-semibold mb-2 text-lg"
+      animate={{ opacity: [0.7, 1, 0.7] }}
+      transition={{ duration: 3, repeat: Infinity }}
+    >
+      Secure the Aleo Network, Evolve the Chain!
+    </motion.span>
+
+    <motion.p
+      className="text-gray-300"
+      animate={{ opacity: [0.8, 1, 0.8] }}
+      transition={{ duration: 5, repeat: Infinity }}
+    >
+      Step into the neon world of Aleo — a blockchain built for privacy and performance.
+      Guide your digital snake through the decentralized grid, collect encrypted transactions,
+      and defend the Aleo network from hostile nodes.
+      <br />
+      <br />
+      Each transaction accelerates your growth, every five levels bring new challenges,
+      and red bombs can purge the field in a flash of cryptographic power.
+      <br />
+      <br />
+      <motion.span
+        className="italic text-[#C4FFC2]"
+        animate={{ opacity: [0.6, 1, 0.6], textShadow: ["0 0 5px #C4FFC2", "0 0 15px #EEFFA8", "0 0 5px #C4FFC2"] }}
+        transition={{ duration: 4, repeat: Infinity }}
+      >
+        Show your skill as a validator — protect privacy, sustain the chain,
+        and keep Aleo secure... until Game Over.
+      </motion.span>
+    </motion.p>
+  </motion.div>
+
+  <BlockSnake />
+</section>
+
 function BlockSnake() {
   const canvasRef = useRef(null);
   const rafRef = useRef(null);
