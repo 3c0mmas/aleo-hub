@@ -445,7 +445,6 @@ export default function AleoQuizInteractive() {
       id="quiz-zone"
       className="relative flex flex-col items-center justify-center text-gray-100 px-6 py-32 min-h-screen overflow-visible z-[5] bg-transparent"
     >
-      <FloatingSymbols /> {/* ✨ только внутри квиза */}
 
       <div className="relative z-10 w-full max-w-5xl text-center flex flex-col items-center">
         <motion.h3
@@ -462,17 +461,19 @@ export default function AleoQuizInteractive() {
         <AnimatePresence mode="wait">
           {!finished ? (
             <motion.div
-              key={current}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-              className="relative border border-[#EEFFA8]/15 rounded-3xl backdrop-blur-[6px] bg-black/30 shadow-[0_0_60px_rgba(238,255,168,0.08)] flex flex-col justify-center items-center"
-              style={{
-                width: "760px",
-                height: "480px",
-              }}
-            >
+  key={current}
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  exit={{ opacity: 0, y: -20 }}
+  transition={{ duration: 0.4 }}
+  className="relative border border-[#EEFFA8]/15 rounded-3xl backdrop-blur-[6px] bg-black/30 shadow-[0_0_60px_rgba(238,255,168,0.08)] flex flex-col justify-center items-center mx-auto"
+  style={{
+    width: "720px",
+    minHeight: "460px",
+    flexShrink: 0,
+    transition: "none", // 🔒 отключает автоанимацию размеров
+  }}
+>
               <div className="absolute inset-0 rounded-3xl shadow-[0_0_70px_15px_rgba(238,255,168,0.12)] pointer-events-none" />
               <div className="relative z-10 p-10 text-center">
                 <h4 className="text-xl text-white font-medium mb-6">
