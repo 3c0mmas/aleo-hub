@@ -1,71 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AleoQuizInteractive from "./AleoQuizInteractive";
-import GlowingCursor from "./GlowingCursor";
-import PixelBackground from "./PixelBackground";
-import GameSection from "./GameSection";
-
-// === MAIN PAGE ==============================================================
-export default function AleoLanding() {
-  const [showMore, setShowMore] = useState(false);
-  const [showSplash, setShowSplash] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowSplash(false), 2500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <motion.div className="relative min-h-screen font-sans text-gray-100 bg-black overflow-x-hidden">
-      {/* другие секции: About, Features, Events, Community, Governance, Articles, Game */}
-
-      <AleoQuizInteractive /> {/* 🧠 квиз-зона */}
-
-      <footer className="text-center py-10 text-sm text-[#EEFFA8]/80">
-        © 2025 Julissa ♥ Aleo Community
-      </footer>
-    </motion.div>
-  );
-}
-
-// === квадратики по всему сайту ===
-function PixelBackground() {
-  const pixels = Array.from({ length: 30 }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: Math.random() * 3 + 1,
-    delay: Math.random() * 10,
-    duration: 15 + Math.random() * 10,
-  }));
-
-  return (
-    <div className="absolute inset-0 overflow-hidden z-0">
-      {pixels.map((p) => (
-        <motion.span
-          key={p.id}
-          className="absolute block bg-[#EEFFA8]/30 rounded-full"
-          style={{
-            width: p.size,
-            height: p.size,
-            top: `${p.y}%`,
-            left: `${p.x}%`,
-          }}
-          animate={{
-            opacity: [0.2, 1, 0.2],
-            y: ["0%", "-10%"],
-          }}
-          transition={{
-            repeat: Infinity,
-            duration: p.duration,
-            delay: p.delay,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
-    </div>
-  );
-}
 
 // === GLOW CURSOR =============================================================
 function GlowingCursor() {
@@ -770,7 +705,7 @@ function GameSection() {
 
 // === MAIN PAGE ==============================================================
 
-
+export default function AleoLanding() {
   const [showMore, setShowMore] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
 
