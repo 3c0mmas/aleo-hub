@@ -403,9 +403,9 @@ export default function AleoQuizInteractive() {
 
   return (
     <section
-      id="quiz-zone"
-      className="relative min-h-screen flex flex-col items-center justify-center bg-black text-gray-100 px-6 py-20 overflow-hidden"
-    >
+  id="quiz-zone"
+  className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-black via-[#0a0a0a] to-black z-30 text-gray-100 px-6 py-20 overflow-hidden"
+>
       <motion.div
         className="absolute inset-0 pointer-events-none z-0"
         animate={{
