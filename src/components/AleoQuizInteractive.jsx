@@ -479,31 +479,35 @@ export default function AleoQuizInteractive() {
                 <h4 className="text-xl text-white font-medium mb-6">
                   {quiz[current]?.question}
                 </h4>
-                <div className="grid grid-cols-1 gap-3 mb-6">
-                  {quiz[current]?.options.map((opt, i) => {
-                    const isCorrect = i === quiz[current].correct;
-                    const isSelected = i === selected;
-                    let bg = "bg-white/10 hover:bg-[#EEFFA8]/10";
-                    if (showExplanation && isSelected) {
-                      bg = isCorrect
-                        ? "bg-green-500/30 border-green-400/40"
-                        : "bg-red-500/30 border-red-400/40";
-                    }
-                    if (showExplanation && !isSelected && isCorrect) {
-                      bg = "bg-green-500/20 border-green-400/30";
-                    }
-                    return (
-                      <button
-                        key={i}
-                        onClick={() => handleAnswer(i)}
-                        disabled={showExplanation}
-                        className={`${bg} border border-white/10 text-gray-200 py-3 rounded-xl transition`}
-                      >
-                        {opt}
-                      </button>
-                    );
-                  })}
-                </div>
+                <div className="grid grid-cols-1 gap-3 mb-6 w-full max-w-[540px] mx-auto">
+  {quiz[current]?.options.map((opt, i) => {
+    const isCorrect = i === quiz[current].correct;
+    const isSelected = i === selected;
+    let bg = "bg-white/10 hover:bg-[#EEFFA8]/10";
+    if (showExplanation && isSelected) {
+      bg = isCorrect
+        ? "bg-green-500/30 border-green-400/40"
+        : "bg-red-500/30 border-red-400/40";
+    }
+    if (showExplanation && !isSelected && isCorrect) {
+      bg = "bg-green-500/20 border-green-400/30";
+    }
+    return (
+      <button
+        key={i}
+        onClick={() => handleAnswer(i)}
+        disabled={showExplanation}
+        className={`${bg} border border-white/10 text-gray-200 py-3 rounded-xl transition w-full text-center`}
+        style={{
+          minWidth: "520px",
+          maxWidth: "520px",
+        }}
+      >
+        {opt}
+      </button>
+    );
+  })}
+</div>
 
                 {showExplanation && (
                   <motion.div
