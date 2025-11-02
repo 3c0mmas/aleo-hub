@@ -6,24 +6,17 @@ import PixelBackground from "./PixelBackground";
 import GameSection from "./GameSection";
 
 // === MAIN PAGE ==============================================================
-
+export default function AleoLanding() {
   const [showMore, setShowMore] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
-      {/* HERO и другие блоки */}
-      <section className="relative flex flex-col items-center justify-center min-h-screen text-center">
-        <motion.h1
-          className="text-5xl font-bold text-[#EEFFA8] drop-shadow-[0_0_15px_rgba(238,255,168,0.4)]"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          Welcome to Aleo Network
-        </motion.h1>
-        <p className="mt-4 text-gray-400 max-w-xl">
-          Privacy-first blockchain empowering developers to build private, decentralized apps.
-        </p>
-      </section>
 
+  useEffect(() => {
+    const timer = setTimeout(() => setShowSplash(false), 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <motion.div className="relative min-h-screen font-sans text-gray-100 bg-black overflow-x-hidden">
       {/* другие секции: About, Features, Events, Community, Governance, Articles, Game */}
 
       <AleoQuizInteractive /> {/* 🧠 квиз-зона */}
@@ -31,7 +24,7 @@ import GameSection from "./GameSection";
       <footer className="text-center py-10 text-sm text-[#EEFFA8]/80">
         © 2025 Julissa ♥ Aleo Community
       </footer>
-    </div>
+    </motion.div>
   );
 }
 
