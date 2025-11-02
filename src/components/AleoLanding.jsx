@@ -715,62 +715,56 @@ useEffect(() => {
 
 
   const allEvents = [
-    {
-      time: "6:00 PM - 9:00 PM GMT+9, November 1 2025",
-      location: "Tokyo, Japan",
-      title: "Aleo: Tokyo Compliant Private Token Workshop",
-      link: "https://luma.com/aleotokyo2025workshop",
-    },
-    {
-      time: "1:00 PM - 4:00 PM EDT, November 1 2025",
-      location: "Toronto, Canada",
-      title: "Aleo: Toronto Compliant Private Token Workshop",
-      link: "https://luma.com/aleotorontooctober2025workshop",
-    },
-    {
-      time: "4:00 PM NOVEMBER 3 2025 GMT-3",
-      location: "São Paulo, Brazil",
-      title: "Aleo LATAM Developer Meetup",
-      link: "https://luma.com/aleobrazil2025",
-    },
-    {
-      time: "2:30 PM OCTOBER 27 2025 PDT",
-      location: "Las Vegas, Nevada",
-      title: "Aleo's Privacy Lounge @Money20/20",
-      link: "https://luma.com/4s1lxlc9",
-    },
-    {
-      time: "5:00 PM OCTOBER 22 2025 GMT+3",
-      location: "Istanbul, Turkey",
-      title: "Aleo x Yıldız Technical University Blockchain Club",
-      link: "https://luma.com/pdjgokou",
-    },
-    {
-      time: "12:00 PM OCTOBER 21 2025 GMT+1",
-      location: "Uyo, Nigeria",
-      title: "Aleo: Uyo Compliant Private Token Workshop",
-      link: "https://luma.com/aleouyooctober2025workshop",
-    },
-    {
-      time: "2:00 PM OCTOBER 19 2025 GMT+8",
-      location: "Shanghai, China",
-      title:
-        "揭秘下一代隐私网络！Aleo 上海 Dev Party 邀你面对面话 Web3 未来！",
-      link: "https://luma.com/xwjcv6xh",
-    },
-    {
-      time: "9:00 AM OCTOBER 19 2025 GMT+7",
-      location: "Ho Chi Minh, Vietnam",
-      title: "Aleo: HCMC Compliant Private Token Workshop",
-      link: "https://luma.com/aleohcmc2025workshop",
-    },
-    {
-      time: "6:30 PM OCTOBER 13 2025 GMT+2",
-      location: "Paris, France",
-      title: "Aleo x Crypto Mondays x SheFi Paris",
-      link: "https://luma.com/zw8oesrq",
-    },
-  ];
+    const allEvents = [
+  {
+    time: "1:00 PM - 4:00 PM EDT, November 1 2025",
+    location: "Toronto, Ontario",
+    title: "Aleo: Toronto Compliant Private Token Workshop",
+    link: "https://luma.com/aleotorontonovember2025workshop",
+    image:
+      "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=2,background=white,quality=75,width=400,height=400/event-covers/8i/2f2d2fe8-6339-485b-bcc2-8728f12a3e30.png",
+  },
+  {
+    time: "2:30 PM OCTOBER 27 2025 - OCTOBER 29 2025 PDT",
+    location: "Las Vegas, Nevada",
+    title: "Aleo's Privacy Lounge @Money20/20",
+    link: "https://luma.com/4s1lxlc9",
+    image:
+      "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/event-covers/uk/a02dbec0-96a6-4537-8f66-3df9d8abc7ec.png",
+  },
+  {
+    time: "5:00 PM OCTOBER 22 2025 GMT+3",
+    location: "Istanbul, Turkey",
+    title: "Aleo x Yıldız Technical University Blockchain Club",
+    link: "https://luma.com/4fgb4hxp",
+    image:
+      "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/event-covers/gs/c162c8e7-1d85-40f3-a4d9-0eae37fa7e38.png",
+  },
+  {
+    time: "6:00 PM - 9:00 PM GMT+9, November 1 2025",
+    location: "Tokyo, Japan",
+    title: "Aleo Developer Meetup Tokyo",
+    link: "https://luma.com/aleotokyomeetup",
+    image:
+      "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/event-covers/oq/5c9427af-acff-4119-995a-5babdd7df56a.png",
+  },
+  {
+    time: "7:00 PM - 10:00 PM WAT, October 25 2025",
+    location: "Lagos, Nigeria",
+    title: "Aleo x BlockchainUNN — Privacy & Compliance Workshop",
+    link: "https://luma.com/aleo-lagos2025",
+    image:
+      "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/event-covers/7a/cd195a97-ae09-4f69-b198-b036c163232c.png",
+  },
+  {
+    time: "8:00 PM - 11:00 PM PST, October 30 2025",
+    location: "San Francisco, USA",
+    title: "Aleo Dev Party — zk Builders Night",
+    link: "https://luma.com/aleodevparty",
+    image:
+      "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/event-covers/f5/353273f0-9803-410f-8d6e-4ae0003c4bcd.png",
+  },
+];
 
   const visibleEvents = showMore ? allEvents : allEvents.slice(0, 6);
 
@@ -1016,6 +1010,19 @@ useEffect(() => {
               >
                 <div className="text-sm text-gray-400">{event.time}</div>
                 <div className="text-xs text-gray-500">{event.location}</div>
+                {event.image && (
+  <div className="relative w-full h-40 mb-4 overflow-hidden rounded-xl">
+    <img
+      src={event.image}
+      alt={event.title}
+      className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+    />
+    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60"></div>
+  </div>
+)}
+<h4 className="text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">
+  {event.title}
+</h4>
                 <h4 className="mt-3 text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">
                   {event.title}
                 </h4>
