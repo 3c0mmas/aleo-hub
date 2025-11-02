@@ -400,8 +400,6 @@ const questions = [
     explanation: "They span gaming, healthcare, education, and social trust use cases."
   }
 ];
-import { questions } from "./quizData"; // если у тебя inline, просто оставь как было
-
 export default function AleoQuizInteractive() {
   const [quiz, setQuiz] = useState([]);
   const [current, setCurrent] = useState(0);
