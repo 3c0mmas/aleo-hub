@@ -1,6 +1,77 @@
-import React, { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 import AleoQuizInteractive from "./AleoQuizInteractive";
+
+export default function AleoLanding() {
+  return (
+    <div className="relative min-h-screen font-sans text-gray-100 bg-black overflow-x-hidden overflow-y-visible">
+      <PixelBackground /> {/* 🔶 квадратики по всему сайту */}
+      <GlowingCursor /> {/* 💡 лимонный курсор */}
+
+      {/* HERO и другие блоки */}
+      <section className="relative flex flex-col items-center justify-center min-h-screen text-center">
+        <motion.h1
+          className="text-5xl font-bold text-[#EEFFA8] drop-shadow-[0_0_15px_rgba(238,255,168,0.4)]"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          Welcome to Aleo Network
+        </motion.h1>
+        <p className="mt-4 text-gray-400 max-w-xl">
+          Privacy-first blockchain empowering developers to build private, decentralized apps.
+        </p>
+      </section>
+
+      {/* другие секции: About, Features, Events, Community, Governance, Articles, Game */}
+
+      <AleoQuizInteractive /> {/* 🧠 квиз-зона */}
+
+      <footer className="text-center py-10 text-sm text-[#EEFFA8]/80">
+        © 2025 Julissa ♥ Aleo Community
+      </footer>
+    </div>
+  );
+}
+
+// === квадратики по всему сайту ===
+function PixelBackground() {
+  const pixels = Array.from({ length: 30 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 3 + 1,
+    delay: Math.random() * 10,
+    duration: 15 + Math.random() * 10,
+  }));
+
+  return (
+    <div className="absolute inset-0 overflow-hidden z-0">
+      {pixels.map((p) => (
+        <motion.span
+          key={p.id}
+          className="absolute block bg-[#EEFFA8]/30 rounded-full"
+          style={{
+            width: p.size,
+            height: p.size,
+            top: `${p.y}%`,
+            left: `${p.x}%`,
+          }}
+          animate={{
+            opacity: [0.2, 1, 0.2],
+            y: ["0%", "-10%"],
+          }}
+          transition={{
+            repeat: Infinity,
+            duration: p.duration,
+            delay: p.delay,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 
 // === GLOW CURSOR =============================================================
 function GlowingCursor() {
