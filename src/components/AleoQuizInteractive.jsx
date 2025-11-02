@@ -367,6 +367,7 @@ export default function AleoQuizInteractive() {
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
   const cardHeight = 640; // фиксированный размер карточки, чтобы не прыгала
+  const cardWidth = 560; // фиксированная ширина карточки
 
   function initializeQuiz() {
     const shuffled = [...questions].sort(() => 0.5 - Math.random());
@@ -438,7 +439,7 @@ export default function AleoQuizInteractive() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
               className="relative border border-[#EEFFA8]/20 rounded-2xl p-8 shadow-[0_0_40px_rgba(238,255,168,0.25)] backdrop-blur-[2px] bg-black/50 w-full h-[520px] flex flex-col justify-between"
-              style={{ height: `${cardHeight}px` }}
+              style={{ height: `${cardHeight}px`, width: `${cardWidth}px`, margin: "0 auto" }}
             >
               {/* свечение под карточкой */}
               <motion.div
