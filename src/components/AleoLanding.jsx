@@ -688,7 +688,24 @@ export default function AleoLanding() {
         </nav>
       </header>
 
-      {/* HERO */}
+     {/* HEADER */}
+      <header className="z-30 relative border-b border-white/5">
+        <nav className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#EEFFA8]/10 flex items-center justify-center border border-[#EEFFA8]/30">
+              <img src="https://developer.aleo.org/img/logo-128x128.png" alt="Aleo Logo" className="w-7 h-7" />
+            </div>
+            <span className="text-xl font-semibold text-[#EEFFA8]">Aleo Network</span>
+          </div>
+          <div className="flex items-center gap-6 text-sm text-gray-400">
+            {["About","Features","Events","Community","Governance","Articles","Game"].map(i=>(
+              <a key={i} href={`#${i.toLowerCase()}`} className="hover:text-[#EEFFA8] transition-colors">{i}</a>
+            ))}
+          </div>
+        </nav>
+      </header>
+      
+     {/* HERO */}
 <section className="relative h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
   {/* Light Glow Animation */}
   <motion.div
@@ -798,7 +815,7 @@ export default function AleoLanding() {
       {/* GOVERNANCE */}
       <section id="governance" className="max-w-6xl mx-auto px-6 py-20 text-center">
         <h3 className="text-3xl font-semibold text-white mb-4">Aleo Governance</h3>
-        <p className="text-gray-300 max-w-2xl mx-auto mb-6">Propose, vote, and shape the future of the Aleo Network together.</p>
+        <p className="text-gray-300 max-w-2xl mx-auto mb-6">Participate in Aleo’s on-chain governance — propose, vote, and shape the network’s evolution.</p>
         <a href="https://vote.aleo.org/" target="_blank" rel="noreferrer" className="inline-block px-8 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition">Join Governance Platform</a>
       </section>
 
