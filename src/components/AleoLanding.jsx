@@ -694,17 +694,6 @@ function GameSection() {
           and red bombs can purge the field in a flash of cryptographic power.
           <br />
           <br />
-          <motion.span
-            className="italic text-[#C4FFC2]"
-            animate={{
-              opacity: [0.6, 1, 0.6],
-              textShadow: ["0 0 5px #C4FFC2", "0 0 15px #EEFFA8", "0 0 5px #C4FFC2"],
-            }}
-            transition={{ duration: 4, repeat: Infinity }}
-          >
-            Show your skill as a validator — protect privacy, sustain the chain,
-            and keep Aleo secure... until Game Over.
-          </motion.span>
         </motion.p>
       </motion.div>
 
