@@ -1,46 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// floating background symbols component
-function FloatingSymbols() {
-  const symbols = ["?", "%", "★", "▲", "●", "■", "◆", "∞"];
-  const items = Array.from({ length: 20 }, (_, i) => ({
-    id: i,
-    symbol: symbols[Math.floor(Math.random() * symbols.length)],
-    size: Math.random() * 20 + 10,
-    left: Math.random() * 100,
-    duration: Math.random() * 10 + 10,
-    delay: Math.random() * 5,
-  }));
-
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      {items.map((item) => (
-        <motion.span
-          key={item.id}
-          initial={{ y: "100vh", opacity: 0 }}
-          animate={{ y: ["100vh", "-10vh"], opacity: [0.3, 1, 0.3] }}
-          transition={{
-            duration: item.duration,
-            delay: item.delay,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          style={{
-            position: "absolute",
-            left: `${item.left}%`,
-            fontSize: `${item.size}px`,
-            color: "rgba(238,255,168,0.3)",
-            filter: "blur(1px)",
-          }}
-        >
-          {item.symbol}
-        </motion.span>
-      ))}
-    </div>
-  );
-}
-
 // === Full 50-question pool inline ===
 const questions = [
   // === Aleo Mainnet ===
@@ -446,8 +406,6 @@ export default function AleoQuizInteractive() {
       id="quiz-zone"
       className="relative min-h-screen flex flex-col items-center justify-center bg-black text-gray-100 px-6 py-20 overflow-hidden"
     >
-      <FloatingSymbols />
-
       <motion.div
         className="absolute inset-0 pointer-events-none z-0"
         animate={{
