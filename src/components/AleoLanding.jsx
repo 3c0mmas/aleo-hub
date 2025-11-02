@@ -948,7 +948,7 @@ useEffect(() => {
             <img
               src="https://vote.aleo.org/images/logo-wordmark-black.svg"
               alt="Aleo logo"
-              className="h-10 filter invert brightness-[120%] saturate-[120%] sepia-[10%] hue-rotate-[75deg]"
+              className="h-10 filter invert brightness-[150%] saturate-[140%] hue-rotate-[60deg] drop-shadow-[0_0_12px_#C4FFC2aa]"
             />
             Network
           </h1>
