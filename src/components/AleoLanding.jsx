@@ -784,7 +784,7 @@ export default function AleoLanding() {
   </div>
 </section>
 
-  const allEvents = [
+const allEvents = [
     {
       time: "6:00 PM - 9:00 PM GMT+9, November 1 2025",
       location: "Tokyo, Japan",
