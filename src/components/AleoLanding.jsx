@@ -140,15 +140,8 @@ function PixelBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    // зафиксировать соотношение сторон
-canvas.style.imageRendering = "pixelated"; // (чтобы не смазывало)
-canvas.style.aspectRatio = "1 / 1"; // квадратный вид
-
-// делаем поле квадратным — по минимальной стороне
-let size = Math.min(window.innerWidth, window.innerHeight * 0.7);
-let w = (canvas.width = size);
-let h = (canvas.height = size);
-
+    let w = (canvas.width = window.innerWidth);
+    let h = (canvas.height = window.innerHeight);
 
     const COUNT = 120;
     const COLORS = ["#EEFFA8", "#C4FFC2", "#ffffff"];
