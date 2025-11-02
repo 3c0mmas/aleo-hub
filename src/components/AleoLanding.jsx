@@ -924,33 +924,37 @@ useEffect(() => {
       <section className="relative h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
        {/* animated glowing background */}
 {/* animated glowing background */}
+{/* floating pink glows */}
 <motion.div
-  className="absolute inset-0 z-0 pointer-events-none"
-  initial={{ opacity: 0.5 }}
+  className="absolute w-[350px] h-[350px] rounded-full bg-[#FFE2FC] blur-[140px] opacity-25 left-[-10%] top-[35%] z-0"
   animate={{
-    opacity: [0.4, 0.8, 0.4],
-    background: [
-      `
-        radial-gradient(circle at 30% 40%, rgba(238,255,168,0.22) 0%, transparent 55%),
-        radial-gradient(circle at 70% 60%, rgba(196,255,194,0.22) 0%, transparent 55%),
-        radial-gradient(circle at 45% 25%, rgba(255,226,252,0.18) 0%, transparent 45%),
-        radial-gradient(circle at 85% 75%, rgba(255,226,252,0.15) 0%, transparent 50%)
-      `,
-      `
-        radial-gradient(circle at 35% 45%, rgba(238,255,168,0.25) 0%, transparent 55%),
-        radial-gradient(circle at 65% 55%, rgba(196,255,194,0.25) 0%, transparent 55%),
-        radial-gradient(circle at 55% 35%, rgba(255,226,252,0.2) 0%, transparent 45%),
-        radial-gradient(circle at 15% 75%, rgba(255,226,252,0.15) 0%, transparent 50%)
-      `
-    ],
+    x: [0, 40, 0, -30, 0],
+    y: [0, -20, 30, 0],
+    opacity: [0.25, 0.4, 0.25],
+    scale: [1, 1.1, 1],
   }}
   transition={{
-    duration: 10,
+    duration: 18,
     repeat: Infinity,
-    repeatType: "mirror",
     ease: "easeInOut",
   }}
 />
+
+<motion.div
+  className="absolute w-[300px] h-[300px] rounded-full bg-[#FFE2FC] blur-[120px] opacity-2 right-[-8%] top-[40%] z-0"
+  animate={{
+    x: [0, -30, 0, 20, 0],
+    y: [0, 25, -20, 0],
+    opacity: [0.2, 0.35, 0.2],
+    scale: [1, 1.1, 0.95],
+  }}
+  transition={{
+    duration: 20,
+    repeat: Infinity,
+    ease: "easeInOut",
+  }}
+/>
+>
         <div className="relative z-10 flex flex-col items-center justify-center">
           <h1 className="text-5xl font-bold mb-4 flex items-center gap-3 text-white">
   Welcome to
