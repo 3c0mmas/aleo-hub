@@ -1,6 +1,47 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// === Background floating symbols ===
+function FloatingSymbols() {
+  const symbols = ["?", "%", "★", "▲", "●", "■", "◆", "∞"];
+  const items = Array.from({ length: 25 }, (_, i) => ({
+    id: i,
+    symbol: symbols[Math.floor(Math.random() * symbols.length)],
+    size: Math.random() * 16 + 8,
+    left: Math.random() * 100,
+    duration: Math.random() * 12 + 8,
+    delay: Math.random() * 6,
+  }));
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      {items.map((item) => (
+        <motion.span
+          key={item.id}
+          initial={{ y: "110vh", opacity: 0 }}
+          animate={{ y: ["110vh", "-10vh"], opacity: [0.2, 0.8, 0.2] }}
+          transition={{
+            duration: item.duration,
+            delay: item.delay,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          style={{
+            position: "absolute",
+            left: `${item.left}%`,
+            fontSize: `${item.size}px`,
+            color: "rgba(238,255,168,0.3)",
+            filter: "blur(1px)",
+          }}
+        >
+          {item.symbol}
+        </motion.span>
+      ))}
+    </div>
+  );
+}
+
+// === 50-question pool (imported from your previous code) ===
 const questions = [
   // === Aleo Mainnet ===
   {
@@ -359,6 +400,8 @@ const questions = [
     explanation: "They span gaming, healthcare, education, and social trust use cases."
   }
 ];
+import { questions } from "./quizData"; // если у тебя inline, просто оставь как было
+
 export default function AleoQuizInteractive() {
   const [quiz, setQuiz] = useState([]);
   const [current, setCurrent] = useState(0);
@@ -366,8 +409,10 @@ export default function AleoQuizInteractive() {
   const [showExplanation, setShowExplanation] = useState(false);
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
-  const cardHeight = 640; // фиксированный размер карточки, чтобы не прыгала
-  const cardWidth = 560; // фиксированная ширина карточки
+
+  // === фиксированные размеры карточки ===
+  const cardHeight = 640;
+  const cardWidth = 560;
 
   function initializeQuiz() {
     const shuffled = [...questions].sort(() => 0.5 - Math.random());
@@ -404,21 +449,23 @@ export default function AleoQuizInteractive() {
   return (
     <section
       id="quiz-zone"
-      className="relative min-h-screen flex flex-col items-center justify-center text-gray-100 px-6 py-24 overflow-hidden"
+      className="relative min-h-screen flex flex-col items-center justify-center bg-black text-gray-100 px-6 py-20 overflow-hidden"
     >
-      {/* общий фон с анимацией */}
+      <FloatingSymbols />
+
+      {/* мягкое движение света по фону */}
       <motion.div
-        className="absolute inset-0 pointer-events-none z-[-1]"
+        className="absolute inset-0 pointer-events-none z-0"
         animate={{
           background: [
-            "radial-gradient(circle at 20% 40%, rgba(238,255,168,0.06) 0%, transparent 60%)",
-            "radial-gradient(circle at 80% 60%, rgba(196,255,194,0.06) 0%, transparent 60%)",
+            "radial-gradient(circle at 30% 40%, rgba(238,255,168,0.06) 0%, transparent 60%)",
+            "radial-gradient(circle at 70% 60%, rgba(196,255,194,0.08) 0%, transparent 60%)",
           ],
         }}
         transition={{ duration: 8, repeat: Infinity, repeatType: "mirror" }}
       />
 
-      <div className="relative z-10 w-full max-w-2xl text-center flex flex-col justify-center">
+      <div className="relative z-10 w-full text-center flex flex-col items-center">
         <motion.h3
           className="text-4xl font-semibold text-[#EEFFA8] mb-4"
           initial={{ opacity: 0, y: -10 }}
@@ -438,94 +485,64 @@ export default function AleoQuizInteractive() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
-              className="relative border border-[#EEFFA8]/20 rounded-2xl p-8 shadow-[0_0_40px_rgba(238,255,168,0.25)] backdrop-blur-[2px] bg-black/50 w-full h-[520px] flex flex-col justify-between"
-              style={{ height: `${cardHeight}px`, width: `${cardWidth}px`, margin: "0 auto" }}
+              className="border border-[#EEFFA8]/20 rounded-2xl p-8 backdrop-blur-sm shadow-[0_0_50px_rgba(238,255,168,0.15)] bg-black/60 flex flex-col justify-center"
+              style={{
+                height: `${cardHeight}px`,
+                width: `${cardWidth}px`,
+                margin: "0 auto",
+              }}
             >
-              {/* свечение под карточкой */}
-              <motion.div
-                className="absolute inset-0 rounded-2xl blur-[45px] opacity-35"
-                style={{
-                  background:
-                    "radial-gradient(circle at center, rgba(238,255,168,0.35) 0%, transparent 70%)",
-                }}
-                animate={{
-                  opacity: [0.3, 0.45, 0.3],
-                  scale: [0.98, 1.02, 0.98],
-                }}
-                transition={{
-                  duration: 5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
+              <h4 className="text-xl text-white font-medium mb-6">
+                {quiz[current]?.question}
+              </h4>
 
-              <div className="relative z-10 flex flex-col justify-between flex-grow">
-                <h4 className="text-xl text-white font-medium mb-6">
-                  {quiz[current]?.question}
-                </h4>
-
-                <div className="grid grid-cols-1 gap-3 mb-6 flex-grow">
-                  {quiz[current]?.options.map((opt, i) => {
-                    const isCorrect = i === quiz[current].correct;
-                    const isSelected = i === selected;
-                    let base =
-                      "border border-white/10 text-gray-200 py-3 rounded-xl transition relative overflow-hidden";
-                    let state = "bg-white/5 hover:bg-[#EEFFA8]/10";
-                    if (showExplanation && isSelected) {
-                      state = isCorrect
-                        ? "bg-green-500/30 border-green-400/40"
-                        : "bg-red-500/30 border-red-400/40";
-                    }
-                    if (showExplanation && !isSelected && isCorrect) {
-                      state = "bg-green-500/20 border-green-400/30";
-                    }
-                    return (
-                      <motion.button
-                        whileHover={{
-                          scale: showExplanation ? 1 : 1.02,
-                          boxShadow: showExplanation
-                            ? "none"
-                            : "0 0 12px rgba(238,255,168,0.25)",
-                        }}
-                        transition={{ duration: 0.2 }}
-                        key={i}
-                        onClick={() => handleAnswer(i)}
-                        disabled={showExplanation}
-                        className={`${base} ${state}`}
-                      >
-                        {opt}
-                      </motion.button>
-                    );
-                  })}
-                </div>
-
-                <AnimatePresence>
-                  {showExplanation && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="text-gray-300 text-sm mb-4 flex-grow"
+              <div className="grid grid-cols-1 gap-3 mb-6">
+                {quiz[current]?.options.map((opt, i) => {
+                  const isCorrect = i === quiz[current].correct;
+                  const isSelected = i === selected;
+                  let bg = "bg-white/5 hover:bg-[#EEFFA8]/10";
+                  if (showExplanation && isSelected) {
+                    bg = isCorrect
+                      ? "bg-green-500/30 border-green-400/40"
+                      : "bg-red-500/30 border-red-400/40";
+                  }
+                  if (showExplanation && !isSelected && isCorrect) {
+                    bg = "bg-green-500/20 border-green-400/30";
+                  }
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => handleAnswer(i)}
+                      disabled={showExplanation}
+                      className={`${bg} border border-white/10 text-gray-200 py-3 rounded-xl transition`}
                     >
-                      {quiz[current].explanation}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {showExplanation && (
-                  <motion.button
-                    whileHover={{
-                      scale: 1.05,
-                      boxShadow: "0 0 20px rgba(238,255,168,0.35)",
-                    }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={nextQuestion}
-                    className="mt-auto px-6 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition"
-                  >
-                    {current + 1 < quiz.length ? "Next Question" : "Show Results"}
-                  </motion.button>
-                )}
+                      {opt}
+                    </button>
+                  );
+                })}
               </div>
+
+              <AnimatePresence>
+                {showExplanation && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="text-gray-300 text-sm mb-6"
+                  >
+                    {quiz[current].explanation}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {showExplanation && (
+                <button
+                  onClick={nextQuestion}
+                  className="px-6 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition"
+                >
+                  {current + 1 < quiz.length ? "Next Question" : "Show Results"}
+                </button>
+              )}
             </motion.div>
           ) : (
             <motion.div
@@ -534,44 +551,26 @@ export default function AleoQuizInteractive() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="relative border border-[#EEFFA8]/20 rounded-2xl p-10 shadow-[0_0_40px_rgba(238,255,168,0.25)] backdrop-blur-[2px] bg-black/50 w-full h-[520px] flex flex-col justify-center"
+              className="border border-[#EEFFA8]/20 rounded-2xl p-10 backdrop-blur-sm shadow-[0_0_50px_rgba(238,255,168,0.15)] bg-black/60 flex flex-col justify-center items-center"
+              style={{
+                height: `${cardHeight}px`,
+                width: `${cardWidth}px`,
+                margin: "0 auto",
+              }}
             >
-              <motion.div
-                className="absolute inset-0 rounded-2xl blur-[45px] opacity-35"
-                style={{
-                  background:
-                    "radial-gradient(circle at center, rgba(238,255,168,0.35) 0%, transparent 70%)",
-                }}
-                animate={{
-                  opacity: [0.3, 0.45, 0.3],
-                  scale: [0.98, 1.02, 0.98],
-                }}
-                transition={{
-                  duration: 5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-
-              <h4 className="text-2xl text-[#EEFFA8] font-bold mb-4 relative z-10">
+              <h4 className="text-2xl text-[#EEFFA8] font-bold mb-4">
                 Quiz Complete!
               </h4>
-              <p className="text-gray-300 mb-6 relative z-10">
+              <p className="text-gray-300 mb-6">
                 You scored <span className="text-[#EEFFA8]">{score}</span> out of{" "}
                 {quiz.length}.
               </p>
-
-              <motion.button
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 0 20px rgba(238,255,168,0.35)",
-                }}
-                whileTap={{ scale: 0.97 }}
+              <button
                 onClick={initializeQuiz}
-                className="relative z-10 px-6 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition"
+                className="px-6 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition"
               >
                 Try Again
-              </motion.button>
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
@@ -579,3 +578,4 @@ export default function AleoQuizInteractive() {
     </section>
   );
 }
+
