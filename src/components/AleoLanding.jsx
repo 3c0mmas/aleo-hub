@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import AleoQuizInteractive from "./components/AleoQuizInteractive";
 
 // === GLOW CURSOR =============================================================
 function GlowingCursor() {
@@ -905,15 +906,24 @@ useEffect(() => {
             </span>
           </div>
           <div className="flex items-center gap-6 text-sm text-[#EEFFA8]">
-  {["About", "Features", "Events", "Community", "Governance", "Articles", "Game"].map((i) => (
-    <a
-      key={i}
-      href={`#${i.toLowerCase()}`}
-      className="hover:text-[#FFE2FC] transition-colors duration-300 drop-shadow-[0_0_8px_#EEFFA855]"
-    >
-      {i}
-    </a>
-  ))}
+  {[
+  "About",
+  "Features",
+  "Events",
+  "Community",
+  "Governance",
+  "Articles",
+  "Game",
+  "Quiz Zone",
+].map((i) => (
+  <a
+    key={i}
+    href={`#${i.toLowerCase().replace(" ", "-")}`}
+    className="hover:text-[#FFE2FC] transition-colors duration-300 drop-shadow-[0_0_8px_#EEFFA855]"
+  >
+    {i}
+  </a>
+))}
 </div>
         </nav>
       </header>
@@ -1165,6 +1175,24 @@ useEffect(() => {
 
       {/* GAME */}
       <GameSection />
+
+      {/* QUIZ ZONE */}
+<section
+  id="quiz-zone"
+  className="relative min-h-screen flex flex-col items-center justify-center bg-black text-gray-100 px-6 py-20 overflow-hidden"
+>
+  <motion.div
+    className="absolute inset-0 pointer-events-none z-0"
+    animate={{
+      background: [
+        "radial-gradient(circle at 20% 40%, rgba(238,255,168,0.08) 0%, transparent 60%)",
+        "radial-gradient(circle at 80% 60%, rgba(196,255,194,0.08) 0%, transparent 60%)",
+      ],
+    }}
+    transition={{ duration: 6, repeat: Infinity, repeatType: "mirror" }}
+  />
+  <AleoQuizInteractive />
+</section>
 
       {/* FOOTER */}
       <footer className="max-w-6xl mx-auto px-6 py-12 text-center text-sm text-gray-500">
