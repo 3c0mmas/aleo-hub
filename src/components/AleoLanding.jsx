@@ -1172,8 +1172,32 @@ useEffect(() => {
 
       {/* FOOTER */}
       <footer className="max-w-6xl mx-auto px-6 py-12 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} Julissa ♥ Aleo Community
-      </footer>
+  © {new Date().getFullYear()}{" "}
+  <a
+    href="https://x.com/0xJu1issa"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center gap-1 text-[#EEFFA8] hover:text-[#C4FFC2] transition-colors duration-300"
+  >
+    Julissa
+    <motion.span
+      animate={{
+        scale: [1, 1.15, 1],
+        opacity: [0.8, 1, 0.8],
+      }}
+      transition={{
+        duration: 1.6,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+      className="text-[#FFE2FC] inline-block"
+    >
+      ♥
+    </motion.span>
+    Aleo Community
+  </a>
+</footer>
+
     </motion.div>
   );
 }
