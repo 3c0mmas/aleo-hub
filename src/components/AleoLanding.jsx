@@ -705,37 +705,84 @@ export default function AleoLanding() {
   ];
 
   const articles = [
-    {
-      date: "October 27, 2025",
-      title: "Paxos Labs and ANF launch USAD Private Stablecoin",
-      link: "https://aleo.org/post/paxos-labs-and-ANF-launch-USAD-Private-Stablecoin/",
-    },
-    {
-      date: "October 25, 2025",
-      title: "Aleo joins Binance Alpha",
-      link: "https://aleo.org/post/aleo-joins-binance-alpha/",
-    },
-    {
-      date: "October 22, 2025",
-      title: "Aleo & Request Finance: Private Payments Partnership",
-      link: "https://aleo.org/post/aleo-request-finance-private-payments-partnership/",
-    },
-    {
-      date: "October 20, 2025",
-      title: "Aleo joins Global Dollar Network: Private Stablecoin",
-      link: "https://aleo.org/post/aleo-joins-global-dollar-network-private-stablecoin/",
-    },
-    {
-      date: "October 19, 2025",
-      title: "Aleo Token Revolut Listing",
-      link: "https://aleo.org/post/aleo-token-revolut-listing/",
-    },
-    {
-      date: "October 18, 2025",
-      title: "Aleo Ecosystem Growth Report",
-      link: "https://aleo.org/post/aleo-ecosystem-growth-report/",
-    },
-  ];
+    <section id="articles" className="max-w-6xl mx-auto px-6 py-20">
+  <h3 className="text-3xl font-semibold text-white mb-8 text-center">
+    Aleo Blog Highlights
+  </h3>
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {[
+      {
+        date: "October 27, 2025",
+        title: "Paxos Labs and ANF launch USAD Private Stablecoin",
+        link: "https://aleo.org/post/paxos-labs-and-ANF-launch-USAD-Private-Stablecoin/",
+        image:
+          "https://images.ctfassets.net/qyo46trxl4dy/12c2mUaWTYvwVnlT9nL58S/de92f7ae9246f808aa9c85b088229439/Aleo-Social-with-PaxosLabs-1920x1080.png?w=1440&h=810&q=70&fm=webp",
+      },
+      {
+        date: "October 25, 2025",
+        title: "Aleo joins Binance Alpha",
+        link: "https://aleo.org/post/aleo-joins-binance-alpha/",
+        image:
+          "https://images.ctfassets.net/qyo46trxl4dy/mcb9WhNZaX5bmwlkqCy3m/30a076c088575cc08831f9f902967de3/Aleo-Social-with-Binance-Alpha-1920x1080.png?w=1440&h=810&q=70&fm=webp",
+      },
+      {
+        date: "October 22, 2025",
+        title: "Aleo & Request Finance: Private Payments Partnership",
+        link: "https://aleo.org/post/aleo-request-finance-private-payments-partnership/",
+        image:
+          "https://images.ctfassets.net/qyo46trxl4dy/7KKPNIIsjkTWJeL4euvrGc/7237b6e2e149a2bf10f64bd9bc91b4ef/Aleo-with-Request-Blog-header-dither-sphere-1920x1080.png?w=1440&h=810&q=70&fm=webp",
+      },
+      {
+        date: "October 20, 2025",
+        title: "Aleo joins Global Dollar Network: Private Stablecoin",
+        link: "https://aleo.org/post/aleo-joins-global-dollar-network-private-stablecoin/",
+        image:
+          "https://images.ctfassets.net/qyo46trxl4dy/7feNonGbyiMPWr8KJ15qnq/6bca38c6b0e27ccc2b5f29bee6bf2dae/Aleo-Social-with-GDN-1920x1080.png?w=1440&h=810&q=70&fm=webp",
+      },
+      {
+        date: "October 19, 2025",
+        title: "Aleo Token Revolut Listing",
+        link: "https://aleo.org/post/aleo-token-revolut-listing/",
+        image:
+          "https://images.ctfassets.net/qyo46trxl4dy/6iYoy5TBw7hfl8qzKIIcSb/dd0cb9804a06e9467c80d5f8dbb7c0a0/Aleo-with-Revolut-Gradient-bg-2000x1048__1_.png?w=1440&h=755&q=70&fm=webp",
+      },
+      {
+        date: "October 18, 2025",
+        title: "Aleo Ecosystem Growth Report",
+        link: "https://aleo.org/post/aleo-ecosystem-growth-report/",
+        image:
+          "https://images.ctfassets.net/qyo46trxl4dy/2FCHIJzPePkfjjgUBWivIQ/22bad418b22eead7373f5a7645dbd17d/Aleo-blog-header-snarkOS4_1920x1080px__2_.png?w=1440&h=810&q=70&fm=png",
+      },
+    ].map((article, idx) => (
+      <motion.div
+        key={idx}
+        onClick={() => window.open(article.link, "_blank")}
+        whileHover={{
+          scale: 1.03,
+          boxShadow: "0 0 25px #EEFFA8aa, 0 0 50px #C4FFC2aa",
+          borderColor: "#EEFFA8",
+        }}
+        transition={{ type: "spring", stiffness: 120, damping: 10 }}
+        className="cursor-pointer bg-white/5 border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 group"
+      >
+        <div className="relative w-full h-40 overflow-hidden">
+          <img
+            src={article.image}
+            alt={article.title}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70"></div>
+        </div>
+        <div className="p-6 text-left">
+          <div className="text-sm text-gray-400 mb-2">{article.date}</div>
+          <h4 className="text-lg font-semibold text-white group-hover:text-[#EEFFA8] transition-colors">
+            {article.title}
+          </h4>
+        </div>
+      </motion.div>
+    ))}
+  </div>
+</section>
 
   const allEvents = [
     {
