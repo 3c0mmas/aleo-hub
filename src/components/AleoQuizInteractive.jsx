@@ -417,7 +417,7 @@ export default function AleoQuizInteractive() {
         transition={{ duration: 6, repeat: Infinity, repeatType: "mirror" }}
       />
 
-      <div className="relative z-10 w-full max-w-2xl text-center">
+      <div className="relative z-10 w-full max-w-2xl text-center min-h-[520px] flex flex-col justify-center">
         <motion.h3
           className="text-4xl font-semibold text-[#EEFFA8] mb-4"
           initial={{ opacity: 0, y: -10 }}
