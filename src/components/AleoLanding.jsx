@@ -992,53 +992,6 @@ useEffect(() => {
         </div>
       </section>
 
-      {/* EVENTS */}
-      <section id="events" className="max-w-6xl mx-auto px-6 py-20">
-        <h3 className="text-3xl font-semibold text-white mb-8">Aleo Global Events</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <AnimatePresence>
-            {visibleEvents.map((event, idx) => (
-              <motion.div
-                key={idx}
-                onClick={() => window.open(event.link, "_blank")}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-                className="cursor-pointer bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-[#EEFFA8]/10 hover:scale-[1.03] hover:shadow-[0_0_25px_#EEFFA8aa]"
-              >
-                <div className="text-sm text-gray-400">{event.time}</div>
-                <div className="text-xs text-gray-500">{event.location}</div>
-                {event.image && (
-  <div className="relative w-full h-40 mb-4 overflow-hidden rounded-xl">
-    <img
-      src={event.image}
-      alt={event.title}
-      className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
-    />
-    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60"></div>
-  </div>
-)}
-<h4 className="text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">
-  {event.title}
-</h4>
-                <h4 className="mt-3 text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">
-                  {event.title}
-                </h4>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
-        <div className="text-center mt-10">
-          <button
-            onClick={() => setShowMore(!showMore)}
-            className="px-6 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition"
-          >
-            {showMore ? "Show Less Events" : "Show More Events"}
-          </button>
-        </div>
-      </section>
-
       {/* COMMUNITY */}
       <section id="community" className="max-w-6xl mx-auto px-6 py-20">
         <h3 className="text-3xl font-semibold text-white mb-8">Aleo Community Hub</h3>
