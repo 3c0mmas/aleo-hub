@@ -943,15 +943,15 @@ useEffect(() => {
           transition={{ duration: 6, repeat: Infinity, repeatType: "mirror" }}
         />
         <div className="relative z-10 flex flex-col items-center justify-center">
-          <h1 className="text-5xl font-bold mb-4 flex items-center gap-3 text-[#C4FFC2]">
-            Welcome to
-            <img
-              src="https://vote.aleo.org/images/logo-wordmark-black.svg"
-              alt="Aleo logo"
-              className="h-10 filter invert brightness-[150%] saturate-[140%] hue-rotate-[60deg] drop-shadow-[0_0_12px_#C4FFC2aa]"
-            />
-            Network
-          </h1>
+          <h1 className="text-5xl font-bold mb-4 flex items-center gap-3">
+  <span className="text-white">Welcome to</span>
+  <img
+    src="https://vote.aleo.org/images/logo-wordmark-black.svg"
+    alt="Aleo logo"
+    className="h-10 filter invert brightness-[120%] saturate-[120%]"
+  />
+  <span className="text-[#C4FFC2]">Network</span>
+</h1>
 
           <p className="text-gray-400 max-w-xl">
             Privacy-first blockchain empowering developers to build private,
