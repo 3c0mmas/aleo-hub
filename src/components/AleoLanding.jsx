@@ -208,137 +208,449 @@ function PixelBackground() {
 function BlockSnake() {
   const canvasRef = useRef(null);
   const rafRef = useRef(null);
-  const [running, setRunning] = useState(false);
-  const restartRef = useRef(() => {});
-  const statsRef = useRef({ score: 0, level: 1, slashed: 0 });
+  const flashRef = useRef(0);
+  const spawnFlashRef = useRef([]);
+  const shardsRef = useRef([]);
+  const statsRef = useRef({ slashed: 0 });
+  const bombsRef = useRef([]);
+  const gameApiRef = useRef({ start: () => {} });
+  const [showOverlay, setShowOverlay] = useState(true);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
-    let w = (canvas.width = window.innerWidth);
-    let h = (canvas.height = window.innerHeight * 0.7);
+    if (!ctx) return;
+
+    const COLORS = {
+      main: "#EEFFA8",
+      glow: "#C4FFC2",
+      bg: "#0b0b0b",
+      enemy: "#FFE2FC",
+      tx: "#C4FFC2",
+      bomb: "#FF5C5C",
+      grid: "rgba(255,255,255,0.12)",
+      text: "rgba(255,255,255,0.7)",
+      flash: "rgba(238,255,168,0.3)",
+      shard: "rgba(255,226,252,0.8)",
+    };
+
     const CELL = 24;
+
+    let w = canvas.clientWidth || window.innerWidth;
+    let h = (canvas.clientHeight || window.innerHeight) * 0.7;
+    if (h < 380) h = 380;
+
     let COLS = Math.floor(w / CELL);
     let ROWS = Math.floor(h / CELL);
 
-    let snake = [
+    canvas.width = w;
+    canvas.height = h;
+
+    let tick = 0;
+    let stepMs = 150;
+    let last = 0;
+    let running = false; // <- внутреннее состояние игры
+    let score = 0;
+    let level = 1;
+
+    const snake = [
       { x: Math.floor(COLS / 2), y: Math.floor(ROWS / 2) },
       { x: Math.floor(COLS / 2) - 1, y: Math.floor(ROWS / 2) },
     ];
     let dir = { x: 1, y: 0 };
     let nextDir = { x: 1, y: 0 };
-    let tx = { x: 5, y: 5 };
-    let tick = 0;
-    let last = 0;
-    let stepMs = 150;
 
-    const COLORS = {
-      bg: "#000",
-      grid: "rgba(255,255,255,0.1)",
-      main: "#EEFFA8",
-      tx: "#C4FFC2",
-    };
+    const enemies = [];
+    let tx = null;
+    let power = null;
+    let powerTime = 0;
 
-    const drawCell = (c, color) => {
-      ctx.save();
-      ctx.shadowColor = color;
-      ctx.shadowBlur = 8;
-      ctx.fillStyle = color;
-      ctx.fillRect(c.x * CELL + 3, c.y * CELL + 3, CELL - 6, CELL - 6);
-      ctx.restore();
-    };
-
+    const cellEquals = (a, b) => a && b && a.x === b.x && a.y === b.y;
     const inBounds = (c) => c.x >= 0 && c.y >= 0 && c.x < COLS && c.y < ROWS;
 
-    const spawnFree = () => ({
-      x: Math.floor(Math.random() * COLS),
-      y: Math.floor(Math.random() * ROWS),
-    });
+    function occupied(c) {
+      return (
+        snake.some((s) => cellEquals(s, c)) ||
+        enemies.some((e) => e.alive && cellEquals(e, c)) ||
+        (tx && cellEquals(tx, c)) ||
+        (power && cellEquals(power, c)) ||
+        bombsRef.current.some((b) => cellEquals(b, c))
+      );
+    }
 
-    const step = () => {
-      dir = nextDir;
-      const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
-      if (!inBounds(head)) {
-        setRunning(false);
+    function spawnFree() {
+      let c;
+      let tries = 0;
+      do {
+        c = {
+          x: Math.floor(Math.random() * COLS),
+          y: Math.floor(Math.random() * ROWS),
+        };
+        tries++;
+        if (tries > 100) break;
+      } while (occupied(c));
+      return c;
+    }
+
+    function spawnEnemy() {
+      const e = {
+        x: Math.floor(Math.random() * COLS),
+        y: Math.floor(Math.random() * ROWS),
+        alive: true,
+      };
+      spawnFlashRef.current.push({ x: e.x, y: e.y, alpha: 1 });
+      return e;
+    }
+
+    function addEnemiesForLevel() {
+      const count = level <= 3 ? 2 : level <= 8 ? 3 : 5;
+      for (let i = 0; i < count; i++) enemies.push(spawnEnemy());
+    }
+
+    // first target
+    tx = spawnFree();
+    addEnemiesForLevel();
+
+    const keyDir = {
+      ArrowUp: { x: 0, y: -1 },
+      ArrowDown: { x: 0, y: 1 },
+      ArrowLeft: { x: -1, y: 0 },
+      ArrowRight: { x: 1, y: 0 },
+      KeyW: { x: 0, y: -1 },
+      KeyS: { x: 0, y: 1 },
+      KeyA: { x: -1, y: 0 },
+      KeyD: { x: 1, y: 0 },
+    };
+
+    const onKey = (e) => {
+      if (e.code === "Space") {
+        // если не идёт — стартанём
+        if (!running && score > 0) {
+          resetGame();
+          return;
+        }
+        running = !running;
+        if (running) {
+          setShowOverlay(false);
+        } else {
+          setShowOverlay(true);
+        }
         return;
       }
+      const nd = keyDir[e.code];
+      if (!nd) return;
+      if (snake.length > 1 && nd.x === -dir.x && nd.y === -dir.y) return;
+      nextDir = nd;
+    };
+
+    window.addEventListener("keydown", onKey);
+
+    window.addEventListener("click", (e) => {
+      if (!running) {
+        // клик по канвасу тоже может стартануть
+        resetGame();
+        return;
+      }
+      const rect = canvas.getBoundingClientRect();
+      const x = Math.floor((e.clientX - rect.left) / CELL);
+      const y = Math.floor((e.clientY - rect.top) / CELL);
+      for (const enemy of enemies) {
+        if (enemy.alive && cellEquals(enemy, { x, y })) {
+          enemy.alive = false;
+          score += 5;
+          statsRef.current.slashed++;
+          for (let i = 0; i < 8; i++) {
+            shardsRef.current.push({
+              x: x * CELL + CELL / 2,
+              y: y * CELL + CELL / 2,
+              vx: (Math.random() - 0.5) * 4,
+              vy: (Math.random() - 0.5) * 4,
+              life: 1,
+            });
+          }
+        }
+      }
+    });
+
+    function resetGame() {
+      level = 1;
+      score = 0;
+      statsRef.current.slashed = 0;
+      enemies.length = 0;
+      bombsRef.current = [];
+      addEnemiesForLevel();
+      snake.length = 2;
+      snake[0] = { x: Math.floor(COLS / 2), y: Math.floor(ROWS / 2) };
+      snake[1] = { x: Math.floor(COLS / 2) - 1, y: Math.floor(ROWS / 2) };
+      tx = spawnFree();
+      running = true;
+      stepMs = 150;
+      setShowOverlay(false); // спрятать кнопку
+    }
+
+    // отдаём кнопку наружу
+    gameApiRef.current.start = () => {
+      resetGame();
+    };
+
+    function triggerBombs() {
+      for (const e of enemies) {
+        if (e.alive) {
+          e.alive = false;
+          statsRef.current.slashed++;
+          score += 5;
+          for (let i = 0; i < 6; i++) {
+            shardsRef.current.push({
+              x: e.x * CELL + CELL / 2,
+              y: e.y * CELL + CELL / 2,
+              vx: (Math.random() - 0.5) * 5,
+              vy: (Math.random() - 0.5) * 5,
+              life: 1,
+            });
+          }
+        }
+      }
+      bombsRef.current = [];
+    }
+
+    function step() {
+      dir = nextDir;
+      const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+      if (!inBounds(head)) return gameOver();
+
+      if (!power || powerTime <= 0) {
+        for (let i = 0; i < snake.length; i++)
+          if (cellEquals(snake[i], head)) return gameOver();
+        if (enemies.some((e) => e.alive && cellEquals(e, head))) return gameOver();
+      }
+
       snake.unshift(head);
-      if (head.x === tx.x && head.y === tx.y) {
+
+      if (cellEquals(head, tx)) {
+        score += 10;
         tx = spawnFree();
-        statsRef.current.score += 10;
+        level++;
+        addEnemiesForLevel();
+
+        if (level % 5 === 0) {
+          stepMs = Math.max(60, stepMs - 10);
+          bombsRef.current.push({ ...spawnFree(), timer: 300 });
+        }
+
+        if (!power && Math.random() < 0.3) power = spawnFree();
+        flashRef.current = 1;
       } else {
         snake.pop();
       }
-    };
 
-    const render = () => {
-      ctx.fillStyle = COLORS.bg;
-      ctx.fillRect(0, 0, w, h);
-      for (let x = 0; x < COLS; x++) {
-        for (let y = 0; y < ROWS; y++) {
-          ctx.fillStyle = COLORS.grid;
-          ctx.fillRect(x * CELL, y * CELL, 1, 1);
+      // bombs tick
+      for (const bomb of bombsRef.current) {
+        bomb.timer--;
+      }
+      bombsRef.current = bombsRef.current.filter((b) => b.timer > 0);
+
+      // bomb picked
+      for (const bomb of bombsRef.current) {
+        if (cellEquals(head, bomb)) {
+          triggerBombs();
+          break;
         }
       }
-      drawCell(tx, COLORS.tx);
-      snake.forEach((s) => drawCell(s, COLORS.main));
-      ctx.fillStyle = "#C4FFC2";
-      ctx.font = "14px monospace";
-      ctx.fillText(`Score: ${statsRef.current.score}`, 10, h - 10);
-    };
 
-    const loop = (ts) => {
-      if (!running) return;
+      // power picked
+      if (power && cellEquals(head, power)) {
+        power = null;
+        powerTime = 30 + level * 10;
+      }
+
+      if (powerTime > 0) powerTime--;
+    }
+
+    function gameOver() {
+      running = false;
+      setShowOverlay(true); // показать кнопку снова
+    }
+
+    function drawCell(c, color, glow = false, alpha = 1) {
+      if (!c) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      if (glow) {
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 12;
+      }
+      ctx.fillStyle = color;
+      ctx.fillRect(c.x * CELL + 3, c.y * CELL + 3, CELL - 6, CELL - 6);
+      ctx.restore();
+    }
+
+    function renderShards() {
+      for (const shard of shardsRef.current) {
+        ctx.save();
+        ctx.fillStyle = COLORS.shard;
+        ctx.globalAlpha = shard.life;
+        ctx.fillRect(shard.x, shard.y, 3, 3);
+        ctx.restore();
+        shard.x += shard.vx;
+        shard.y += shard.vy;
+        shard.life -= 0.03;
+      }
+      shardsRef.current = shardsRef.current.filter((s) => s.life > 0);
+    }
+
+    function renderSpawnFlashes() {
+      for (const flash of spawnFlashRef.current) {
+        if (flash.alpha <= 0) continue;
+        ctx.save();
+        ctx.beginPath();
+        ctx.fillStyle = COLORS.enemy;
+        ctx.globalAlpha = flash.alpha * 0.5;
+        const px = flash.x * CELL + CELL / 2;
+        const py = flash.y * CELL + CELL / 2;
+        const radius = (1 - flash.alpha) * 40 + 8;
+        ctx.arc(px, py, radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+        flash.alpha -= 0.05;
+      }
+      spawnFlashRef.current = spawnFlashRef.current.filter((f) => f.alpha > 0);
+    }
+
+    function render() {
+      ctx.fillStyle = COLORS.bg;
+      ctx.fillRect(0, 0, w, h);
+
+      // grid
+      ctx.strokeStyle = COLORS.grid;
+      ctx.lineWidth = 1;
+      for (let x = 0; x <= COLS; x++) {
+        ctx.beginPath();
+        ctx.moveTo(x * CELL + 0.5, 0);
+        ctx.lineTo(x * CELL + 0.5, h);
+        ctx.stroke();
+      }
+      for (let y = 0; y <= ROWS; y++) {
+        ctx.beginPath();
+        ctx.moveTo(0, y * CELL + 0.5);
+        ctx.lineTo(w, y * CELL + 0.5);
+        ctx.stroke();
+      }
+
+      renderSpawnFlashes();
+      renderShards();
+
+      // global flash
+      if (flashRef.current > 0) {
+        ctx.save();
+        ctx.fillStyle = COLORS.flash;
+        ctx.globalAlpha = flashRef.current * 0.5;
+        ctx.fillRect(0, 0, w, h);
+        ctx.restore();
+        flashRef.current *= 0.9;
+      }
+
+      // target
+      drawCell(tx, COLORS.tx, true);
+
+      // power
+      if (power) drawCell(power, COLORS.glow, true, 0.8);
+
+      // enemies
+      for (const e of enemies) {
+        if (e.alive) drawCell(e, COLORS.enemy, false, 0.9);
+      }
+
+      // bombs
+      for (const b of bombsRef.current) {
+        drawCell(b, COLORS.bomb, true, 0.9);
+      }
+
+      // snake
+      for (let i = snake.length - 1; i >= 0; i--) {
+        const a = 0.45 + 0.55 * (i === 0 ? 1 : i / snake.length);
+        drawCell(snake[i], COLORS.main, true, a);
+      }
+
+      // HUD
+      ctx.save();
+      ctx.fillStyle = COLORS.text;
+      ctx.font = "14px monospace";
+      if (!running && score > 0) {
+        ctx.fillText(
+          `GAME OVER — Level ${level}, Slashed ${statsRef.current.slashed} nodes`,
+          12,
+          h / 2
+        );
+        ctx.fillText(`Tap / Space to Restart`, 12, h / 2 + 24);
+      } else {
+        ctx.fillText(
+          `Score: ${score}  Level: ${level}  Slashed: ${statsRef.current.slashed}  ${
+            running ? "" : "Tap / Space to Start"
+          }`,
+          12,
+          h - 16
+        );
+      }
+      ctx.restore();
+    }
+
+    function loop(ts) {
       if (!last) last = ts;
       const dt = ts - last;
-      tick += dt;
-      if (tick > stepMs) {
+      if (running) tick += dt;
+      if (tick >= stepMs) {
         step();
         tick = 0;
       }
       render();
       last = ts;
       rafRef.current = requestAnimationFrame(loop);
-    };
+    }
 
-    const startGame = () => {
-      snake = [
-        { x: Math.floor(COLS / 2), y: Math.floor(ROWS / 2) },
-        { x: Math.floor(COLS / 2) - 1, y: Math.floor(ROWS / 2) },
-      ];
-      dir = { x: 1, y: 0 };
-      nextDir = { x: 1, y: 0 };
-      tx = spawnFree();
-      statsRef.current.score = 0;
-      setRunning(true);
-      last = 0;
+    rafRef.current = requestAnimationFrame(loop);
+
+    function onResize() {
+      w = canvas.clientWidth || window.innerWidth;
+      h = (canvas.clientHeight || window.innerHeight) * 0.7;
+      if (h < 380) h = 380;
+      COLS = Math.floor(w / CELL);
+      ROWS = Math.floor(h / CELL);
+      canvas.width = w;
+      canvas.height = h;
+    }
+
+    window.addEventListener("resize", onResize);
+
+    return () => {
       cancelAnimationFrame(rafRef.current);
-      rafRef.current = requestAnimationFrame(loop);
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
     };
-
-    restartRef.current = startGame;
-    render();
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [running]);
+  }, []);
 
   return (
-    <div className="relative w-full h-[70vh] bg-black border border-[#EEFFA8]/20 rounded-3xl overflow-hidden flex items-center justify-center">
+    <div className="relative w-full h-[70vh] bg-black border border-[#EEFFA8]/20 rounded-3xl overflow-hidden">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-      {!running && (
+      <div className="absolute top-4 left-4 text-[#EEFFA8] font-semibold z-10 drop-shadow">
+        Play Aleo Snake
+      </div>
+
+      {showOverlay && (
         <motion.button
-          onClick={() => restartRef.current()}
+          onClick={() => gameApiRef.current.start()}
           initial={{ opacity: 0 }}
           animate={{
             opacity: [0.6, 1, 0.6],
             boxShadow: [
-              "0 0 10px #EEFFA8",
-              "0 0 25px #C4FFC2",
-              "0 0 10px #EEFFA8",
+              "0 0 12px rgba(238,255,168,0.7)",
+              "0 0 28px rgba(196,255,194,0.9)",
+              "0 0 12px rgba(238,255,168,0.7)",
             ],
           }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="z-10 px-8 py-4 rounded-2xl border border-[#EEFFA8]/40 bg-[#EEFFA8]/10 text-[#EEFFA8] font-semibold text-lg tracking-wide backdrop-blur-sm hover:scale-105 transition-transform"
+          transition={{ duration: 1.6, repeat: Infinity }}
+          className="absolute inset-0 m-auto h-fit w-fit px-8 py-4 rounded-2xl border border-[#EEFFA8]/30 bg-black/50 backdrop-blur-md text-[#EEFFA8] font-semibold text-lg tracking-wide hover:bg-[#EEFFA8]/10 hover:scale-105 transition z-20"
         >
           ▶ Start / Restart Game
         </motion.button>
@@ -346,6 +658,7 @@ function BlockSnake() {
     </div>
   );
 }
+
 
 // === GAME SECTION (описание + BlockSnake) ====================================
 function GameSection() {
