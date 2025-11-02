@@ -445,51 +445,15 @@ export default function AleoQuizInteractive() {
   }
 
   return (
-// === квиз-секция с фоном из фигурок ===
-<section
+    <section
   id="quiz-zone"
   className="relative min-h-screen flex flex-col items-center justify-center text-gray-100 px-6 py-32 overflow-hidden"
 >
-  {/* отдельный слой с фигурами только для квиза */}
-  <div className="absolute inset-0 pointer-events-none z-0">
-    {Array.from({ length: 25 }).map((_, i) => {
-      const symbols = ["?", "%", "★", "▲", "●", "■", "◆", "∞"];
-      const symbol = symbols[Math.floor(Math.random() * symbols.length)];
-      const size = Math.random() * 20 + 10;
-      const left = Math.random() * 100;
-      const delay = Math.random() * 8;
-      const duration = 10 + Math.random() * 10;
+  {/* оставляем только частицы и свечение */}
+  <FloatingSymbols />
 
-      return (
-        <motion.span
-          key={i}
-          initial={{ y: "120%", opacity: 0 }}
-          animate={{
-            y: ["120%", "-20%"],
-            opacity: [0.2, 0.6, 0.2],
-          }}
-          transition={{
-            duration,
-            delay,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          style={{
-            position: "absolute",
-            left: `${left}%`,
-            fontSize: `${size}px`,
-            color: "rgba(238,255,168,0.25)",
-            filter: "blur(1px)",
-          }}
-        >
-          {symbol}
-        </motion.span>
-      );
-    })}
-  </div>
-
-  {/* мягкое внутреннее свечение, без бликов */}
-  <div className="absolute inset-0 z-0 bg-gradient-to-b from-transparent via-transparent to-black/10" />
+  {/* убрали блуждающий блик, оставили лёгкое фоновое свечение */}
+<div className="absolute inset-0 pointer-events-none z-0 bg-gradient-to-b from-transparent via-transparent to-black/10" />
 
   <div className="relative z-10 w-full text-center flex flex-col items-center">
     <motion.h3
@@ -511,17 +475,20 @@ export default function AleoQuizInteractive() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.4 }}
-          className="relative border border-[#EEFFA8]/15 rounded-3xl backdrop-blur-[6px] bg-black/20 shadow-[0_0_60px_rgba(238,255,168,0.08)] flex flex-col justify-center items-center"
+          className="relative border border-[#EEFFA8]/15 rounded-3xl backdrop-blur-[6px] bg-black/20 shadow-[0_0_60px_rgba(238,255,168,0.08)] overflow-hidden flex flex-col justify-center"
           style={{
             width: "760px",
             height: "480px",
+            margin: "0 auto",
           }}
         >
           <div className="absolute inset-0 rounded-3xl shadow-[0_0_70px_15px_rgba(238,255,168,0.12)] pointer-events-none" />
+
           <div className="relative z-10 p-10 text-center">
             <h4 className="text-xl text-white font-medium mb-6">
               {quiz[current]?.question}
             </h4>
+
             <div className="grid grid-cols-1 gap-3 mb-6">
               {quiz[current]?.options.map((opt, i) => {
                 const isCorrect = i === quiz[current].correct;
@@ -576,13 +543,15 @@ export default function AleoQuizInteractive() {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="relative border border-[#EEFFA8]/15 rounded-3xl backdrop-blur-[6px] bg-black/20 shadow-[0_0_60px_rgba(238,255,168,0.08)] flex flex-col justify-center items-center"
+          className="relative border border-[#EEFFA8]/15 rounded-3xl backdrop-blur-[6px] bg-black/20 shadow-[0_0_60px_rgba(238,255,168,0.08)] overflow-hidden flex flex-col justify-center items-center"
           style={{
             width: "760px",
             height: "480px",
+            margin: "0 auto",
           }}
         >
           <div className="absolute inset-0 rounded-3xl shadow-[0_0_70px_15px_rgba(238,255,168,0.12)] pointer-events-none" />
+
           <div className="relative z-10 text-center">
             <h4 className="text-2xl text-[#EEFFA8] font-bold mb-4">
               Quiz Complete!
@@ -605,4 +574,3 @@ export default function AleoQuizInteractive() {
 </section>
   );
 }
-
