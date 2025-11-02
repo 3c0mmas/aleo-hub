@@ -955,6 +955,21 @@ useEffect(() => {
   }}
 />
 >
+        {/* floating lemon glow */}
+<motion.div
+  className="absolute w-[280px] h-[280px] rounded-full bg-[#EEFFA8] blur-[120px] opacity-25 top-[45%] left-[50%] -translate-x-1/2 z-0"
+  animate={{
+    x: [0, 50, -40, 30, -20, 0],
+    y: [0, -30, 20, -10, 10, 0],
+    scale: [1, 1.1, 0.9, 1.05, 1],
+    opacity: [0.25, 0.4, 0.3, 0.5, 0.25],
+  }}
+  transition={{
+    duration: 16,
+    repeat: Infinity,
+    ease: "easeInOut",
+  }}
+/>
         <div className="relative z-10 flex flex-col items-center justify-center">
           <h1 className="text-5xl font-bold mb-4 flex items-center gap-3 text-white">
   Welcome to
