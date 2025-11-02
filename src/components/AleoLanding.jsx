@@ -987,17 +987,15 @@ useEffect(() => {
 />
 
         <div className="relative z-10 flex flex-col items-center justify-center">
-          <h1 className="text-5xl font-bold mb-4 flex items-center gap-3 text-white">
+          <h1 className="font-[AleoSans] text-5xl font-bold mb-4 flex items-center gap-3 text-[#C4FFC2]">
   Welcome to
   <img
     src="https://vote.aleo.org/images/logo-wordmark-black.svg"
     alt="Aleo logo"
-    className="h-10 brightness-[0] invert"
+    className="h-10"
   />
   Network
 </h1>
-
-
           <p className="text-gray-400 max-w-xl">
             Privacy-first blockchain empowering developers to build private,
             decentralized apps.
