@@ -717,6 +717,13 @@ function GameSection() {
 
 export default function AleoLanding() {
   const [showMore, setShowMore] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
+
+useEffect(() => {
+  const timer = setTimeout(() => setShowSplash(false), 2500);
+  return () => clearTimeout(timer);
+}, []);
+
 
   const allEvents = [
     {
@@ -855,6 +862,45 @@ export default function AleoLanding() {
         "https://images.ctfassets.net/qyo46trxl4dy/2FCHIJzPePkfjjgUBWivIQ/22bad418b22eead7373f5a7645dbd17d/Aleo-blog-header-snarkOS4_1920x1080px__2_.png?w=1440&h=810&q=70&fm=png",
     },
   ];
+{showSplash && (
+  <motion.div
+    initial={{ opacity: 1 }}
+    animate={{ opacity: 0 }}
+    transition={{ duration: 1.2, delay: 1.5 }}
+    className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black"
+  >
+    <motion.img
+      src="https://vote.aleo.org/images/logo-wordmark-black.svg"
+      alt="Aleo Splash"
+      initial={{ scale: 0.8, opacity: 0.6 }}
+      animate={{
+        scale: [0.8, 1.05, 1],
+        opacity: [0.6, 1, 0.8],
+        filter: [
+          "drop-shadow(0 0 5px #EEFFA8) drop-shadow(0 0 10px #C4FFC2)",
+          "drop-shadow(0 0 20px #C4FFC2) drop-shadow(0 0 40px #EEFFA8)",
+          "drop-shadow(0 0 5px #EEFFA8) drop-shadow(0 0 10px #C4FFC2)",
+        ],
+      }}
+      transition={{
+        duration: 2,
+        ease: "easeInOut",
+        repeat: Infinity,
+        repeatType: "mirror",
+      }}
+      className="w-48"
+    />
+
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: [0.3, 0.8, 0.3] }}
+      transition={{ duration: 2, repeat: Infinity }}
+      className="mt-6 text-[#C4FFC2] text-sm tracking-widest"
+    >
+      Loading Aleo Network...
+    </motion.div>
+  </motion.div>
+)}
 
   return (
     <motion.div className="relative min-h-screen font-sans text-gray-100 bg-black overflow-x-hidden">
