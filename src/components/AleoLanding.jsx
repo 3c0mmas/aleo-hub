@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import AleoQuizInteractive from "./components/AleoQuizInteractive";
+import AleoQuizInteractive from "./AleoQuizInteractive";
 
 // === GLOW CURSOR =============================================================
 function GlowingCursor() {
