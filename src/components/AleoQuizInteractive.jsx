@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// — твои 50 вопросов остаются здесь —
 const questions = [
   // === Aleo Mainnet ===
   {
@@ -360,7 +359,6 @@ const questions = [
     explanation: "They span gaming, healthcare, education, and social trust use cases."
   }
 ];
-
 export default function AleoQuizInteractive() {
   const [quiz, setQuiz] = useState([]);
   const [current, setCurrent] = useState(0);
@@ -406,7 +404,7 @@ export default function AleoQuizInteractive() {
       id="quiz-zone"
       className="relative min-h-screen flex flex-col items-center justify-center text-gray-100 px-6 py-24 overflow-hidden"
     >
-      {/* ✨ Фон сайта — плавный и единый */}
+      {/* общий фон с анимацией */}
       <motion.div
         className="absolute inset-0 pointer-events-none z-[-1]"
         animate={{
@@ -438,11 +436,11 @@ export default function AleoQuizInteractive() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
-              className="relative border border-[#EEFFA8]/20 rounded-2xl p-8 shadow-[0_0_40px_rgba(238,255,168,0.25)] backdrop-blur-[3px] bg-black/60 w-full min-h-[480px] flex flex-col justify-between"
+              className="relative border border-[#EEFFA8]/20 rounded-2xl p-8 shadow-[0_0_40px_rgba(238,255,168,0.25)] backdrop-blur-[2px] bg-black/50 w-full h-[520px] flex flex-col justify-between"
             >
-              {/* 🌟 лимонное свечение позади карточки */}
+              {/* свечение под карточкой */}
               <motion.div
-                className="absolute inset-0 rounded-2xl blur-[45px] opacity-40"
+                className="absolute inset-0 rounded-2xl blur-[45px] opacity-35"
                 style={{
                   background:
                     "radial-gradient(circle at center, rgba(238,255,168,0.35) 0%, transparent 70%)",
@@ -463,7 +461,7 @@ export default function AleoQuizInteractive() {
                   {quiz[current]?.question}
                 </h4>
 
-                <div className="grid grid-cols-1 gap-3 mb-6">
+                <div className="grid grid-cols-1 gap-3 mb-6 flex-grow">
                   {quiz[current]?.options.map((opt, i) => {
                     const isCorrect = i === quiz[current].correct;
                     const isSelected = i === selected;
@@ -504,7 +502,7 @@ export default function AleoQuizInteractive() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="text-gray-300 text-sm mb-4"
+                      className="text-gray-300 text-sm mb-4 flex-grow"
                     >
                       {quiz[current].explanation}
                     </motion.div>
@@ -533,10 +531,10 @@ export default function AleoQuizInteractive() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="relative border border-[#EEFFA8]/20 rounded-2xl p-10 shadow-[0_0_40px_rgba(238,255,168,0.25)] backdrop-blur-[3px] bg-black/60 w-full min-h-[480px] flex flex-col justify-center"
+              className="relative border border-[#EEFFA8]/20 rounded-2xl p-10 shadow-[0_0_40px_rgba(238,255,168,0.25)] backdrop-blur-[2px] bg-black/50 w-full h-[520px] flex flex-col justify-center"
             >
               <motion.div
-                className="absolute inset-0 rounded-2xl blur-[45px] opacity-40"
+                className="absolute inset-0 rounded-2xl blur-[45px] opacity-35"
                 style={{
                   background:
                     "radial-gradient(circle at center, rgba(238,255,168,0.35) 0%, transparent 70%)",
