@@ -923,6 +923,7 @@ useEffect(() => {
       {/* HERO */}
       <section className="relative h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
        {/* animated glowing background */}
+{/* animated glowing background */}
 <motion.div
   className="absolute inset-0 z-0 pointer-events-none"
   initial={{ opacity: 0.5 }}
@@ -930,16 +931,16 @@ useEffect(() => {
     opacity: [0.4, 0.8, 0.4],
     background: [
       `
-        radial-gradient(circle at 30% 40%, rgba(238,255,168,0.25) 0%, transparent 60%),
-        radial-gradient(circle at 70% 60%, rgba(196,255,194,0.25) 0%, transparent 60%),
-        radial-gradient(circle at 50% 20%, rgba(255,226,252,0.25) 0%, transparent 65%),
-        radial-gradient(circle at 80% 80%, rgba(255,226,252,0.2) 0%, transparent 70%)
+        radial-gradient(circle at 30% 40%, rgba(238,255,168,0.22) 0%, transparent 55%),
+        radial-gradient(circle at 70% 60%, rgba(196,255,194,0.22) 0%, transparent 55%),
+        radial-gradient(circle at 45% 25%, rgba(255,226,252,0.18) 0%, transparent 45%),
+        radial-gradient(circle at 85% 75%, rgba(255,226,252,0.15) 0%, transparent 50%)
       `,
       `
-        radial-gradient(circle at 40% 45%, rgba(238,255,168,0.3) 0%, transparent 65%),
-        radial-gradient(circle at 60% 55%, rgba(196,255,194,0.3) 0%, transparent 65%),
-        radial-gradient(circle at 70% 30%, rgba(255,226,252,0.3) 0%, transparent 70%),
-        radial-gradient(circle at 20% 80%, rgba(255,226,252,0.25) 0%, transparent 70%)
+        radial-gradient(circle at 35% 45%, rgba(238,255,168,0.25) 0%, transparent 55%),
+        radial-gradient(circle at 65% 55%, rgba(196,255,194,0.25) 0%, transparent 55%),
+        radial-gradient(circle at 55% 35%, rgba(255,226,252,0.2) 0%, transparent 45%),
+        radial-gradient(circle at 15% 75%, rgba(255,226,252,0.15) 0%, transparent 50%)
       `
     ],
   }}
