@@ -925,28 +925,14 @@ useEffect(() => {
        {/* animated glowing background */}
 {/* animated glowing background */}
 {/* floating pink glows */}
+{/* floating pink glows — soft breathing motion */}
 <motion.div
-  className="absolute w-[350px] h-[350px] rounded-full bg-[#FFE2FC] blur-[140px] opacity-25 left-[-10%] top-[35%] z-0"
+  className="absolute w-[320px] h-[320px] rounded-full bg-[#FFE2FC] blur-[140px] opacity-25 left-[-10%] top-[35%] z-0"
   animate={{
     x: [0, 40, 0, -30, 0],
-    y: [0, -20, 30, 0],
-    opacity: [0.25, 0.4, 0.25],
-    scale: [1, 1.1, 1],
-  }}
-  transition={{
-    duration: 18,
-    repeat: Infinity,
-    ease: "easeInOut",
-  }}
-/>
-
-<motion.div
-  className="absolute w-[300px] h-[300px] rounded-full bg-[#FFE2FC] blur-[120px] opacity-2 right-[-8%] top-[40%] z-0"
-  animate={{
-    x: [0, -30, 0, 20, 0],
-    y: [0, 25, -20, 0],
-    opacity: [0.2, 0.35, 0.2],
-    scale: [1, 1.1, 0.95],
+    y: [0, -40, 20, -30, 10, 0],
+    opacity: [0.25, 0.4, 0.3, 0.45, 0.25],
+    scale: [1, 1.05, 0.95, 1.1, 1],
   }}
   transition={{
     duration: 20,
@@ -954,7 +940,21 @@ useEffect(() => {
     ease: "easeInOut",
   }}
 />
->
+
+<motion.div
+  className="absolute w-[280px] h-[280px] rounded-full bg-[#FFE2FC] blur-[130px] opacity-2 right-[-8%] top-[40%] z-0"
+  animate={{
+    x: [0, -30, 10, 20, -20, 0],
+    y: [0, 30, -40, 25, -20, 0],
+    opacity: [0.2, 0.35, 0.25, 0.4, 0.2],
+    scale: [1, 1.1, 0.9, 1.05, 1],
+  }}
+  transition={{
+    duration: 22,
+    repeat: Infinity,
+    ease: "easeInOut",
+  }}
+/>
         {/* floating lemon glow */}
 <motion.div
   className="absolute w-[280px] h-[280px] rounded-full bg-[#EEFFA8] blur-[120px] opacity-25 top-[45%] left-[50%] -translate-x-1/2 z-0"
