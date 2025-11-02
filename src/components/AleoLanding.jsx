@@ -714,7 +714,6 @@ useEffect(() => {
 }, []);
 
 
-  const allEvents = [
     const allEvents = [
   {
     time: "1:00 PM - 4:00 PM EDT, November 1 2025",
