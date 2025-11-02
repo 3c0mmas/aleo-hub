@@ -958,9 +958,15 @@ useEffect(() => {
             Privacy-first blockchain empowering developers to build private,
             decentralized apps.
           </p>
-          <button className="mt-6 px-6 py-3 bg-[#C4FFC2]/10 border border-[#C4FFC2]/30 rounded-xl text-[#C4FFC2] hover:bg-[#C4FFC2]/20 transition">
-            Learn More
-          </button>
+          <button
+  onClick={() =>
+    document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })
+  }
+  className="mt-6 px-6 py-3 bg-[#C4FFC2]/10 border border-[#C4FFC2]/30 rounded-xl text-[#C4FFC2] hover:bg-[#C4FFC2]/20 transition"
+>
+  Learn More
+</button>
+
         </div>
       </section>
 
