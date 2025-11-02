@@ -972,17 +972,17 @@ useEffect(() => {
   }}
 />
         
-{/* warm golden glow near logo (slightly left) */}
+{/* warm golden glow near logo (further left) */}
 <motion.div
-  className="absolute w-[240px] h-[240px] rounded-full bg-[#FFE092] blur-[110px] opacity-35 top-[-6%] left-[42%] z-0"
+  className="absolute w-[240px] h-[240px] rounded-full bg-[#FFE092] blur-[110px] opacity-35 top-[-6%] left-[25%] z-0"
   animate={{
-    x: [0, -15, 10, -8, 0],
-    y: [0, 15, -10, 5, 0],
+    x: [0, -20, 10, -15, 0],
+    y: [0, 25, -10, 15, 0],
     opacity: [0.3, 0.45, 0.35, 0.4, 0.3],
-    scale: [1, 1.06, 0.94, 1],
+    scale: [1, 1.05, 0.95, 1],
   }}
   transition={{
-    duration: 16,
+    duration: 18,
     repeat: Infinity,
     ease: "easeInOut",
   }}
