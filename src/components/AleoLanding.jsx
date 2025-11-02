@@ -904,19 +904,18 @@ useEffect(() => {
               Aleo Network
             </span>
           </div>
-          <div className="flex items-center gap-6 text-sm text-gray-400">
-            {["About", "Features", "Events", "Community", "Governance", "Articles", "Game"].map(
-              (i) => (
-                <a
-                    key={i}
-                    href={`#${i.toLowerCase()}`}
-                    className="hover:text-[#EEFFA8] transition-colors"
-                >
-                  {i}
-                </a>
-              )
-            )}
-          </div>
+          <div className="flex items-center gap-6 text-sm text-[#FFE2FC]">
+  {["About", "Features", "Events", "Community", "Governance", "Articles", "Game"].map((i) => (
+    <a
+      key={i}
+      href={`#${i.toLowerCase()}`}
+      className="hover:text-[#EEFFA8] transition-colors duration-300 drop-shadow-[0_0_8px_#FFE2FC55]"
+    >
+      {i}
+    </a>
+  ))}
+</div>
+
         </nav>
       </header>
 
