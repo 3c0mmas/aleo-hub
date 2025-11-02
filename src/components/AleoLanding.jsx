@@ -170,16 +170,13 @@ function PixelBackground() {
         ctx.fillRect(p.x, p.y, p.size, p.size);
         ctx.shadowBlur = 0;
 
-        // лёгкое движение
         p.x += Math.cos(p.dir) * p.speed;
         p.y += Math.sin(p.dir) * p.speed;
 
-        // плавное изменение прозрачности
         p.alpha += (Math.random() - 0.5) * 0.01;
         if (p.alpha < 0.1) p.alpha = 0.1;
         if (p.alpha > 0.7) p.alpha = 0.7;
 
-        // возврат за границы
         if (p.x < 0) p.x = w;
         if (p.x > w) p.x = 0;
         if (p.y < 0) p.y = h;
@@ -305,7 +302,6 @@ function BlockSnake() {
       for (let i = 0; i < count; i++) enemies.push(spawnEnemy());
     }
 
-    // first target
     tx = spawnFree();
     addEnemiesForLevel();
 
@@ -399,10 +395,8 @@ function BlockSnake() {
       dir = nextDir;
       const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
 
-      // столкновение со стеной
       if (!inBounds(head)) return gameOver();
 
-      // столкновение с собой / врагом (если нет буста)
       if (!power || powerTime <= 0) {
         for (let i = 0; i < snake.length; i++)
           if (cellEquals(snake[i], head)) return gameOver();
@@ -411,33 +405,28 @@ function BlockSnake() {
 
       snake.unshift(head);
 
-      // съели цель
       if (cellEquals(head, tx)) {
         score += 10;
         tx = spawnFree();
         level++;
         addEnemiesForLevel();
 
-        // каждые 5 уровней — бомба
         if (level % 5 === 0) {
           stepMs = Math.max(60, stepMs - 10);
-          bombsRef.current.push({ ...spawnFree(), timer: 300 }); // ~5 сек
+          bombsRef.current.push({ ...spawnFree(), timer: 300 });
         }
 
-        // шанс на power
         if (!power && Math.random() < 0.3) power = spawnFree();
         flashRef.current = 1;
       } else {
         snake.pop();
       }
 
-      // таймер бомб
       for (const bomb of bombsRef.current) {
         bomb.timer--;
       }
       bombsRef.current = bombsRef.current.filter((b) => b.timer > 0);
 
-      // подорвали бомбу
       for (const bomb of bombsRef.current) {
         if (cellEquals(head, bomb)) {
           triggerBombs();
@@ -445,7 +434,6 @@ function BlockSnake() {
         }
       }
 
-      // подобрали power
       if (power && cellEquals(head, power)) {
         power = null;
         powerTime = 30 + level * 10;
@@ -507,7 +495,6 @@ function BlockSnake() {
       ctx.fillStyle = COLORS.bg;
       ctx.fillRect(0, 0, w, h);
 
-      // сетка
       ctx.strokeStyle = COLORS.grid;
       ctx.lineWidth = 1;
       for (let x = 0; x <= COLS; x++) {
@@ -526,7 +513,6 @@ function BlockSnake() {
       renderSpawnFlashes();
       renderShards();
 
-      // глобальный флеш
       if (flashRef.current > 0) {
         ctx.save();
         ctx.fillStyle = COLORS.flash;
@@ -536,29 +522,23 @@ function BlockSnake() {
         flashRef.current *= 0.9;
       }
 
-      // цель
       drawCell(tx, COLORS.tx, true);
 
-      // power
       if (power) drawCell(power, COLORS.glow, true, 0.8);
 
-      // враги
       for (const e of enemies) {
         if (e.alive) drawCell(e, COLORS.enemy, false, 0.9);
       }
 
-      // бомбы
       for (const b of bombsRef.current) {
         drawCell(b, COLORS.bomb, true, 0.9);
       }
 
-      // змейка
       for (let i = snake.length - 1; i >= 0; i--) {
         const a = 0.45 + 0.55 * (i === 0 ? 1 : i / snake.length);
         drawCell(snake[i], COLORS.main, true, a);
       }
 
-      // HUD
       ctx.save();
       ctx.fillStyle = COLORS.text;
       ctx.font = "14px monospace";
@@ -596,7 +576,6 @@ function BlockSnake() {
 
     rafRef.current = requestAnimationFrame(loop);
 
-    // resize game on window resize
     function onResize() {
       w = canvas.clientWidth || window.innerWidth;
       h = (canvas.clientHeight || window.innerHeight) * 0.7;
@@ -631,145 +610,298 @@ export default function AleoLanding() {
   const [showMore, setShowMore] = useState(false);
 
   const tweets = [
-    { date: "October 27, 2025", text: "Exploring the future of privacy at Money20/20 Las Vegas! Join us at Aleo’s Privacy Lounge.", link: "https://x.com/AleoHQ/status/1982800488736465064" },
-    { date: "October 25, 2025", text: "Aleo joins Binance Alpha! Building bridges for privacy-first innovation.", link: "https://x.com/AleoHQ/status/1982452680875270299" },
-    { date: "October 23, 2025", text: "Our Istanbul event brought together amazing builders from around the globe.", link: "https://x.com/AleoHQ/status/1981834085329694747" },
-    { date: "October 21, 2025", text: "zk-proofs verified, privacy preserved. The Aleo mainnet continues to grow.", link: "https://x.com/AleoHQ/status/1981443533933367677" },
-    { date: "October 20, 2025", text: "From Shanghai to Paris — Aleo’s global developer workshops keep expanding!", link: "https://x.com/AleoHQ/status/1981392940045091209" },
-    { date: "October 18, 2025", text: "Aleo’s privacy ecosystem keeps growing — join the movement!", link: "https://x.com/AleoHQ/status/1981300000000000000" },
+    {
+      date: "October 27, 2025",
+      text: "Exploring the future of privacy at Money20/20 Las Vegas! Join us at Aleo’s Privacy Lounge.",
+      link: "https://x.com/AleoHQ/status/1982800488736465064",
+    },
+    {
+      date: "October 25, 2025",
+      text: "Aleo joins Binance Alpha! Building bridges for privacy-first innovation.",
+      link: "https://x.com/AleoHQ/status/1982452680875270299",
+    },
+    {
+      date: "October 23, 2025",
+      text: "Our Istanbul event brought together amazing builders from around the globe.",
+      link: "https://x.com/AleoHQ/status/1981834085329694747",
+    },
+    {
+      date: "October 21, 2025",
+      text: "zk-proofs verified, privacy preserved. The Aleo mainnet continues to grow.",
+      link: "https://x.com/AleoHQ/status/1981443533933367677",
+    },
+    {
+      date: "October 20, 2025",
+      text: "From Shanghai to Paris — Aleo’s global developer workshops keep expanding!",
+      link: "https://x.com/AleoHQ/status/1981392940045091209",
+    },
+    {
+      date: "October 18, 2025",
+      text: "Aleo’s privacy ecosystem keeps growing — join the movement!",
+      link: "https://x.com/AleoHQ/status/1981300000000000000",
+    },
   ];
 
   const articles = [
-    { date: "October 27, 2025", title: "Paxos Labs and ANF launch USAD Private Stablecoin", link: "https://aleo.org/post/paxos-labs-and-ANF-launch-USAD-Private-Stablecoin/" },
-    { date: "October 25, 2025", title: "Aleo joins Binance Alpha", link: "https://aleo.org/post/aleo-joins-binance-alpha/" },
-    { date: "October 22, 2025", title: "Aleo & Request Finance: Private Payments Partnership", link: "https://aleo.org/post/aleo-request-finance-private-payments-partnership/" },
-    { date: "October 20, 2025", title: "Aleo joins Global Dollar Network: Private Stablecoin", link: "https://aleo.org/post/aleo-joins-global-dollar-network-private-stablecoin/" },
-    { date: "October 19, 2025", title: "Aleo Token Revolut Listing", link: "https://aleo.org/post/aleo-token-revolut-listing/" },
-    { date: "October 18, 2025", title: "Aleo Ecosystem Growth Report", link: "https://aleo.org/post/aleo-ecosystem-growth-report/" },
+    {
+      date: "October 27, 2025",
+      title: "Paxos Labs and ANF launch USAD Private Stablecoin",
+      link: "https://aleo.org/post/paxos-labs-and-ANF-launch-USAD-Private-Stablecoin/",
+    },
+    {
+      date: "October 25, 2025",
+      title: "Aleo joins Binance Alpha",
+      link: "https://aleo.org/post/aleo-joins-binance-alpha/",
+    },
+    {
+      date: "October 22, 2025",
+      title: "Aleo & Request Finance: Private Payments Partnership",
+      link: "https://aleo.org/post/aleo-request-finance-private-payments-partnership/",
+    },
+    {
+      date: "October 20, 2025",
+      title: "Aleo joins Global Dollar Network: Private Stablecoin",
+      link: "https://aleo.org/post/aleo-joins-global-dollar-network-private-stablecoin/",
+    },
+    {
+      date: "October 19, 2025",
+      title: "Aleo Token Revolut Listing",
+      link: "https://aleo.org/post/aleo-token-revolut-listing/",
+    },
+    {
+      date: "October 18, 2025",
+      title: "Aleo Ecosystem Growth Report",
+      link: "https://aleo.org/post/aleo-ecosystem-growth-report/",
+    },
   ];
 
   const allEvents = [
-    { time: "6:00 PM - 9:00 PM GMT+9, November 1 2025", location: "Tokyo, Japan", title: "Aleo: Tokyo Compliant Private Token Workshop", link: "https://luma.com/aleotokyo2025workshop" },
-    { time: "1:00 PM - 4:00 PM EDT, November 1 2025", location: "Toronto, Canada", title: "Aleo: Toronto Compliant Private Token Workshop", link: "https://luma.com/aleotorontooctober2025workshop" },
-    { time: "4:00 PM NOVEMBER 3 2025 GMT-3", location: "São Paulo, Brazil", title: "Aleo LATAM Developer Meetup", link: "https://luma.com/aleobrazil2025" },
-    { time: "2:30 PM OCTOBER 27 2025 PDT", location: "Las Vegas, Nevada", title: "Aleo's Privacy Lounge @Money20/20", link: "https://luma.com/4s1lxlc9" },
-    { time: "5:00 PM OCTOBER 22 2025 GMT+3", location: "Istanbul, Turkey", title: "Aleo x Yıldız Technical University Blockchain Club", link: "https://luma.com/pdjgokou" },
-    { time: "12:00 PM OCTOBER 21 2025 GMT+1", location: "Uyo, Nigeria", title: "Aleo: Uyo Compliant Private Token Workshop", link: "https://luma.com/aleouyooctober2025workshop" },
-    { time: "2:00 PM OCTOBER 19 2025 GMT+8", location: "Shanghai, China", title: "揭秘下一代隐私网络！Aleo 上海 Dev Party 邀你面对面话 Web3 未来！", link: "https://luma.com/xwjcv6xh" },
-    { time: "9:00 AM OCTOBER 19 2025 GMT+7", location: "Ho Chi Minh, Vietnam", title: "Aleo: HCMC Compliant Private Token Workshop", link: "https://luma.com/aleohcmc2025workshop" },
-    { time: "6:30 PM OCTOBER 13 2025 GMT+2", location: "Paris, France", title: "Aleo x Crypto Mondays x SheFi Paris", link: "https://luma.com/zw8oesrq" },
+    {
+      time: "6:00 PM - 9:00 PM GMT+9, November 1 2025",
+      location: "Tokyo, Japan",
+      title: "Aleo: Tokyo Compliant Private Token Workshop",
+      link: "https://luma.com/aleotokyo2025workshop",
+    },
+    {
+      time: "1:00 PM - 4:00 PM EDT, November 1 2025",
+      location: "Toronto, Canada",
+      title: "Aleo: Toronto Compliant Private Token Workshop",
+      link: "https://luma.com/aleotorontooctober2025workshop",
+    },
+    {
+      time: "4:00 PM NOVEMBER 3 2025 GMT-3",
+      location: "São Paulo, Brazil",
+      title: "Aleo LATAM Developer Meetup",
+      link: "https://luma.com/aleobrazil2025",
+    },
+    {
+      time: "2:30 PM OCTOBER 27 2025 PDT",
+      location: "Las Vegas, Nevada",
+      title: "Aleo's Privacy Lounge @Money20/20",
+      link: "https://luma.com/4s1lxlc9",
+    },
+    {
+      time: "5:00 PM OCTOBER 22 2025 GMT+3",
+      location: "Istanbul, Turkey",
+      title: "Aleo x Yıldız Technical University Blockchain Club",
+      link: "https://luma.com/pdjgokou",
+    },
+    {
+      time: "12:00 PM OCTOBER 21 2025 GMT+1",
+      location: "Uyo, Nigeria",
+      title: "Aleo: Uyo Compliant Private Token Workshop",
+      link: "https://luma.com/aleouyooctober2025workshop",
+    },
+    {
+      time: "2:00 PM OCTOBER 19 2025 GMT+8",
+      location: "Shanghai, China",
+      title:
+        "揭秘下一代隐私网络！Aleo 上海 Dev Party 邀你面对面话 Web3 未来！",
+      link: "https://luma.com/xwjcv6xh",
+    },
+    {
+      time: "9:00 AM OCTOBER 19 2025 GMT+7",
+      location: "Ho Chi Minh, Vietnam",
+      title: "Aleo: HCMC Compliant Private Token Workshop",
+      link: "https://luma.com/aleohcmc2025workshop",
+    },
+    {
+      time: "6:30 PM OCTOBER 13 2025 GMT+2",
+      location: "Paris, France",
+      title: "Aleo x Crypto Mondays x SheFi Paris",
+      link: "https://luma.com/zw8oesrq",
+    },
   ];
 
   const visibleEvents = showMore ? allEvents : allEvents.slice(0, 6);
 
   return (
     <motion.div className="relative min-h-screen font-sans text-gray-100 bg-black overflow-x-hidden">
-      <PixelBackground /> {/* фон */}
+      <PixelBackground />
       <GlowingCursor />
 
-      {/* HEADER NAVIGATION */}
+      {/* HEADER NAVIGATION (первый) */}
       <header className="z-30 relative">
         <nav className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-md bg-gradient-to-tr from-[#121216] to-[#1b1b20] border border-white/6 flex items-center justify-center shadow-sm">
               <span className="text-xs font-semibold tracking-wider">A</span>
             </div>
-            <div className="text-sm text-gray-300">Aleo — Private by design</div>
+            <div className="text-sm text-gray-300">
+              Aleo — Private by design
+            </div>
           </div>
           <div className="flex items-center gap-4 text-sm text-gray-400">
-            <a href="#about" className="hover:text-white">About</a>
-            <a href="#features" className="hover:text-white">Features</a>
-            <a href="#events" className="hover:text-white">Events</a>
-            <a href="#community" className="hover:text-white">Community</a>
-            <a href="#governance" className="hover:text-white">Governance</a>
-            <a href="#articles" className="hover:text-white">Articles</a>
-            <a href="#game" className="hover:text-white">Game</a>
+            <a href="#about" className="hover:text-white">
+              About
+            </a>
+            <a href="#features" className="hover:text-white">
+              Features
+            </a>
+            <a href="#events" className="hover:text-white">
+              Events
+            </a>
+            <a href="#community" className="hover:text-white">
+              Community
+            </a>
+            <a href="#governance" className="hover:text-white">
+              Governance
+            </a>
+            <a href="#articles" className="hover:text-white">
+              Articles
+            </a>
+            <a href="#game" className="hover:text-white">
+              Game
+            </a>
           </div>
         </nav>
       </header>
 
-     {/* HEADER */}
+      {/* HEADER (второй, с лого) */}
       <header className="z-30 relative border-b border-white/5">
         <nav className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-[#EEFFA8]/10 flex items-center justify-center border border-[#EEFFA8]/30">
-              <img src="https://developer.aleo.org/img/logo-128x128.png" alt="Aleo Logo" className="w-7 h-7" />
+              <img
+                src="https://developer.aleo.org/img/logo-128x128.png"
+                alt="Aleo Logo"
+                className="w-7 h-7"
+              />
             </div>
-            <span className="text-xl font-semibold text-[#EEFFA8]">Aleo Network</span>
+            <span className="text-xl font-semibold text-[#EEFFA8]">
+              Aleo Network
+            </span>
           </div>
           <div className="flex items-center gap-6 text-sm text-gray-400">
-            {["About","Features","Events","Community","Governance","Articles","Game"].map(i=>(
-              <a key={i} href={`#${i.toLowerCase()}`} className="hover:text-[#EEFFA8] transition-colors">{i}</a>
+            {[
+              "About",
+              "Features",
+              "Events",
+              "Community",
+              "Governance",
+              "Articles",
+              "Game",
+            ].map((i) => (
+              <a
+                key={i}
+                href={`#${i.toLowerCase()}`}
+                className="hover:text-[#EEFFA8] transition-colors"
+              >
+                {i}
+              </a>
             ))}
           </div>
         </nav>
       </header>
-      
-     {/* HERO */}
-<section className="relative h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
-  {/* Light Glow Animation */}
-  <motion.div
-    className="absolute inset-0 z-0 pointer-events-none"
-    initial={{ opacity: 0.4 }}
-    animate={{
-      opacity: [0.4, 0.8, 0.4],
-      background: [
-        "radial-gradient(circle at 30% 40%, rgba(238,255,168,0.25) 0%, transparent 60%)",
-        "radial-gradient(circle at 70% 60%, rgba(196,255,194,0.25) 0%, transparent 60%)",
-        "radial-gradient(circle at 50% 50%, rgba(238,255,168,0.3) 0%, transparent 65%)",
-      ],
-    }}
-    transition={{ duration: 6, repeat: Infinity, repeatType: "mirror" }}
-  />
 
-  {/* Hero Content */}
-  <section className="flex flex-col items-center justify-center h-[90vh] text-center px-6">
-  <h1 className="text-5xl font-bold mb-4 text-[#C4FFC2] flex items-center gap-3">
-    Welcome to 
-    <img
-      src="https://vote.aleo.org/images/logo-wordmark-black.svg"
-      alt="Aleo logo"
-      className="h-10 invert-[90%] sepia-[30%] saturate-[300%] hue-rotate-[35deg] brightness-[110%] contrast-[105%]"
-    />
-    Network
-  </h1>
-  <p className="text-gray-400 max-w-xl">
-    Privacy-first blockchain empowering developers to build private, decentralized apps.
-  </p>
-  <button className="mt-6 px-6 py-3 bg-[#C4FFC2]/10 border border-[#C4FFC2]/30 rounded-xl text-[#C4FFC2] hover:bg-[#C4FFC2]/20 transition">
-    Learn More
-  </button>
-</section>
+      {/* HERO */}
+      <section className="relative h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
+        {/* Light Glow Animation */}
+        <motion.div
+          className="absolute inset-0 z-0 pointer-events-none"
+          initial={{ opacity: 0.4 }}
+          animate={{
+            opacity: [0.4, 0.8, 0.4],
+            background: [
+              "radial-gradient(circle at 30% 40%, rgba(238,255,168,0.25) 0%, transparent 60%)",
+              "radial-gradient(circle at 70% 60%, rgba(196,255,194,0.25) 0%, transparent 60%)",
+              "radial-gradient(circle at 50% 50%, rgba(238,255,168,0.3) 0%, transparent 65%)",
+            ],
+          }}
+          transition={{ duration: 6, repeat: Infinity, repeatType: "mirror" }}
+        />
 
+        {/* Hero Content */}
+        <section className="flex flex-col items-center justify-center h-[90vh] text-center px-6">
+          <h1 className="text-5xl font-bold mb-4 text-[#C4FFC2] flex items-center gap-3">
+            Welcome to
+            <img
+              src="https://vote.aleo.org/images/logo-wordmark-black.svg"
+              alt="Aleo logo"
+              className="h-10 invert-[90%] sepia-[30%] saturate-[300%] hue-rotate-[35deg] brightness-[110%] contrast-[105%]"
+            />
+            Network
+          </h1>
+          <p className="text-gray-400 max-w-xl">
+            Privacy-first blockchain empowering developers to build private,
+            decentralized apps.
+          </p>
+          <button className="mt-6 px-6 py-3 bg-[#C4FFC2]/10 border border-[#C4FFC2]/30 rounded-xl text-[#C4FFC2] hover:bg-[#C4FFC2]/20 transition">
+            Learn More
+          </button>
+        </section>
+      </section>
+      {/* ← вот этого закрывающего section не хватало */}
 
       {/* ABOUT */}
       <section id="about" className="max-w-6xl mx-auto px-6 py-20">
         <h3 className="text-3xl font-semibold text-white mb-4">About Aleo</h3>
-        <p className="text-gray-300 max-w-3xl">Aleo is the world’s leading zero-knowledge platform enabling fully private applications with off-chain computation verified on-chain.</p>
+        <p className="text-gray-300 max-w-3xl">
+          Aleo is the world’s leading zero-knowledge platform enabling fully
+          private applications with off-chain computation verified on-chain.
+        </p>
       </section>
 
       {/* FEATURES */}
       <section id="features" className="max-w-6xl mx-auto px-6 py-20">
-        <h3 className="text-3xl font-semibold text-white mb-8 text-center">Core Features</h3>
+        <h3 className="text-3xl font-semibold text-white mb-8 text-center">
+          Core Features
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa]">
-            <h4 className="text-lg font-semibold text-white mb-2">Private by Default</h4>
-            <p className="text-gray-400 text-sm">All app logic executes privately with zk-proofs, ensuring total confidentiality.</p>
+            <h4 className="text-lg font-semibold text-white mb-2">
+              Private by Default
+            </h4>
+            <p className="text-gray-400 text-sm">
+              All app logic executes privately with zk-proofs, ensuring total
+              confidentiality.
+            </p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa]">
-            <h4 className="text-lg font-semibold text-white mb-2">Developer-First</h4>
-            <p className="text-gray-400 text-sm">Powerful SDKs and tooling for fast, privacy-focused app development.</p>
+            <h4 className="text-lg font-semibold text-white mb-2">
+              Developer-First
+            </h4>
+            <p className="text-gray-400 text-sm">
+              Powerful SDKs and tooling for fast, privacy-focused app
+              development.
+            </p>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa]">
-            <h4 className="text-lg font-semibold text-white mb-2">Composable & Secure</h4>
-            <p className="text-gray-400 text-sm">Aleo enables modular private DeFi and verifiable computation.</p>
+            <h4 className="text-lg font-semibold text-white mb-2">
+              Composable & Secure
+            </h4>
+            <p className="text-gray-400 text-sm">
+              Aleo enables modular private DeFi and verifiable computation.
+            </p>
           </div>
         </div>
       </section>
 
       {/* EVENTS */}
       <section id="events" className="max-w-6xl mx-auto px-6 py-20">
-        <h3 className="text-3xl font-semibold text-white mb-8">Aleo Global Events</h3>
+        <h3 className="text-3xl font-semibold text-white mb-8">
+          Aleo Global Events
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence>
             {visibleEvents.map((event, idx) => (
@@ -784,7 +916,9 @@ export default function AleoLanding() {
               >
                 <div className="text-sm text-gray-400">{event.time}</div>
                 <div className="text-xs text-gray-500">{event.location}</div>
-                <h4 className="mt-3 text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">{event.title}</h4>
+                <h4 className="mt-3 text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">
+                  {event.title}
+                </h4>
               </motion.div>
             ))}
           </AnimatePresence>
@@ -801,32 +935,63 @@ export default function AleoLanding() {
 
       {/* COMMUNITY */}
       <section id="community" className="max-w-6xl mx-auto px-6 py-20">
-        <h3 className="text-3xl font-semibold text-white mb-8">Aleo Community Hub</h3>
+        <h3 className="text-3xl font-semibold text-white mb-8">
+          Aleo Community Hub
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tweets.map((tweet, idx) => (
-            <div key={idx} onClick={() => window.open(tweet.link, "_blank")} className="cursor-pointer bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] hover:scale-[1.03]">
+            <div
+              key={idx}
+              onClick={() => window.open(tweet.link, "_blank")}
+              className="cursor-pointer bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] hover:scale-[1.03]"
+            >
               <div className="text-sm text-gray-400">{tweet.date}</div>
-              <h4 className="mt-3 text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">{tweet.text}</h4>
+              <h4 className="mt-3 text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">
+                {tweet.text}
+              </h4>
             </div>
           ))}
         </div>
       </section>
 
       {/* GOVERNANCE */}
-      <section id="governance" className="max-w-6xl mx-auto px-6 py-20 text-center">
-        <h3 className="text-3xl font-semibold text-white mb-4">Aleo Governance</h3>
-        <p className="text-gray-300 max-w-2xl mx-auto mb-6">Participate in Aleo’s on-chain governance — propose, vote, and shape the network’s evolution.</p>
-        <a href="https://vote.aleo.org/" target="_blank" rel="noreferrer" className="inline-block px-8 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition">Join Governance Platform</a>
+      <section
+        id="governance"
+        className="max-w-6xl mx-auto px-6 py-20 text-center"
+      >
+        <h3 className="text-3xl font-semibold text-white mb-4">
+          Aleo Governance
+        </h3>
+        <p className="text-gray-300 max-w-2xl mx-auto mb-6">
+          Participate in Aleo’s on-chain governance — propose, vote, and shape
+          the network’s evolution.
+        </p>
+        <a
+          href="https://vote.aleo.org/"
+          target="_blank"
+          rel="noreferrer"
+          className="inline-block px-8 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition"
+        >
+          Join Governance Platform
+        </a>
       </section>
 
       {/* ARTICLES */}
       <section id="articles" className="max-w-6xl mx-auto px-6 py-20">
-        <h3 className="text-3xl font-semibold text-white mb-8">Aleo Blog Highlights</h3>
+        <h3 className="text-3xl font-semibold text-white mb-8">
+          Aleo Blog Highlights
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {articles.map((article, idx) => (
-            <div key={idx} onClick={() => window.open(article.link, "_blank")} className="cursor-pointer bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] hover:scale-[1.03]">
+            <div
+              key={idx}
+              onClick={() => window.open(article.link, "_blank")}
+              className="cursor-pointer bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] hover:scale-[1.03]"
+            >
               <div className="text-sm text-gray-400 mb-2">{article.date}</div>
-              <h4 className="text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">{article.title}</h4>
+              <h4 className="text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">
+                {article.title}
+              </h4>
             </div>
           ))}
         </div>
@@ -834,7 +999,9 @@ export default function AleoLanding() {
 
       {/* GAME */}
       <section id="game" className="max-w-6xl mx-auto px-6 py-20">
-        <h3 className="text-3xl font-semibold text-white mb-8">Aleo Block Snake</h3>
+        <h3 className="text-3xl font-semibold text-white mb-8">
+          Aleo Block Snake
+        </h3>
         <BlockSnake />
       </section>
 
