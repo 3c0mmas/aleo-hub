@@ -915,7 +915,6 @@ useEffect(() => {
     </a>
   ))}
 </div>
-
         </nav>
       </header>
 
