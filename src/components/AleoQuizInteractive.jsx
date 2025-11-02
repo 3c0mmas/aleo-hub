@@ -452,17 +452,8 @@ export default function AleoQuizInteractive() {
   {/* оставляем только частицы и свечение */}
   <FloatingSymbols />
 
-  {/* убираем черный фон внутри, оставляем мягкое движение */}
-  <motion.div
-    className="absolute inset-0 pointer-events-none z-0"
-    animate={{
-      background: [
-        "radial-gradient(circle at 20% 40%, rgba(238,255,168,0.05) 0%, transparent 60%)",
-        "radial-gradient(circle at 80% 60%, rgba(196,255,194,0.05) 0%, transparent 60%)",
-      ],
-    }}
-    transition={{ duration: 8, repeat: Infinity, repeatType: "mirror" }}
-  />
+  {/* убрали блуждающий блик, оставили лёгкое фоновое свечение */}
+<div className="absolute inset-0 pointer-events-none z-0 bg-gradient-to-b from-transparent via-transparent to-black/10" />
 
   <div className="relative z-10 w-full text-center flex flex-col items-center">
     <motion.h3
