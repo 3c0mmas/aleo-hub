@@ -781,65 +781,45 @@ export default function AleoLanding() {
         </div>
       </motion.div>
     ))}
+          </div>
+      </motion.div>
+    ))}
   </div>
 </section>
 
-const allEvents = [
-    {
-      time: "6:00 PM - 9:00 PM GMT+9, November 1 2025",
-      location: "Tokyo, Japan",
-      title: "Aleo: Tokyo Compliant Private Token Workshop",
-      link: "https://luma.com/aleotokyo2025workshop",
-    },
-    {
-      time: "1:00 PM - 4:00 PM EDT, November 1 2025",
-      location: "Toronto, Canada",
-      title: "Aleo: Toronto Compliant Private Token Workshop",
-      link: "https://luma.com/aleotorontooctober2025workshop",
-    },
-    {
-      time: "4:00 PM NOVEMBER 3 2025 GMT-3",
-      location: "São Paulo, Brazil",
-      title: "Aleo LATAM Developer Meetup",
-      link: "https://luma.com/aleobrazil2025",
-    },
-    {
-      time: "2:30 PM OCTOBER 27 2025 PDT",
-      location: "Las Vegas, Nevada",
-      title: "Aleo's Privacy Lounge @Money20/20",
-      link: "https://luma.com/4s1lxlc9",
-    },
-    {
-      time: "5:00 PM OCTOBER 22 2025 GMT+3",
-      location: "Istanbul, Turkey",
-      title: "Aleo x Yıldız Technical University Blockchain Club",
-      link: "https://luma.com/pdjgokou",
-    },
-    {
-      time: "12:00 PM OCTOBER 21 2025 GMT+1",
-      location: "Uyo, Nigeria",
-      title: "Aleo: Uyo Compliant Private Token Workshop",
-      link: "https://luma.com/aleouyooctober2025workshop",
-    },
-    {
-      time: "2:00 PM OCTOBER 19 2025 GMT+8",
-      location: "Shanghai, China",
-      title: "揭秘下一代隐私网络！Aleo 上海 Dev Party 邀你面对面话 Web3 未来！",
-      link: "https://luma.com/xwjcv6xh",
-    },
-    {
-      time: "9:00 AM OCTOBER 19 2025 GMT+7",
-      location: "Ho Chi Minh, Vietnam",
-      title: "Aleo: HCMC Compliant Private Token Workshop",
-      link: "https://luma.com/aleohcmc2025workshop",
-    },
-    {
-      time: "6:30 PM OCTOBER 13 2025 GMT+2",
-      location: "Paris, France",
-      title: "Aleo x Crypto Mondays x SheFi Paris",
-      link: "https://luma.com/zw8oesrq",
-    },
-  ];
+{/* EVENTS */}
+<section id="events" className="max-w-6xl mx-auto px-6 py-20">
+  <h3 className="text-3xl font-semibold text-white mb-8">Aleo Global Events</h3>
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <AnimatePresence>
+      {visibleEvents.map((event, idx) => (
+        <motion.div
+          key={idx}
+          onClick={() => window.open(event.link, "_blank")}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ duration: 0.3 }}
+          className="cursor-pointer bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-[#EEFFA8]/10 hover:scale-[1.03] hover:shadow-[0_0_25px_#EEFFA8aa]"
+        >
+          <div className="text-sm text-gray-400">{event.time}</div>
+          <div className="text-xs text-gray-500">{event.location}</div>
+          <h4 className="mt-3 text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">
+            {event.title}
+          </h4>
+        </motion.div>
+      ))}
+    </AnimatePresence>
+  </div>
+  <div className="text-center mt-10">
+    <button
+      onClick={() => setShowMore(!showMore)}
+      className="px-6 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition"
+    >
+      {showMore ? "Show Less Events" : "Show More Events"}
+    </button>
+  </div>
+</section>
 
   const visibleEvents = showMore ? allEvents : allEvents.slice(0, 6);
 
