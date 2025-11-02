@@ -402,22 +402,26 @@ export default function AleoQuizInteractive() {
   }
 
   return (
-    <section
+   <section
   id="quiz-zone"
-  className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-black via-[#0a0a0a] to-black z-30 text-gray-100 px-6 py-20 overflow-hidden"
+  className="relative min-h-screen flex flex-col items-center justify-center text-gray-100 px-6 py-20 overflow-hidden"
 >
-      <motion.div
-        className="absolute inset-0 pointer-events-none z-0"
-        animate={{
-          background: [
-            "radial-gradient(circle at 20% 40%, rgba(238,255,168,0.08) 0%, transparent 60%)",
-            "radial-gradient(circle at 80% 60%, rgba(196,255,194,0.08) 0%, transparent 60%)",
-          ],
-        }}
-        transition={{ duration: 6, repeat: Infinity, repeatType: "mirror" }}
-      />
+  {/* translucent panel background */}
+  <div className="absolute inset-0 z-0 bg-black/60 backdrop-blur-[2px]" />
 
-      <div className="relative z-10 w-full max-w-2xl text-center min-h-[520px] flex flex-col justify-center">
+  {/* animated subtle gradient glow */}
+  <motion.div
+    className="absolute inset-0 pointer-events-none z-[-1]"
+    animate={{
+      background: [
+        "radial-gradient(circle at 20% 40%, rgba(238,255,168,0.08) 0%, transparent 60%)",
+        "radial-gradient(circle at 80% 60%, rgba(196,255,194,0.08) 0%, transparent 60%)",
+      ],
+    }}
+    transition={{ duration: 6, repeat: Infinity, repeatType: "mirror" }}
+  />
+
+  <div className="relative z-10 w-full max-w-2xl text-center min-h-[520px] flex flex-col justify-center">
         <motion.h3
           className="text-4xl font-semibold text-[#EEFFA8] mb-4"
           initial={{ opacity: 0, y: -10 }}
