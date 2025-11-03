@@ -1,6 +1,5 @@
 import React, { useMemo, useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
 
 function FloatingSpheres() {
   const canvasRef = useRef(null);
@@ -38,7 +37,9 @@ function FloatingSpheres() {
       ctx.clearRect(0, 0, w, h);
       ctx.fillStyle = "rgba(238,255,168,0.5)";
       for (const s of spheres) {
-        s.ax += s.sx; s.ay += s.sy; s.az += s.sz;
+        s.ax += s.sx;
+        s.ay += s.sy;
+        s.az += s.sz;
         for (const d of s.dots) {
           const x = s.r * Math.sin(d.p) * Math.cos(d.t);
           const y = s.r * Math.sin(d.p) * Math.sin(d.t);
@@ -64,6 +65,24 @@ function FloatingSpheres() {
   }, []);
   return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-0" />;
 }
+
+// заменяем ChevronDown на встроенный SVG
+const ChevronDown = ({ className }) => (
+  <svg
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="m6 9 6 6 6-6" />
+  </svg>
+);
 
 function QA({ q, a, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -132,8 +151,10 @@ export default function AleoFAQPage() {
 
   const items = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return RAW_FAQ.filter((i) =>
-      (cat === "All" || i.cat === cat) && (!q || i.q.toLowerCase().includes(q) || i.a.toLowerCase().includes(q))
+    return RAW_FAQ.filter(
+      (i) =>
+        (cat === "All" || i.cat === cat) &&
+        (!q || i.q.toLowerCase().includes(q) || i.a.toLowerCase().includes(q))
     );
   }, [query, cat]);
 
@@ -155,7 +176,11 @@ export default function AleoFAQPage() {
               <button
                 key={c}
                 onClick={() => setCat(c)}
-                className={`px-4 py-2 rounded-full border text-sm ${cat === c ? "bg-[#EEFFA8]/15 border-[#EEFFA8]/40 text-[#EEFFA8]" : "bg-white/5 border-white/10 text-gray-300 hover:bg-white/10"}`}
+                className={`px-4 py-2 rounded-full border text-sm ${
+                  cat === c
+                    ? "bg-[#EEFFA8]/15 border-[#EEFFA8]/40 text-[#EEFFA8]"
+                    : "bg-white/5 border-white/10 text-gray-300 hover:bg-white/10"
+                }`}
               >
                 {c}
               </button>
@@ -174,7 +199,9 @@ export default function AleoFAQPage() {
             <QA key={idx} q={it.q} a={it.a} defaultOpen={idx === 0} />
           ))}
           {items.length === 0 && (
-            <div className="text-gray-400 text-sm py-8 text-center border border-white/10 rounded-2xl">No results found.</div>
+            <div className="text-gray-400 text-sm py-8 text-center border border-white/10 rounded-2xl">
+              No results found.
+            </div>
           )}
         </div>
 
