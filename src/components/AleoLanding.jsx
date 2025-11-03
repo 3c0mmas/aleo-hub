@@ -218,10 +218,64 @@ function BlockSnake() {
   const [showOverlay, setShowOverlay] = useState(true);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+  const canvas = canvasRef.current;
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  // === блокируем стандартную прокрутку по стрелкам и пробелу ===
+  const handleKey = (e) => {
+    if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(e.key)) {
+      e.preventDefault();
+    }
+  };
+
+  // === управление свайпами на телефоне ===
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+  };
+
+  const handleTouchMove = (e) => {
+    if (!touchStartX || !touchStartY) return;
+    const touch = e.touches[0];
+    const dx = touch.clientX - touchStartX;
+    const dy = touch.clientY - touchStartY;
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+      // горизонтальный свайп
+      if (dx > 30)
+        window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }));
+      else if (dx < -30)
+        window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }));
+    } else {
+      // вертикальный свайп
+      if (dy > 30)
+        window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+      else if (dy < -30)
+        window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }));
+    }
+
+    touchStartX = 0;
+    touchStartY = 0;
+  };
+
+  // === слушатели ===
+  window.addEventListener("keydown", handleKey);
+  canvas.addEventListener("touchstart", handleTouchStart);
+  canvas.addEventListener("touchmove", handleTouchMove);
+
+  // === очистка слушателей при размонтировании ===
+  return () => {
+    window.removeEventListener("keydown", handleKey);
+    canvas.removeEventListener("touchstart", handleTouchStart);
+    canvas.removeEventListener("touchmove", handleTouchMove);
+  };
+}, []);
 
     const COLORS = {
       main: "#EEFFA8",
@@ -661,35 +715,78 @@ canvas.style.height = `${canvas.height}px`;
     };
   }, []);
 
-  return (
-    <div className="relative w-full h-[70vh] bg-black border border-[#EEFFA8]/20 rounded-3xl overflow-hidden">
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-      <div className="absolute top-4 left-4 text-[#EEFFA8] font-semibold z-10 drop-shadow">
-        Play Aleo Snake
+ return (
+  <div className="relative w-full h-[70vh] bg-black border border-[#EEFFA8]/20 rounded-3xl overflow-hidden">
+    {/* сам холст */}
+    <canvas ref={canvasRef} className="absolute inset-0 w-full h-full rounded-2xl" />
+
+    {/* === Тач-контроллер (мобилка) === */}
+    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 select-none z-20 md:hidden">
+      <button
+        className="w-14 h-14 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl active:scale-90 backdrop-blur-sm shadow-[0_0_15px_rgba(238,255,168,0.4)] text-[#EEFFA8] text-2xl font-bold"
+        onTouchStart={() =>
+          window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }))
+        }
+      >
+        ▲
+      </button>
+
+      <div className="flex gap-10">
+        <button
+          className="w-14 h-14 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl active:scale-90 backdrop-blur-sm shadow-[0_0_15px_rgba(238,255,168,0.4)] text-[#EEFFA8] text-2xl font-bold"
+          onTouchStart={() =>
+            window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }))
+          }
+        >
+          ◀
+        </button>
+        <button
+          className="w-14 h-14 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl active:scale-90 backdrop-blur-sm shadow-[0_0_15px_rgba(238,255,168,0.4)] text-[#EEFFA8] text-2xl font-bold"
+          onTouchStart={() =>
+            window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }))
+          }
+        >
+          ▶
+        </button>
       </div>
 
-      {showOverlay && (
-        <motion.button
-          onClick={() => gameApiRef.current.start()}
-          initial={{ opacity: 0 }}
-          animate={{
-            opacity: [0.6, 1, 0.6],
-            boxShadow: [
-              "0 0 12px rgba(238,255,168,0.7)",
-              "0 0 28px rgba(196,255,194,0.9)",
-              "0 0 12px rgba(238,255,168,0.7)",
-            ],
-          }}
-          transition={{ duration: 1.6, repeat: Infinity }}
-          className="absolute inset-0 m-auto h-fit w-fit px-8 py-4 rounded-2xl border border-[#EEFFA8]/30 bg-black/50 backdrop-blur-md text-[#EEFFA8] font-semibold text-lg tracking-wide hover:bg-[#EEFFA8]/10 hover:scale-105 transition z-20"
-        >
-          ▶ Start / Restart Game
-        </motion.button>
-      )}
+      <button
+        className="w-14 h-14 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl active:scale-90 backdrop-blur-sm shadow-[0_0_15px_rgba(238,255,168,0.4)] text-[#EEFFA8] text-2xl font-bold"
+        onTouchStart={() =>
+          window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }))
+        }
+      >
+        ▼
+      </button>
     </div>
-  );
-}
 
+    {/* заголовок */}
+    <div className="absolute top-4 left-4 text-[#EEFFA8] font-semibold z-10 drop-shadow">
+      Play Aleo Snake
+    </div>
+
+    {/* кнопка старта */}
+    {showOverlay && (
+      <motion.button
+        onClick={() => gameApiRef.current.start()}
+        initial={{ opacity: 0 }}
+        animate={{
+          opacity: [0.6, 1, 0.6],
+          boxShadow: [
+            "0 0 12px rgba(238,255,168,0.7)",
+            "0 0 28px rgba(196,255,194,0.9)",
+            "0 0 12px rgba(238,255,168,0.7)",
+          ],
+        }}
+        transition={{ duration: 1.6, repeat: Infinity }}
+        className="absolute inset-0 m-auto h-fit w-fit px-8 py-4 rounded-2xl border border-[#EEFFA8]/30 bg-black/50 backdrop-blur-md text-[#EEFFA8] font-semibold text-lg tracking-wide hover:bg-[#EEFFA8]/10 hover:scale-105 transition z-20"
+      >
+        ▶ Start / Restart Game
+      </motion.button>
+    )}
+  </div>
+);
+}
 
 // === GAME SECTION (описание + BlockSnake) ====================================
 function GameSection() {
