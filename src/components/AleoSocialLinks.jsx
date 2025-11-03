@@ -5,7 +5,7 @@ import { FaXTwitter, FaDiscord } from 'react-icons/fa6';
 export default function AleoSocialLinks() {
   return (
     <section className="flex flex-col md:flex-row items-center justify-center gap-6 bg-black text-white py-20 px-6">
-      {/* X (Twitter) */}
+  
      {/* X (Twitter) */}
 <motion.a
   href="https://twitter.com/aleohq"
