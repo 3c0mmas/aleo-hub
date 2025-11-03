@@ -223,6 +223,14 @@ function BlockSnake() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    // === блокируем прокрутку ===
+  const handleKey = (e) => {
+    if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(e.key)) {
+      e.preventDefault();
+    }
+  };
+  window.addEventListener("keydown", handleKey);
+
     const COLORS = {
       main: "#EEFFA8",
       glow: "#C4FFC2",
@@ -654,12 +662,12 @@ canvas.style.height = `${canvas.height}px`;
 
     window.addEventListener("resize", onResize);
 
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("keydown", onKey);
-      window.removeEventListener("resize", onResize);
-    };
-  }, []);
+   return () => {
+  cancelAnimationFrame(rafRef.current);
+  window.removeEventListener("keydown", onKey);
+  window.removeEventListener("keydown", handleKey); // ✅ блокировка стрелок снимается
+  window.removeEventListener("resize", onResize);
+};
 
   return (
     <div className="relative w-full h-[70vh] bg-black border border-[#EEFFA8]/20 rounded-3xl overflow-hidden">
