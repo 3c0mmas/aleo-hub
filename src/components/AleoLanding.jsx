@@ -709,23 +709,21 @@ canvas.style.height = `${canvas.height}px`;
     }
 
     // === слушатели ===
-    window.addEventListener("resize", onResize);
-    window.addEventListener("keydown", onKey);
+  window.addEventListener("resize", onResize);
+  window.addEventListener("keydown", onKey);
 
-    // === очистка при размонтировании ===
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("keydown", onKey);
-      window.removeEventListener("resize", onResize);
-    };
-  }, []); // ✅ ← вот это конец самого верхнего useEffect, теперь он один
+  return () => {
+    cancelAnimationFrame(rafRef.current);
+    window.removeEventListener("keydown", onKey);
+    window.removeEventListener("resize", onResize);
+  };
+}, []); // ✅ конец useEffect
 
-
-  // === JSX ===
-  return (
-    <div className="relative w-full h-[70vh] bg-black border border-[#EEFFA8]/20 rounded-3xl overflow-hidden">
-      {/* сам холст */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full rounded-2xl" />
+// === JSX ===
+return (
+  <div className="relative w-full h-[70vh] bg-black border border-[#EEFFA8]/20 rounded-3xl overflow-hidden">
+    {/* сам холст */}
+    <canvas ref={canvasRef} className="absolute inset-0 w-full h-full rounded-2xl" />
 
       {/* === Тач-контроллер (мобилка) === */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 select-none z-20 md:hidden">
