@@ -248,6 +248,25 @@ let COLS = Math.floor(w / CELL);
 let ROWS = Math.floor(h / CELL);
 
 // добавляем +1 строку под текст
+    // === мягкое свечение по периметру ===
+function drawGlowBorder() {
+  const g = ctx.createRadialGradient(
+    canvas.width / 2,
+    canvas.height / 2,
+    Math.min(canvas.width, canvas.height) / 2.2,
+    canvas.width / 2,
+    canvas.height / 2,
+    Math.min(canvas.width, canvas.height) / 1.1
+  );
+  g.addColorStop(0, "rgba(238,255,168,0)");
+const pulse = 0.05 + 0.03 * Math.sin(Date.now() / 1200);
+g.addColorStop(1, `rgba(238,255,168,${pulse})`);
+  ctx.save();
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.restore();
+}
+
 canvas.width = COLS * CELL;
 canvas.height = (ROWS + 1) * CELL;
 
@@ -617,6 +636,7 @@ canvas.style.height = `${canvas.height}px`;
       }
       render();
       last = ts;
+      drawGlowBorder(); // добавляем мягкое лимонное свечение
       rafRef.current = requestAnimationFrame(loop);
     }
 
