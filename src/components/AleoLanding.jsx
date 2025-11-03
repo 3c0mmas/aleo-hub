@@ -236,17 +236,16 @@ function BlockSnake() {
       shard: "rgba(255,226,252,0.8)",
     };
 
-    const CELL = 24;
+     let w = canvas.clientWidth || window.innerWidth;
+     let h = (canvas.clientHeight || window.innerHeight) * 0.7;
+     if (h < 380) h = 380;
 
-    let w = canvas.clientWidth || window.innerWidth;
-    let h = (canvas.clientHeight || window.innerHeight) * 0.7;
-    if (h < 380) h = 380;
+     // 🔧 округляем количество клеток, чтобы каждая была квадратной
+     let COLS = Math.floor(w / CELL);
+     let ROWS = Math.floor(h / CELL);
 
-    let COLS = Math.floor(w / CELL);
-    let ROWS = Math.floor(h / CELL);
-
-    canvas.width = w;
-    canvas.height = h;
+     canvas.width = COLS * CELL;
+     canvas.height = ROWS * CELL;
 
     let tick = 0;
     let stepMs = 150;
