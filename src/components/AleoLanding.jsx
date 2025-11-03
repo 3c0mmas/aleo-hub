@@ -706,14 +706,15 @@ canvas.style.height = `${canvas.height}px`;
       canvas.height = h;
     }
 
-    window.addEventListener("resize", onResize);
+    useEffect(() => {
+  window.addEventListener("resize", onResize);
 
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("keydown", onKey);
-      window.removeEventListener("resize", onResize);
-    };
-  }, []);
+  return () => {
+    cancelAnimationFrame(rafRef.current);
+    window.removeEventListener("keydown", onKey);
+    window.removeEventListener("resize", onResize);
+  };
+}, []);
 
  return (
   <div className="relative w-full h-[70vh] bg-black border border-[#EEFFA8]/20 rounded-3xl overflow-hidden">
