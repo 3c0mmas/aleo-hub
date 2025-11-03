@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export default function AleoSocialLinks() {
   const cardStyle =
-    "flex flex-col md:flex-row justify-between items-center bg-[#121216] border border-white/10 rounded-[2rem] px-10 py-8 w-[450px] h-[180px] cursor-pointer hover:bg-[#EEFFA8]/10 transition";
+    "flex flex-col md:flex-row justify-between items-center bg-[#121216] border border-white/10 rounded-[2rem] px-10 py-8 w-[460px] h-[170px] cursor-pointer hover:bg-[#EEFFA8]/10 transition";
 
   const svgClass =
     "w-10 h-10 fill-[#EEFFA8] mb-2 drop-shadow-[0_0_8px_rgba(238,255,168,0.5)] transition-transform duration-700 group-hover:scale-110";
