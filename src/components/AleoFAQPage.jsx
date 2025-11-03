@@ -97,7 +97,7 @@ function FloatingSpheres() {
     return () => window.removeEventListener("resize", resize);
   }, []);
 
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-0" />;
+  return <canvas ref={canvasRef} className="className="absolute inset-0 w-full h-full z-0 pointer-events-none" />;
 }
 
 // заменяем ChevronDown на встроенный SVG
