@@ -713,7 +713,7 @@ canvas.style.height = `${canvas.height}px`;
     window.removeEventListener("keydown", onKey);
     window.removeEventListener("resize", onResize);
   };
-}, []);
+} [];
 
  return (
   <div className="relative w-full h-[70vh] bg-black border border-[#EEFFA8]/20 rounded-3xl overflow-hidden">
@@ -786,7 +786,6 @@ canvas.style.height = `${canvas.height}px`;
     )}
   </div>
 );
-}
 
 // === GAME SECTION (описание + BlockSnake) ====================================
 function GameSection() {
