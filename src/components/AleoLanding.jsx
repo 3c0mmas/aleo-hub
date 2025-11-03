@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AleoQuizInteractive from "./AleoQuizInteractive";
+import AleoSocialLinks from "./AleoSocialLinks";
 
 // === GLOW CURSOR =============================================================
 function GlowingCursor() {
@@ -1231,6 +1232,9 @@ useEffect(() => {
   />
   <AleoQuizInteractive />
 </section>
+
+      {/* SOCIAL LINKS */}
+<AleoSocialLinks />
 
       {/* FOOTER */}
       <footer className="max-w-6xl mx-auto px-6 py-12 text-center text-sm text-gray-500">
