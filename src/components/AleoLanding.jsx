@@ -238,15 +238,21 @@ function BlockSnake() {
 
         const CELL = 24;
 
-    let w = canvas.clientWidth || window.innerWidth;
-    let h = (canvas.clientHeight || window.innerHeight) * 0.7;
-    if (h < 380) h = 380;
+let w = canvas.clientWidth || window.innerWidth;
+let h = (canvas.clientHeight || window.innerHeight) * 0.7;
+if (h < 380) h = 380;
 
-    let COLS = Math.floor(w / CELL);
-    let ROWS = Math.floor(h / CELL);
+// 👇 Правильный способ, чтобы клетки были квадратные
+let COLS = Math.floor(w / CELL);
+let ROWS = Math.floor(h / CELL);
 
-    canvas.width = w;
-    canvas.height = h;
+// Важно: задаём размеры холста точно по целым клеткам
+canvas.width = COLS * CELL;
+canvas.height = ROWS * CELL;
+
+// 👇 Обновляем реальные пиксели, чтобы совпадали с CSS
+canvas.style.width = `${canvas.width}px`;
+canvas.style.height = `${canvas.height}px`;
 
     let tick = 0;
     let stepMs = 150;
