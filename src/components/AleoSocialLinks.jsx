@@ -15,7 +15,7 @@ export default function AleoSocialLinks() {
 >
   <div>
     <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">Find Aleo on X</p>
-    <h3 className="text-5xl font-bold text-[#EEFFA8]">270K+</h3>
+    <h3 className="text-5xl font-bold text-[#EEFFA8]">290K+</h3>
     <p className="text-sm text-gray-500 mt-1">Followers</p>
   </div>
   <div className="flex flex-col items-center justify-center mt-6 md:mt-0">
