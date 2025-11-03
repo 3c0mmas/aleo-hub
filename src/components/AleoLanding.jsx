@@ -680,6 +680,7 @@ canvas.style.height = `${canvas.height}px`;
       ctx.restore();
     }
 
+        // === главный цикл ===
     function loop(ts) {
       if (!last) last = ts;
       const dt = ts - last;
@@ -690,12 +691,13 @@ canvas.style.height = `${canvas.height}px`;
       }
       render();
       last = ts;
-      drawGlowBorder(); // добавляем мягкое лимонное свечение
+      drawGlowBorder(); // мягкое лимонное свечение
       rafRef.current = requestAnimationFrame(loop);
     }
 
     rafRef.current = requestAnimationFrame(loop);
 
+    // === ресайз холста ===
     function onResize() {
       w = canvas.clientWidth || window.innerWidth;
       h = (canvas.clientHeight || window.innerHeight) * 0.7;
@@ -706,86 +708,91 @@ canvas.style.height = `${canvas.height}px`;
       canvas.height = h;
     }
 
-  window.addEventListener("resize", onResize);
+    // === слушатели ===
+    window.addEventListener("resize", onResize);
+    window.addEventListener("keydown", onKey);
 
+    // === очистка при размонтировании ===
     return () => {
-    cancelAnimationFrame(rafRef.current);
-    window.removeEventListener("keydown", onKey);
-    window.removeEventListener("resize", onResize);
-  };
-} [];
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []); // ← вот это правильное закрытие useEffect, не трогай его
 
- return (
-  <div className="relative w-full h-[70vh] bg-black border border-[#EEFFA8]/20 rounded-3xl overflow-hidden">
-    {/* сам холст */}
-    <canvas ref={canvasRef} className="absolute inset-0 w-full h-full rounded-2xl" />
+  // === JSX ===
+  return (
+    <div className="relative w-full h-[70vh] bg-black border border-[#EEFFA8]/20 rounded-3xl overflow-hidden">
+      {/* сам холст */}
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full rounded-2xl" />
 
-    {/* === Тач-контроллер (мобилка) === */}
-    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 select-none z-20 md:hidden">
-      <button
-        className="w-14 h-14 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl active:scale-90 backdrop-blur-sm shadow-[0_0_15px_rgba(238,255,168,0.4)] text-[#EEFFA8] text-2xl font-bold"
-        onTouchStart={() =>
-          window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }))
-        }
-      >
-        ▲
-      </button>
-
-      <div className="flex gap-10">
+      {/* === Тач-контроллер (мобилка) === */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 select-none z-20 md:hidden">
         <button
           className="w-14 h-14 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl active:scale-90 backdrop-blur-sm shadow-[0_0_15px_rgba(238,255,168,0.4)] text-[#EEFFA8] text-2xl font-bold"
           onTouchStart={() =>
-            window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }))
+            window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }))
           }
         >
-          ◀
+          ▲
         </button>
+
+        <div className="flex gap-10">
+          <button
+            className="w-14 h-14 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl active:scale-90 backdrop-blur-sm shadow-[0_0_15px_rgba(238,255,168,0.4)] text-[#EEFFA8] text-2xl font-bold"
+            onTouchStart={() =>
+              window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }))
+            }
+          >
+            ◀
+          </button>
+          <button
+            className="w-14 h-14 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl active:scale-90 backdrop-blur-sm shadow-[0_0_15px_rgba(238,255,168,0.4)] text-[#EEFFA8] text-2xl font-bold"
+            onTouchStart={() =>
+              window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }))
+            }
+          >
+            ▶
+          </button>
+        </div>
+
         <button
           className="w-14 h-14 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl active:scale-90 backdrop-blur-sm shadow-[0_0_15px_rgba(238,255,168,0.4)] text-[#EEFFA8] text-2xl font-bold"
           onTouchStart={() =>
-            window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }))
+            window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }))
           }
         >
-          ▶
+          ▼
         </button>
       </div>
 
-      <button
-        className="w-14 h-14 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl active:scale-90 backdrop-blur-sm shadow-[0_0_15px_rgba(238,255,168,0.4)] text-[#EEFFA8] text-2xl font-bold"
-        onTouchStart={() =>
-          window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }))
-        }
-      >
-        ▼
-      </button>
-    </div>
+      {/* заголовок */}
+      <div className="absolute top-4 left-4 text-[#EEFFA8] font-semibold z-10 drop-shadow">
+        Play Aleo Snake
+      </div>
 
-    {/* заголовок */}
-    <div className="absolute top-4 left-4 text-[#EEFFA8] font-semibold z-10 drop-shadow">
-      Play Aleo Snake
+      {/* кнопка старта */}
+      {showOverlay && (
+        <motion.button
+          onClick={() => gameApiRef.current.start()}
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: [0.6, 1, 0.6],
+            boxShadow: [
+              "0 0 12px rgba(238,255,168,0.7)",
+              "0 0 28px rgba(196,255,194,0.9)",
+              "0 0 12px rgba(238,255,168,0.7)",
+            ],
+          }}
+          transition={{ duration: 1.6, repeat: Infinity }}
+          className="absolute inset-0 m-auto h-fit w-fit px-8 py-4 rounded-2xl border border-[#EEFFA8]/30 bg-black/50 backdrop-blur-md text-[#EEFFA8] font-semibold text-lg tracking-wide hover:bg-[#EEFFA8]/10 hover:scale-105 transition z-20"
+        >
+          ▶ Start / Restart Game
+        </motion.button>
+      )}
     </div>
-
-    {/* кнопка старта */}
-    {showOverlay && (
-      <motion.button
-        onClick={() => gameApiRef.current.start()}
-        initial={{ opacity: 0 }}
-        animate={{
-          opacity: [0.6, 1, 0.6],
-          boxShadow: [
-            "0 0 12px rgba(238,255,168,0.7)",
-            "0 0 28px rgba(196,255,194,0.9)",
-            "0 0 12px rgba(238,255,168,0.7)",
-          ],
-        }}
-        transition={{ duration: 1.6, repeat: Infinity }}
-        className="absolute inset-0 m-auto h-fit w-fit px-8 py-4 rounded-2xl border border-[#EEFFA8]/30 bg-black/50 backdrop-blur-md text-[#EEFFA8] font-semibold text-lg tracking-wide hover:bg-[#EEFFA8]/10 hover:scale-105 transition z-20"
-      >
-        ▶ Start / Restart Game
-      </motion.button>
-    )}
-  </div>
-);
+  );
+}
 
 // === GAME SECTION (описание + BlockSnake) ====================================
 function GameSection() {
