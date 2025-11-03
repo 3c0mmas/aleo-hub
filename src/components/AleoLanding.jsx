@@ -247,15 +247,16 @@ if (h < 380) h = 380;
 let COLS = Math.floor(w / CELL);
 let ROWS = Math.floor(h / CELL);
 
-// гарантируем квадратные клетки
+// добавляем +1 строку под текст
 canvas.width = COLS * CELL;
-canvas.height = ROWS * CELL;
+canvas.height = (ROWS + 1) * CELL;
 
-// 🔥 выравниваем canvas по центру и убираем отступы
+// обновляем стили
 canvas.style.display = "block";
 canvas.style.margin = "0 auto";
 canvas.style.maxWidth = "100%";
 canvas.style.height = `${canvas.height}px`;
+
 
     let tick = 0;
     let stepMs = 150;
