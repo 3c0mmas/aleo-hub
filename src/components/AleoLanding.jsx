@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AleoQuizInteractive from "./AleoQuizInteractive";
 import AleoSocialLinks from "./AleoSocialLinks";
+import AleoFAQPage from "./AleoFAQPage";
 
 // === GLOW CURSOR =============================================================
 function GlowingCursor() {
@@ -1225,6 +1226,11 @@ useEffect(() => {
   <AleoQuizInteractive />
 </section>
 
+{/* FAQ SECTION */}
+      <div className="relative z-10 mt-32">
+        <AleoFAQPage />
+      </div>
+      
       {/* SOCIAL LINKS */}
 <AleoSocialLinks />
 
