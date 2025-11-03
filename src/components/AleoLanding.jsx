@@ -697,7 +697,7 @@ canvas.style.height = `${canvas.height}px`;
 
     rafRef.current = requestAnimationFrame(loop);
 
-    // === ресайз холста ===
+        // === ресайз холста ===
     function onResize() {
       w = canvas.clientWidth || window.innerWidth;
       h = (canvas.clientHeight || window.innerHeight) * 0.7;
@@ -718,7 +718,8 @@ canvas.style.height = `${canvas.height}px`;
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("resize", onResize);
     };
-  }, []); // ← вот это правильное закрытие useEffect, не трогай его
+  }, []); // ✅ ← вот это конец самого верхнего useEffect, теперь он один
+
 
   // === JSX ===
   return (
