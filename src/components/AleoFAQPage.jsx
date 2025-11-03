@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+
 function FloatingSpheres() {
   const canvasRef = useRef(null);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -19,8 +21,8 @@ function FloatingSpheres() {
     resize();
     window.addEventListener("resize", resize);
 
-    let w = () => canvas.clientWidth;
-    let h = () => canvas.clientHeight;
+    const w = () => canvas.clientWidth;
+    const h = () => window.innerHeight; // фиксированная высота экрана, не зависит от контента
 
     const baseTriangle = [
       { x: w() * 0.3, y: h() * 0.7 },
@@ -28,7 +30,8 @@ function FloatingSpheres() {
       { x: w() * 0.5, y: h() * 0.3 },
     ];
 
-    const radii = [360, 300, 260];
+    const radii = [400, 340, 300];
+
     const spheres = radii.map((r, i) => ({
       x: baseTriangle[i].x,
       y: baseTriangle[i].y,
@@ -85,6 +88,7 @@ function FloatingSpheres() {
           ctx.fill();
         }
       }
+
       requestAnimationFrame(draw);
     };
 
@@ -93,7 +97,7 @@ function FloatingSpheres() {
     return () => window.removeEventListener("resize", resize);
   }, []);
 
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-0" />;
+  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full z-0" />;
 }
 
 // заменяем ChevronDown на встроенный SVG
