@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaXTwitter, FaDiscord } from 'react-icons/fa6';
 
 export default function AleoSocialLinks() {
   return (
