@@ -966,8 +966,8 @@ useEffect(() => {
 
   {/* floating spheres background */}
   <div className="absolute inset-0 overflow-hidden z-0">
-  <FloatingSpheres height="h-screen" />
-</div>
+    <FloatingSpheres />
+  </div>
 {/* animated glowing background */}
 {/* floating pink glows */}
 {/* floating pink glows — soft breathing motion */}
