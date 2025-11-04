@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from "react";
 
-export default function FloatingSpheres() {
+export default function FloatingSpheres({ height = "h-[1300px]" }) {
   const canvasRef = useRef(null);
+  const mouse = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -22,7 +23,7 @@ export default function FloatingSpheres() {
     const w = () => canvas.clientWidth;
     const h = () => canvas.clientHeight;
 
-    const trianglePositions = [
+    const triangle = [
       { x: w() * 0.3, y: h() * 0.7 },
       { x: w() * 0.7, y: h() * 0.7 },
       { x: w() * 0.5, y: h() * 0.3 },
@@ -30,10 +31,10 @@ export default function FloatingSpheres() {
 
     const radii = [400, 340, 300];
     const spheres = radii.map((r, i) => ({
-      x: trianglePositions[i].x,
-      y: trianglePositions[i].y,
-      baseX: trianglePositions[i].x,
-      baseY: trianglePositions[i].y,
+      x: triangle[i].x,
+      y: triangle[i].y,
+      baseX: triangle[i].x,
+      baseY: triangle[i].y,
       z: 200 + Math.random() * 100,
       ax: Math.random() * Math.PI * 2,
       ay: Math.random() * Math.PI * 2,
@@ -52,6 +53,14 @@ export default function FloatingSpheres() {
       })),
     }));
 
+    // === реакция на движение мышки ===
+    const handleMouseMove = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.current.x = (e.clientX - rect.width / 2) / rect.width;
+      mouse.current.y = (e.clientY - rect.height / 2) / rect.height;
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+
     const draw = () => {
       ctx.clearRect(0, 0, w(), h());
       ctx.fillStyle = "rgba(238,255,168,0.5)";
@@ -61,8 +70,18 @@ export default function FloatingSpheres() {
         s.ay += s.sy;
         s.az += s.sz;
         s.driftAngle += s.driftSpeed;
-        s.x = s.baseX + Math.cos(s.driftAngle) * s.driftRadius;
-        s.y = s.baseY + Math.sin(s.driftAngle) * s.driftRadius * 0.6;
+
+        // добавляем лёгкий parallax-сдвиг от мышки, ограниченный границами
+        const maxShift = 50; // максимум смещения
+        const dx = mouse.current.x * maxShift;
+        const dy = mouse.current.y * maxShift;
+
+        s.x = s.baseX + Math.cos(s.driftAngle) * s.driftRadius + dx;
+        s.y = s.baseY + Math.sin(s.driftAngle) * s.driftRadius * 0.6 + dy;
+
+        // границы блока
+        s.x = Math.min(Math.max(s.x, s.r * 0.5), w() - s.r * 0.5);
+        s.y = Math.min(Math.max(s.y, s.r * 0.5), h() - s.r * 0.5);
 
         for (const d of s.dots) {
           const x = s.r * Math.sin(d.p) * Math.cos(d.t);
@@ -91,13 +110,17 @@ export default function FloatingSpheres() {
     };
 
     draw();
-    return () => window.removeEventListener("resize", resize);
+
+    return () => {
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute top-0 left-0 w-full h-[1400px] z-0 pointer-events-none"
+      className={`absolute top-0 left-0 w-full ${height} z-0 pointer-events-none`}
     />
   );
 }
