@@ -22,18 +22,20 @@ export default function FloatingSpheres() {
     const w = () => canvas.clientWidth;
     const h = () => canvas.clientHeight;
 
-    const trianglePositions = [
-      { x: w() * 0.3, y: h() * 0.7 },
-      { x: w() * 0.7, y: h() * 0.7 },
-      { x: w() * 0.5, y: h() * 0.3 },
+    // === новые позиции под Hero-сцену ===
+    const spherePositions = [
+      { x: w() * 0.25, y: h() * 0.25 }, // левый верхний
+      { x: w() * 0.5, y: h() * 0.8 },  // нижний центр
+      { x: w() * 0.75, y: h() * 0.45 }, // правый центр
     ];
 
-    const radii = [400, 340, 300];
+    const radii = [360, 400, 320];
+
     const spheres = radii.map((r, i) => ({
-      x: trianglePositions[i].x,
-      y: trianglePositions[i].y,
-      baseX: trianglePositions[i].x,
-      baseY: trianglePositions[i].y,
+      x: spherePositions[i].x,
+      y: spherePositions[i].y,
+      baseX: spherePositions[i].x,
+      baseY: spherePositions[i].y,
       z: 200 + Math.random() * 100,
       ax: Math.random() * Math.PI * 2,
       ay: Math.random() * Math.PI * 2,
@@ -42,11 +44,11 @@ export default function FloatingSpheres() {
       sy: (Math.random() - 0.5) * 0.001,
       sz: (Math.random() - 0.5) * 0.001,
       driftAngle: Math.random() * Math.PI * 2,
-      driftRadius: Math.random() * 40 + 20,
+      driftRadius: Math.random() * 30 + 15, // мягкое дыхание
       driftSpeed:
-        (Math.random() * 0.002 + 0.001) * (Math.random() > 0.5 ? 1 : -1),
+        (Math.random() * 0.0015 + 0.0008) * (Math.random() > 0.5 ? 1 : -1),
       r,
-      dots: Array.from({ length: 1200 }, () => ({
+      dots: Array.from({ length: 1000 }, () => ({
         t: Math.random() * Math.PI * 2,
         p: Math.acos(2 * Math.random() - 1),
       })),
@@ -62,7 +64,11 @@ export default function FloatingSpheres() {
         s.az += s.sz;
         s.driftAngle += s.driftSpeed;
         s.x = s.baseX + Math.cos(s.driftAngle) * s.driftRadius;
-        s.y = s.baseY + Math.sin(s.driftAngle) * s.driftRadius * 0.6;
+        s.y = s.baseY + Math.sin(s.driftAngle) * s.driftRadius * 0.7;
+
+        // ограничение по краям блока (чтобы не вылезали)
+        s.x = Math.max(s.r * 0.3, Math.min(s.x, w() - s.r * 0.3));
+        s.y = Math.max(s.r * 0.3, Math.min(s.y, h() - s.r * 0.3));
 
         for (const d of s.dots) {
           const x = s.r * Math.sin(d.p) * Math.cos(d.t);
@@ -80,7 +86,7 @@ export default function FloatingSpheres() {
           const px = s.x + x2 * k;
           const py = s.y + y2 * k;
 
-          ctx.globalAlpha = Math.max(0.1, Math.min(1, k)) * 0.7;
+          ctx.globalAlpha = Math.max(0.1, Math.min(1, k)) * 0.6;
           ctx.beginPath();
           ctx.arc(px, py, 1.8, 0, Math.PI * 2);
           ctx.fill();
@@ -97,7 +103,7 @@ export default function FloatingSpheres() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute top-0 left-0 w-full h-[1300px] z-0 pointer-events-none"
+      className="absolute top-0 left-0 w-full h-[100vh] z-0 pointer-events-none"
     />
   );
 }
