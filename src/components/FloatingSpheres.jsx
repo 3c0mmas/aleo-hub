@@ -97,7 +97,7 @@ export default function FloatingSpheres() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute top-0 left-0 w-full h-[1300px] z-0 pointer-events-none"
+      className="absolute top-0 left-0 w-full h-[1400px] z-0 pointer-events-none"
     />
   );
 }
