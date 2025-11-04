@@ -962,7 +962,7 @@ useEffect(() => {
       </header>
 
       {/* HERO */}
-<section className="relative h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
+<section className="relative h-screen flex flex-col items-center justify-center text-center px-6 overflow-visible">
 
   {/* floating spheres background */}
   <div className="absolute inset-0 overflow-hidden z-0">
