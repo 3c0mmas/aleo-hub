@@ -18,7 +18,7 @@ function FloatingSymbols() {
       {items.map((item) => (
         <motion.span
           key={item.id}
-          initial={{ y: "120%", opacity: 0 }}
+          initial={{ y: "100%", opacity: 0 }}
           animate={{ y: ["120%", "-20%"], opacity: [0.2, 0.6, 0.2] }}
           transition={{
             duration: item.duration,
