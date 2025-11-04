@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import AleoQuizInteractive from "./AleoQuizInteractive";
 import AleoSocialLinks from "./AleoSocialLinks";
 import AleoFAQPage from "./AleoFAQPage";
+import FloatingSpheres from "./FloatingSpheres";
 
 // === GLOW CURSOR =============================================================
 function GlowingCursor() {
@@ -961,8 +962,12 @@ useEffect(() => {
       </header>
 
       {/* HERO */}
-      <section className="relative h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
-       {/* animated glowing background */}
+<section className="relative h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
+
+  {/* floating spheres background */}
+  <div className="absolute inset-0 overflow-hidden z-0">
+    <FloatingSpheres />
+  </div>
 {/* animated glowing background */}
 {/* floating pink glows */}
 {/* floating pink glows — soft breathing motion */}
