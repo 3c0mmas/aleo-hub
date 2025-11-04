@@ -22,12 +22,11 @@ export default function FloatingSpheres() {
     const w = () => canvas.clientWidth;
     const h = () => canvas.clientHeight;
 
-    // === новые позиции под Hero-сцену ===
-    const spherePositions = [
-      { x: w() * 0.25, y: h() * 0.25 }, // левый верхний
-      { x: w() * 0.5, y: h() * 0.8 },  // нижний центр
-      { x: w() * 0.75, y: h() * 0.45 }, // правый центр
-    ];
+const spherePositions = [
+  { x: w() * 0.75, y: h() * 0.25 }, // теперь правый верхний
+  { x: w() * 0.5, y: h() * 0.8 },   // нижний центр (без изменений)
+  { x: w() * 0.25, y: h() * 0.45 }, // теперь левый центр
+];
 
     const radii = [360, 400, 320];
 
