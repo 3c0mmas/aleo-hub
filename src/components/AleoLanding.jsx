@@ -749,11 +749,19 @@ useEffect(() => {
 
 
     const allEvents = [
+      {
+  time: "11:00 AM - 1:00 PM GMT-3, November 19 2025",
+  location: "Ciudad Cultural Konex, Buenos Aires, Ciudad Autónoma de Buenos Aires",
+  title: "Building Private Compliant Tokens | Aleo Workshop @ Devconnect",
+  link: "https://luma.com/aleo-devconnect-2025",
+  image:
+    "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/event-covers/fx/6e433783-8421-4446-ac39-8d54d8fba4b0.png",
+},
   {
   time: "2:00 PM - 6:00 PM GMT-3, November 17 2025",
   location: "Palermo Wine Club, Buenos Aires, Ciudad Autónoma de Buenos Aires",
   title: "The Privacy Salon",
-  link: "https://lu.ma/theprivacysalon", // если другой URL — скажи, заменю
+  link: "https://luma.com/wfaee0d9",
   image:
     "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/event-covers/8z/f75cd5ee-5e7a-4d8e-83c8-46a4b2ccedc5.png",
  },
@@ -762,7 +770,7 @@ useEffect(() => {
   time: "6:30 PM - 9:00 PM GMT+3, November 6 2025",
   location: "METU Department of Computer Engineering, Çankaya, Ankara",
   title: "Aleo: Ankara Compliant Private Token Workshop",
-  link: "https://lu.ma/aleoankara",
+  link: "https://luma.com/aleoankaraworkshop2025",
   image:
     "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/event-covers/3r/7f3ed1b4-b80e-4be8-9868-dd2338ff72b9.png",
   },
