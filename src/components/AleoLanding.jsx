@@ -711,7 +711,7 @@ function GameSection() {
           animate={{ opacity: [0.7, 1, 0.7] }}
           transition={{ duration: 3, repeat: Infinity }}
         >
-          Secure the Aleo Network, Evolve the Chain!
+          Secure the , Evolve the Chain!
         </motion.span>
 
         <motion.p
@@ -995,9 +995,14 @@ useEffect(() => {
                 className="w-7 h-7"
               />
             </div>
-            <span className="text-xl font-semibold text-[#EEFFA8]">
-              Aleo Network
-            </span>
+            <a 
+  href="https://aleo.org/" 
+  target="_blank" 
+  rel="noopener noreferrer"
+  class="text-xl font-semibold text-[#EEFFA8] hover:underline"
+>
+  Aleo Network
+</a>
           </div>
           <div className="flex items-center gap-6 text-sm text-[#EEFFA8]">
   {[
