@@ -448,7 +448,7 @@ export default function AleoQuizInteractive() {
 
       <div className="relative z-10 w-full max-w-5xl text-center flex flex-col items-center">
         <motion.h3
-          className="text-4xl font-semibold text-[#EEFFA8] mb-4 drop-shadow-[0_0_8px_rgba(238,255,168,0.6)]"
+          className="text-5xl font-semibold text-[#EEFFA8] mb-4 drop-shadow-[0_0_8px_rgba(238,255,168,0.6)]"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
         >
