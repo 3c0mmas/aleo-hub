@@ -1131,9 +1131,9 @@ useEffect(() => {
 
       {/* FEATURES */}
       <section id="features" className="max-w-6xl mx-auto px-6 py-20">
-        <h3 className="text-3xl font-semibold text-white mb-8 text-center">
-          Core Features
-        </h3>
+<h3 className="text-3xl font-semibold text-[#EEFFA8] mb-8 text-center">
+  Core Features
+</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa]">
             <h4 className="text-lg font-semibold text-white mb-2">Private by Default</h4>
@@ -1152,9 +1152,9 @@ useEffect(() => {
 
       {/* EVENTS */}
 <section id="events" className="max-w-6xl mx-auto px-6 py-20">
-  <h3 className="text-3xl font-semibold text-white mb-8 text-center">
-    Aleo Global Events
-  </h3>
+  <h3 className="text-3xl font-semibold text-[#EEFFA8] mb-8 text-center">
+  Aleo Global Events
+</h3>
 
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <AnimatePresence>
@@ -1244,7 +1244,9 @@ useEffect(() => {
 
       {/* GOVERNANCE */}
       <section id="governance" className="max-w-6xl mx-auto px-6 py-20 text-center">
-        <h3 className="text-3xl font-semibold text-white mb-4">Aleo Governance</h3>
+        <h3 className="text-3xl font-semibold text-[#EEFFA8] mb-8 text-center">
+  Aleo Governance
+</h3>
         <p className="text-gray-300 max-w-2xl mx-auto mb-6">
           Participate in Aleo’s on-chain governance — propose, vote, and shape the network’s evolution.
         </p>
@@ -1261,7 +1263,7 @@ useEffect(() => {
       {/* ARTICLES */}
       <section id="articles" className="max-w-6xl mx-auto px-6 py-20">
         <h3 className="text-3xl font-semibold text-[#EEFFA8] mb-8 text-center">
-  Aleo Community Hub
+  Aleo Blog Highlights
 </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {articles.map((article, idx) => (
