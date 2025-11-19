@@ -1138,25 +1138,61 @@ useEffect(() => {
       </section>
 
       {/* FEATURES */}
-      <section id="features" className="max-w-6xl mx-auto px-6 py-20">
-<h2 className="text-5xl font-semibold text-[#EEFFA8] mb-8 text-center">
-  Core Features
-</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa]">
-            <h4 className="text-lg font-semibold text-white mb-2">Private by Default</h4>
-            <p className="text-gray-400 text-sm">All app logic executes privately with zk-proofs, ensuring total confidentiality.</p>
-          </div>
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa]">
-            <h4 className="text-lg font-semibold text-white mb-2">Developer-First</h4>
-            <p className="text-gray-400 text-sm">Powerful SDKs and tooling for fast, privacy-focused app development.</p>
-          </div>
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa]">
-            <h4 className="text-lg font-semibold text-white mb-2">Composable & Secure</h4>
-            <p className="text-gray-400 text-sm">Aleo enables modular private DeFi and verifiable computation.</p>
-          </div>
-        </div>
-      </section>
+     <section id="about" className="max-w-6xl mx-auto px-6 py-20">
+  <h2 className="text-5xl font-semibold text-[#EEFFA8] mb-8 text-center">
+    About Aleo
+  </h2>
+
+  <p className="text-center text-gray-300 max-w-3xl mx-auto mb-16">
+    Aleo is the leading zero-knowledge blockchain enabling fully private applications.
+    It combines off-chain computation with on-chain verification, giving developers and
+    organizations the ability to build secure, privacy-preserving systems without exposing user data.
+  </p>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] transition">
+      <h4 className="text-lg font-semibold text-white mb-2">Private by Design</h4>
+      <p className="text-gray-400 text-sm">
+        Aleo uses zero-knowledge proofs to validate computation without exposing underlying data, enabling fully private interactions across public networks.
+      </p>
+    </div>
+
+    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] transition">
+      <h4 className="text-lg font-semibold text-white mb-2">Off-Chain Compute, On-Chain Proofs</h4>
+      <p className="text-gray-400 text-sm">
+        Heavy computation runs off-chain for efficiency, while lightweight zk-proofs are verified on-chain — delivering both scalability and trust.
+      </p>
+    </div>
+
+    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] transition">
+      <h4 className="text-lg font-semibold text-white mb-2">Developer-Friendly Tools</h4>
+      <p className="text-gray-400 text-sm">
+        Aleo provides Leo, a Rust-inspired language for private applications, along with powerful SDKs and tooling that eliminate deep cryptography overhead for developers.
+      </p>
+    </div>
+
+    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] transition">
+      <h4 className="text-lg font-semibold text-white mb-2">Enterprise-Ready Privacy</h4>
+      <p className="text-gray-400 text-sm">
+        Supports confidential identity, private financial logic, selective disclosure, and secure handling of regulated or sensitive information across industries.
+      </p>
+    </div>
+
+    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] transition">
+      <h4 className="text-lg font-semibold text-white mb-2">Composable & Modular Architecture</h4>
+      <p className="text-gray-400 text-sm">
+        Developers choose what data stays private, what is shared on-chain, and how apps interconnect — unlocking flexible, privacy-preserving system design.
+      </p>
+    </div>
+
+    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] transition">
+      <h4 className="text-lg font-semibold text-white mb-2">Open-Source & Decentralized</h4>
+      <p className="text-gray-400 text-sm">
+        Aleo is fully open-source and progressing toward community-driven decentralization, ensuring transparency, resilience, and long-term trust in the network.
+      </p>
+    </div>
+  </div>
+</section>
 
       {/* EVENTS */}
 <section id="events" className="max-w-6xl mx-auto px-6 py-20">
