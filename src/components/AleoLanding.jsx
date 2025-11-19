@@ -741,6 +741,7 @@ function GameSection() {
 export default function AleoLanding() {
   const [showMore, setShowMore] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
+  const [showMore, setShowMore] = useState(false);
 
 useEffect(() => {
   const timer = setTimeout(() => setShowSplash(false), 2500);
@@ -891,6 +892,8 @@ useEffect(() => {
       link: "https://x.com/AleoHQ/status/1981300000000000000",
     },
   ];
+
+  const visibleTweets = showMoreTweets ? tweets : tweets.slice(0, 6);
 
   const articles = [
     {
@@ -1197,23 +1200,46 @@ useEffect(() => {
 </section>
 
       {/* COMMUNITY */}
-      <section id="community" className="max-w-6xl mx-auto px-6 py-20">
-        <h3 className="text-3xl font-semibold text-white mb-8">Aleo Community Hub</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tweets.map((tweet, idx) => (
-            <div
-              key={idx}
-              onClick={() => window.open(tweet.link, "_blank")}
-              className="cursor-pointer bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] hover:scale-[1.03] transition"
-            >
-              <div className="text-sm text-gray-400">{tweet.date}</div>
-              <h4 className="mt-3 text-lg font-semibold text-white hover:text-[#EEFFA8] transition-colors">
-                {tweet.text}
-              </h4>
-            </div>
-          ))}
-        </div>
-      </section>
+<section id="community" className="max-w-6xl mx-auto px-6 py-20">
+  <h3 className="text-3xl font-semibold text-white mb-8 text-center">
+    Aleo Community Hub
+  </h3>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <AnimatePresence>
+      {visibleTweets.map((tweet, idx) => (
+        <motion.div
+          key={idx}
+          onClick={() => window.open(tweet.link, "_blank")}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ duration: 0.3 }}
+          className="cursor-pointer bg-white/5 border border-white/10 rounded-2xl p-6 
+                     hover:bg-[#EEFFA8]/10 hover:shadow-[0_0_25px_#EEFFA8aa] 
+                     hover:scale-[1.03] transition-all duration-300 group"
+        >
+          <div className="text-sm text-gray-400">{tweet.date}</div>
+
+          <h4 className="mt-3 text-lg font-semibold text-white group-hover:text-[#EEFFA8] transition-colors">
+            {tweet.text}
+          </h4>
+        </motion.div>
+      ))}
+    </AnimatePresence>
+  </div>
+
+  {/* BUTTON */}
+  <div className="text-center mt-10">
+    <button
+      onClick={() => setShowMoreTweets(!showMoreTweets)}
+      className="px-6 py-3 bg-[#EEFFA8]/10 border border-[#EEFFA8]/30 rounded-xl 
+                 text-[#EEFFA8] hover:bg-[#EEFFA8]/20 transition"
+    >
+      {showMoreTweets ? "Show Less Tweets" : "Show More Tweets"}
+    </button>
+  </div>
+</section>
 
       {/* GOVERNANCE */}
       <section id="governance" className="max-w-6xl mx-auto px-6 py-20 text-center">
