@@ -1009,6 +1009,7 @@ useEffect(() => {
   "Articles",
   "Game",
   "Quiz Zone",
+  "FAQ",
 ].map((i) => (
   <a
     key={i}
@@ -1316,9 +1317,9 @@ useEffect(() => {
 </section>
 
 {/* FAQ SECTION */}
-      <div className="relative z-10 mt-32">
-        <AleoFAQPage />
-      </div>
+<section id="faq" className="relative z-10 mt-32">
+  <AleoFAQPage />
+</section>
       
       {/* SOCIAL LINKS */}
 <AleoSocialLinks />
