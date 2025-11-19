@@ -741,7 +741,7 @@ function GameSection() {
 export default function AleoLanding() {
   const [showMore, setShowMore] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
-  const [showMore, setShowMore] = useState(false);
+  const [showMoreTweets, setShowMoreTweets] = useState(false);
 
 useEffect(() => {
   const timer = setTimeout(() => setShowSplash(false), 2500);
