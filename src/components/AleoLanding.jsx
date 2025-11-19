@@ -1123,7 +1123,7 @@ useEffect(() => {
 
       {/* ABOUT */}
       <section id="about" className="max-w-6xl mx-auto px-6 py-20">
-        <h3 className="text-3xl font-semibold text-white mb-4">About Aleo</h3>
+        <h3 className="text-5xl font-semibold text-white mb-4">About Aleo</h3>
         <p className="text-gray-300 max-w-3xl">
           Aleo is the world’s leading zero-knowledge platform enabling fully private applications with off-chain computation verified on-chain.
         </p>
@@ -1131,7 +1131,7 @@ useEffect(() => {
 
       {/* FEATURES */}
       <section id="features" className="max-w-6xl mx-auto px-6 py-20">
-<h2 className="text-3xl font-semibold text-[#EEFFA8] mb-8 text-center">
+<h2 className="text-5xl font-semibold text-[#EEFFA8] mb-8 text-center">
   Core Features
 </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -1152,7 +1152,7 @@ useEffect(() => {
 
       {/* EVENTS */}
 <section id="events" className="max-w-6xl mx-auto px-6 py-20">
-  <h2 className="text-3xl font-semibold text-[#EEFFA8] mb-8 text-center">
+  <h2 className="text-5xl font-semibold text-[#EEFFA8] mb-8 text-center">
   Aleo Global Events
 </h2>
 
@@ -1202,7 +1202,7 @@ useEffect(() => {
 
       {/* COMMUNITY */}
 <section id="community" className="max-w-6xl mx-auto px-6 py-20">
-  <h2 className="text-3xl font-semibold text-[#EEFFA8] mb-8 text-center">
+  <h2 className="text-5xl font-semibold text-[#EEFFA8] mb-8 text-center">
   Aleo Community Hub
 </h2>
 
@@ -1244,7 +1244,7 @@ useEffect(() => {
 
       {/* GOVERNANCE */}
       <section id="governance" className="max-w-6xl mx-auto px-6 py-20 text-center">
-        <h2 className="text-3xl font-semibold text-[#EEFFA8] mb-8 text-center">
+        <h2 className="text-5xl font-semibold text-[#EEFFA8] mb-8 text-center">
   Aleo Governance
 </h2>
         <p className="text-gray-300 max-w-2xl mx-auto mb-6">
@@ -1262,7 +1262,7 @@ useEffect(() => {
 
       {/* ARTICLES */}
       <section id="articles" className="max-w-6xl mx-auto px-6 py-20">
-        <h2 className="text-3xl font-semibold text-[#EEFFA8] mb-8 text-center">
+        <h2 className="text-5xl font-semibold text-[#EEFFA8] mb-8 text-center">
   Aleo Blog Highlights
 </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
