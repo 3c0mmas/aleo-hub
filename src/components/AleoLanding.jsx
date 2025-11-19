@@ -1189,6 +1189,16 @@ useEffect(() => {
   <h2 className="text-5xl font-semibold text-[#EEFFA8] mb-8 text-center">
   Aleo Global Events
 </h2>
+  <h3 className="text-3xl font-semibold text-white mb-8 text-center">
+  Aleo Global Events
+</h3>
+
+<p className="text-center text-gray-300 max-w-3xl mx-auto mb-12">
+  Aleo organizes and participates in leading events around the world — bringing together
+  developers, researchers, and innovators shaping the future of privacy. Join workshops,
+  meetups, and global conferences wherever it's most convenient for you, and connect with
+  the fast-growing Aleo community.
+</p>
 
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <AnimatePresence>
