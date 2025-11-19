@@ -698,7 +698,7 @@ canvas.style.height = `${canvas.height}px`;
 function GameSection() {
   return (
     <section id="game" className="max-w-6xl mx-auto px-6 py-20 text-center">
-      <h3 className="text-4xl md:text-5xl font-bold text-[#EEFFA8] mb-3">Aleo Block Snake Game</h3>
+      <h4 className="text-4xl md:text-5xl font-bold text-[#EEFFA8] mb-3">Aleo Block Snake Game</h4>
 
       <motion.div
         className="text-gray-300 max-w-3xl mx-auto mb-10 leading-relaxed"
