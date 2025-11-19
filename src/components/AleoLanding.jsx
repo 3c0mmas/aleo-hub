@@ -1327,7 +1327,7 @@ useEffect(() => {
 <AleoSocialLinks />
 
       {/* FOOTER */}
-      <footer className="max-w-6xl mx-auto px-6 py-12 text-center text-sm text-gray-500">
+      <footer className="max-w-6xl mx-auto px-6 py-12 text-center text-sm text-[#EEFFA8]">
   © {new Date().getFullYear()}{" "}
   <a
     href="https://x.com/0xJu1issa"
