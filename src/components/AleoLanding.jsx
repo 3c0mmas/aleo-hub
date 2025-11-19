@@ -1202,9 +1202,9 @@ useEffect(() => {
 
       {/* COMMUNITY */}
 <section id="community" className="max-w-6xl mx-auto px-6 py-20">
-  <h3 className="text-3xl font-semibold text-white mb-8 text-center">
-    Aleo Community Hub
-  </h3>
+  <h3 className="text-3xl font-semibold text-[#EEFFA8] mb-8 text-center">
+  Aleo Community Hub
+</h3>
 
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <AnimatePresence>
@@ -1260,7 +1260,9 @@ useEffect(() => {
 
       {/* ARTICLES */}
       <section id="articles" className="max-w-6xl mx-auto px-6 py-20">
-        <h1 className="text-4xl md:text-5xl font-bold text-[#EEFFA8] mb-3">Aleo Blog Highlights</h1>
+        <h3 className="text-3xl font-semibold text-[#EEFFA8] mb-8 text-center">
+  Aleo Community Hub
+</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {articles.map((article, idx) => (
             <motion.div
