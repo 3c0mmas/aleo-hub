@@ -750,6 +750,14 @@ useEffect(() => {
 
     const allEvents = [
       {
+  time: "7:00 PM - 9:30 PM GMT-3, November 20 2025",
+  location: "INVERNADERO, Agüero 2502, C1425EID, 1425 Buenos Aires, Argentina",
+  title: "Privacy Szn Happy Hour",
+  link: "https://luma.com/612avozu",
+  image:
+    "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/event-covers/1t/e8608c26-dab0-4953-831d-30f6da190254.png",
+},
+      {
   time: "11:00 AM - 1:00 PM GMT-3, November 19 2025",
   location: "Ciudad Cultural Konex, Buenos Aires, Ciudad Autónoma de Buenos Aires",
   title: "Building Private Compliant Tokens | Aleo Workshop @ Devconnect",
