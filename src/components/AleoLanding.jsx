@@ -835,6 +835,31 @@ useEffect(() => {
   const visibleEvents = showMore ? allEvents : allEvents.slice(0, 6);
 
   const tweets = [
+{
+  date: "November 12, 2025",
+  text: "$1.22T moved on-chain, but only 0.0013% of activity remains private — highlighting the scale of today’s transparency gap.",
+  link: "https://x.com/AleoHQ/status/1988690824486420920?s=20",
+},
+{
+  date: "November 17, 2025",
+  text: "Privacy is emerging as the new digital divide — shifting the advantage to those who control and protect their data.",
+  link: "https://x.com/AleoHQ/status/1990473797401452962?s=20",
+},
+{
+  date: "November 14, 2025",
+  text: "Privacy goes far beyond tokens — as @1HowardWu notes, confidentiality and real-world data protection are becoming core infrastructure needs.",
+  link: "https://x.com/AleoHQ/status/1989340174161973701?s=20",
+},
+{
+  date: "November 13, 2025",
+  text: "Aleo heads to Buenos Aires for @EFDevcon — bringing a full week of privacy-focused programming to the global builder community.",
+  link: "https://x.com/AleoHQ/status/1989046128151539840?s=20",
+},
+{
+  date: "November 13, 2025",
+  text: "Transparency and compliance don’t have to mean exposure — modern cryptography enables control without sacrificing privacy.",
+  link: "https://x.com/AleoHQ/status/1988994795235111093?s=20",
+},
     {
       date: "October 27, 2025",
       text: "Exploring the future of privacy at Money20/20 Las Vegas! Join us at Aleo’s Privacy Lounge.",
