@@ -1007,7 +1007,6 @@ useEffect(() => {
           <div className="flex items-center gap-6 text-sm text-[#EEFFA8]">
   {[
   "About",
-  "Features",
   "Events",
   "Community",
   "Governance",
