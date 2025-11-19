@@ -1127,15 +1127,6 @@ useEffect(() => {
       </section>
 
       {/* ABOUT */}
-      <section id="about" className="max-w-6xl mx-auto px-6 py-20">
-        <h3 className="text-5xl font-semibold text-[#EEFFA8] mb-4">About Aleo</h3>
-        <p className="text-gray-300 max-w-3xl">
-          Aleo is the leading zero-knowledge blockchain designed for building fully private
-    applications. It combines off-chain computation with on-chain verification,
-    enabling developers to create powerful, privacy-preserving systems without exposing
-    user data.
-        </p>
-      </section>
 
       {/* FEATURES */}
      <section id="about" className="max-w-6xl mx-auto px-6 py-20">
