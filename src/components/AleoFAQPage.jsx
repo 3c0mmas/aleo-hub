@@ -199,7 +199,7 @@ export default function AleoFAQPage() {
       <div className="relative z-10 max-w-4xl mx-auto px-6 py-20">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
           <h3 className="text-4xl md:text-5xl font-bold text-[#EEFFA8] mb-3">Aleo FAQ</h3>
-          <p className="text-gray-400 max-w-2xl mx-auto">
+          <p className="text-gray-300 max-w-2xl mx-auto">
             Discover how Aleo brings zero-knowledge privacy, scalability, and decentralization together. Explore frequently asked questions from the official Aleo documentation — simplified and styled to match your site.
           </p>
         </motion.div>
