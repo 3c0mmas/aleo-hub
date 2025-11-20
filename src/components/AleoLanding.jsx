@@ -1305,6 +1305,11 @@ useEffect(() => {
         <h2 className="text-5xl font-semibold text-[#EEFFA8] mb-8 text-center">
   Aleo Blog Highlights
 </h2>
+        <p className="text-center text-gray-300 max-w-3xl mx-auto mb-12">
+  Stay up to date with the latest partnerships, ecosystem updates, research insights,
+  and announcements from the Aleo team. Explore highlights from the blog to follow the
+  progress of privacy-first technology and its global adoption.
+</p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {articles.map((article, idx) => (
             <motion.div
