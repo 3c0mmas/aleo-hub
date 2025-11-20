@@ -10,6 +10,15 @@ export default function AleoSocialLinks() {
 
   return (
     <section className="flex flex-col items-center justify-center gap-10 bg-black text-white py-20 px-6">
+        <h2 className="text-5xl font-semibold text-[#EEFFA8] mb-4 text-center">
+    Connect With Aleo
+  </h2>
+
+  <p className="text-center text-gray-300 max-w-3xl mx-auto mb-12">
+    Join Aleo across platforms where our global community collaborates, learns, and builds.
+    Follow updates, join discussions, and become part of the movement shaping the next era
+    of private, zero-knowledge applications.
+  </p>
       {/* === TOP ROW: X + Discord === */}
       <div className="flex flex-col md:flex-row items-center justify-center gap-6 flex-wrap">
         {/* X (Twitter) */}
