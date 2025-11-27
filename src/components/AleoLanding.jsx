@@ -1107,7 +1107,7 @@ useEffect(() => {
     alt="Aleo logo"
     className="h-10 brightness-[0] invert"
   />
-  Network
+  Network Community Hub
 </h1>
           <p className="text-gray-400 max-w-xl">
             Privacy-first blockchain empowering developers to build private,
